@@ -1,0 +1,11 @@
+import type { BuildAttachment } from '../src/types';
+export const ATTACHMENT_LIMITS: Readonly<{ count: number; images: number; imageBytes: number; codeBytes: number; totalCodeBytes: number; totalBytes: number; requestBytes: number }>;
+export const IMAGE_TYPES: string[];
+export const CODE_EXTENSIONS: string[];
+export const IMAGE_ACCEPT: string;
+export const CODE_ACCEPT: string;
+export function attachmentKind(name: string, mime?: string): 'image' | 'code' | undefined;
+export function imageMime(name: string, mime?: string): string | undefined;
+export function validateAttachments(input: unknown): BuildAttachment[];
+export function attachmentUserContent(text: string, attachments: BuildAttachment[]): string | ({ type: 'text'; text: string } | { type: 'image_url'; image_url: { url: string } })[];
+export function supportsImageInput(id: string): boolean;

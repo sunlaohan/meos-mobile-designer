@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+
+# Generated Vite config files from earlier TypeScript builds.
+/vite.config.js
+/vite.config.d.ts
+
+# Local logs and test coverage.
+*.log
+coverage/

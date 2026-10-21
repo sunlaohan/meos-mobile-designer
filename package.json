@@ -1,0 +1,31 @@
+{
+  "name": "meos-mobile-designer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:metadata": "node scripts/generate-component-metadata.mjs && node scripts/generate-ai-catalog.mjs",
+    "dev": "pnpm generate:metadata && vite --config vite.config.ts --host 0.0.0.0",
+    "service:start": "node scripts/dev-service.mjs start",
+    "service:restart": "node scripts/dev-service.mjs restart",
+    "service:status": "node scripts/dev-service.mjs status",
+    "service:stop": "node scripts/dev-service.mjs stop",
+    "build": "pnpm generate:metadata && vue-tsc -b && vite build --config vite.config.ts",
+    "preview": "vite preview --config vite.config.ts --host 0.0.0.0",
+    "typecheck": "vue-tsc -b --pretty false",
+    "test": "node --test --test-concurrency=1 scripts/*.test.mjs"
+  },
+  "dependencies": {
+    "lucide-vue-next": "^0.468.0",
+    "persagy-vant": "link:/Users/sunlei/Component/persagy-vant/packages/persagy-mobile",
+    "vue": "3.2.38"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/compiler-sfc": "3.2.38",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vue-tsc": "^2.2.0"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

@@ -1,0 +1,408 @@
+[
+  {
+    "title": "基础组件",
+    "items": [
+      {
+        "path": "button",
+        "title": "按钮 Button"
+      },
+      {
+        "path": "icon",
+        "title": "图标 Icon"
+      },
+      {
+        "path": "cell",
+        "title": "单元格 Cell"
+      },
+      {
+        "path": "image",
+        "title": "图片 Image"
+      },
+      {
+        "path": "toast",
+        "title": "轻提示 Toast"
+      },
+      {
+        "path": "space",
+        "title": "间距 Space"
+      },
+      {
+        "path": "col",
+        "title": "布局 Layout"
+      },
+      {
+        "path": "popup",
+        "title": "弹出层 Popup"
+      },
+      {
+        "path": "style",
+        "title": "内置样式 Style"
+      },
+      {
+        "path": "config-provider",
+        "title": "全局配置 ConfigProvider"
+      }
+    ]
+  },
+  {
+    "title": "表单组件",
+    "items": [
+      {
+        "path": "tree-select",
+        "title": "树选择 TreeSelect"
+      },
+      {
+        "path": "quantity-input",
+        "title": "批量多选 BatchMultiSelect"
+      },
+      {
+        "path": "checkbox",
+        "title": "复选框 Checkbox"
+      },
+      {
+        "path": "radio",
+        "title": "单选框 Radio"
+      },
+      {
+        "path": "field",
+        "title": "输入框 Field"
+      },
+      {
+        "path": "form",
+        "title": "表单 Form"
+      },
+      {
+        "path": "switch",
+        "title": "开关 Switch"
+      },
+      {
+        "path": "picker",
+        "title": "选择器 Picker"
+      },
+      {
+        "path": "rate",
+        "title": "评分 Rate"
+      },
+      {
+        "path": "search",
+        "title": "搜索 Search"
+      },
+      {
+        "path": "datetime-picker",
+        "title": "时间选择 DatetimePicker"
+      },
+      {
+        "path": "calendar",
+        "title": "日历 Calendar"
+      },
+      {
+        "path": "cascader",
+        "title": "级联选择 Cascader"
+      },
+      {
+        "path": "number-keyboard",
+        "title": "数字键盘 NumberKeyboard"
+      },
+      {
+        "path": "password-input",
+        "title": "密码输入框 PasswordInput"
+      },
+      {
+        "path": "slider",
+        "title": "滑块 Slider"
+      },
+      {
+        "path": "stepper",
+        "title": "步进器 Stepper"
+      },
+      {
+        "path": "uploader",
+        "title": "文件上传 Uploader"
+      }
+    ]
+  },
+  {
+    "title": "反馈组件",
+    "items": [
+      {
+        "path": "content-panel",
+        "title": "内容面板 ContentPanel"
+      },
+      {
+        "path": "form-panel",
+        "title": "表单面板 FormPanel"
+      },
+      {
+        "path": "radio-panel",
+        "title": "单选面板 RadioPanel"
+      },
+      {
+        "path": "checkbox-panel",
+        "title": "多选面板 CheckboxPanel"
+      },
+      {
+        "path": "tree-select-panel",
+        "title": "树选择面板 TreeSelectPanel"
+      },
+      {
+        "path": "action-sheet",
+        "title": "动作面板 ActionSheet"
+      },
+      {
+        "path": "dialog",
+        "title": "弹出框 Dialog"
+      },
+      {
+        "path": "loading",
+        "title": "加载 Loading"
+      },
+      {
+        "path": "notify",
+        "title": "消息通知 Notify"
+      },
+      {
+        "path": "overlay",
+        "title": "遮罩层 Overlay"
+      },
+      {
+        "path": "pull-refresh",
+        "title": "下拉刷新 PullRefresh"
+      },
+      {
+        "path": "share-sheet",
+        "title": "分享面板 ShareSheet"
+      },
+      {
+        "path": "swipe-cell",
+        "title": "滑动单元格 SwipeCell"
+      },
+      {
+        "path": "dropdown-menu",
+        "title": "下拉菜单 DropdownMenu"
+      }
+    ]
+  },
+  {
+    "title": "展示组件",
+    "items": [
+      {
+        "path": "blue-mark",
+        "title": "小蓝标 BlueMark"
+      },
+      {
+        "path": "tag",
+        "title": "标签 Tag"
+      },
+      {
+        "path": "badge",
+        "title": "徽标 Badge"
+      },
+      {
+        "path": "swipe",
+        "title": "轮播 Swipe"
+      },
+      {
+        "path": "divider",
+        "title": "分割线 Divider"
+      },
+      {
+        "path": "collapse-toggle",
+        "title": "展开收起 CollapseToggle"
+      },
+      {
+        "path": "label",
+        "title": "字段展示 Label"
+      },
+      {
+        "path": "title-bar",
+        "title": "标题栏 TitleBar"
+      },
+      {
+        "path": "empty",
+        "title": "空状态 Empty"
+      },
+      {
+        "path": "background",
+        "title": "背景 Background"
+      },
+      {
+        "path": "skeleton",
+        "title": "骨架屏 Skeleton"
+      },
+      {
+        "path": "notice-bar",
+        "title": "通知栏 NoticeBar"
+      },
+      {
+        "path": "popover",
+        "title": "气泡弹出框 Popover"
+      },
+      {
+        "path": "friendly-tip",
+        "title": "友好提示 FriendlyTip"
+      },
+      {
+        "path": "image-preview",
+        "title": "图片预览 ImagePreview"
+      },
+      {
+        "path": "video-preview",
+        "title": "视频预览 VideoPreview"
+      },
+      {
+        "path": "circle",
+        "title": "环形进度条 Circle"
+      },
+      {
+        "path": "collapse",
+        "title": "折叠面板 Collapse"
+      },
+      {
+        "path": "count-down",
+        "title": "倒计时 CountDown"
+      },
+      {
+        "path": "lazyload",
+        "title": "懒加载 Lazyload"
+      },
+      {
+        "path": "list",
+        "title": "列表 List"
+      },
+      {
+        "path": "progress",
+        "title": "进度条 Progress"
+      },
+      {
+        "path": "steps",
+        "title": "步骤条 Steps"
+      },
+      {
+        "path": "sticky",
+        "title": "粘性布局 Sticky"
+      }
+    ]
+  },
+  {
+    "title": "导航组件",
+    "items": [
+      {
+        "path": "nav-bar",
+        "title": "导航栏 NavBar"
+      },
+      {
+        "path": "bottom-action-bar",
+        "title": "动作栏 ActionBar"
+      },
+      {
+        "path": "tab",
+        "title": "标签页 Tab"
+      },
+      {
+        "path": "filter-tag",
+        "title": "筛选标签 FilterTag"
+      },
+      {
+        "path": "grid",
+        "title": "宫格 Grid"
+      },
+      {
+        "path": "index-bar",
+        "title": "索引栏 IndexBar"
+      },
+      {
+        "path": "pagination",
+        "title": "分页 Pagination"
+      },
+      {
+        "path": "sidebar",
+        "title": "侧边导航 Sidebar"
+      },
+      {
+        "path": "tabbar",
+        "title": "菜单栏 Tabbar"
+      }
+    ]
+  },
+  {
+    "title": "业务组件",
+    "items": [
+      {
+        "path": "work-order-card",
+        "title": "工单卡片 WorkOrderCard"
+      },
+      {
+        "path": "info-card",
+        "title": "信息卡片 InfoCard"
+      },
+      {
+        "path": "floor-select",
+        "title": "楼层选择 FloorSelect"
+      },
+      {
+        "path": "location-select",
+        "title": "位置单选 LocationSelect"
+      },
+      {
+        "path": "material-add",
+        "title": "添加物料 MaterialAdd"
+      },
+      {
+        "path": "material-detail",
+        "title": "物料详情 MaterialDetail"
+      },
+      {
+        "path": "material-action-bar",
+        "title": "物料操作列表 MaterialActionList"
+      },
+      {
+        "path": "material-display-bar",
+        "title": "物料预览列表 MaterialPreviewList"
+      },
+      {
+        "path": "object-select",
+        "title": "对象选择 ObjectSelect"
+      },
+      {
+        "path": "multi-person-select",
+        "title": "多人选择 MultiSelect"
+      },
+      {
+        "path": "single-person-select",
+        "title": "单人选择 PersonSelect"
+      },
+      {
+        "path": "work-order-filter",
+        "title": "工单筛选 WorkOrderFilter"
+      },
+      {
+        "path": "address-edit",
+        "title": "地址编辑 AddressEdit"
+      },
+      {
+        "path": "address-list",
+        "title": "地址列表 AddressList"
+      },
+      {
+        "path": "area",
+        "title": "省市区选择 Area"
+      },
+      {
+        "path": "contact-edit",
+        "title": "联系人编辑 ContactEdit"
+      },
+      {
+        "path": "contact-list",
+        "title": "联系人列表 ContactList"
+      },
+      {
+        "path": "submit-bar",
+        "title": "提交订单栏 SubmitBar"
+      },
+      {
+        "path": "bot-mobile",
+        "title": "智能助手 BotMobile"
+      }
+    ]
+  }
+]
