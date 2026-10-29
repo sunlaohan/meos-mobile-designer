@@ -5,7 +5,7 @@ import { canvasPanelTypes } from '../../shared/association-controls.mjs';
 export { canvasPanelTypes };
 const panelTypes = new Set<string>(canvasPanelTypes);
 
-export function isCanvasPanel(node: CanvasNode) { return panelTypes.has(node.type); }
+export function isCanvasPanel(node: CanvasNode) { return panelTypes.has(node.type) && !(node.type === 'calendar' && node.props.poppable === false); }
 
 export function isTopFixedCanvasNode(node: CanvasNode) {
   return node.type === 'nav-bar' && node.props.fixed === true;

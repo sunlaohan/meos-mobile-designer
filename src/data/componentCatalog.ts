@@ -4,6 +4,8 @@ import generatedMetadata from './generatedComponentMetadata.json';
 import { propertyTokenKind } from '../utils/designTokens';
 import { propertyLabel } from '../utils/propertyLabels';
 import { canvasPanelTypes } from '../../shared/association-controls.mjs';
+import documentedStyles from './generatedComponentStyles.json';
+import { curatedComponentStyles } from './componentStyles';
 
 const optionLabelMap: Record<string, string> = {
   default: '默认',
@@ -190,7 +192,7 @@ const curatedCatalog: ComponentDefinition[] = [
       text('modelValue', 'v-model', '内容', 'textarea'),
       text('label', 'label'),
       text('placeholder', 'placeholder'),
-      select('type', 'type', ['text', 'textarea', 'tel', 'digit', 'number']),
+      select('type', 'type', ['text', 'textarea', 'tel', 'digit', 'number', 'password']),
       select('labelPosition', 'label-position', ['left', 'top']),
       select('inputAlign', 'input-align', ['left', 'center', 'right']),
       { key: 'maxlength', label: 'maxlength', control: 'number', group: '限制', min: 0, max: 1000 },
@@ -224,6 +226,8 @@ const curatedCatalog: ComponentDefinition[] = [
       json('wrapTags', 'wrap-tags'),
       bool('border', 'border'),
       bool('clickable', 'clickable'),
+      select('size', 'size', ['normal', 'large']),
+      select('selectType', '选择控件', [['复选框', 'checkbox'], ['单选框', 'radio']]),
     ],
   },
   {
@@ -669,7 +673,7 @@ const previewOverrides: Record<string, { props?: Record<string, unknown>; conten
   skeleton: { props: { loading: true, row: 3 } },
   circle: { props: { modelValue: 65, rate: 65, text: '65%' } },
   'count-down': { props: { time: 3600000 } },
-  'filter-tag': { props: { active: true }, content: '筛选条件' },
+  'filter-tag': { props: { selected: true }, content: '筛选条件' },
   pagination: { props: { modelValue: 1, pageCount: 5 } },
   'content-panel': { props: { title: '内容说明' }, content: '请阅读内容并确认。' },
   popup: { props: { position: 'bottom', round: true, closeable: true }, content: '弹出层内容' },
@@ -698,11 +702,18 @@ function parseDefault(attribute: WebTypeAttribute) {
   const value = raw.slice(1, -1);
   if (value === 'true') return true;
   if (value === 'false') return false;
+  if (value === 'null') return null;
   if (value === '[]') return [];
   if (value === '{}') return {};
   if (value === "''") return '';
   if (/^-?\d+(\.\d+)?$/.test(value)) return Number(value);
-  return value;
+  if (/^[\[{]/.test(value)) {
+    try { return JSON.parse(value); } catch { /* Descriptive defaults belong to the runtime. */ }
+  }
+  // Documentation may describe array/object defaults (such as A-Z) rather than executable values.
+  // Leave those to the runtime component instead of passing descriptive strings as structured props.
+  if (/\[\]|Array|object|Props|Item|Option|Date|Function|=>/.test(attribute.value?.type || '')) return undefined;
+  return value.replace(/^(['"])(.*)\1$/, '$2');
 }
 
 function propertyFromAttribute(attribute: WebTypeAttribute): PropertySchema {
@@ -710,20 +721,30 @@ function propertyFromAttribute(attribute: WebTypeAttribute): PropertySchema {
   let control: PropertySchema['control'] = 'text';
   if (type === 'boolean') control = 'boolean';
   else if (type === 'number') control = 'number';
-  else if (/\[\]|Array|object|Props|Item|Option/.test(type)) control = 'json';
+  else if (/\[\]|\[[^\]]*,[^\]]*\]|Array|object|Props|Item|Option/.test(type)) control = 'json';
+  const values = attribute.description?.match(/可选值为\s*([^。；;]+)/)?.[1].match(/[a-zA-Z][\w-]*/g);
+  const options = values ? [...new Set(values)].map((value) => ({ label: optionLabel(value), value })) : undefined;
+  const defaultValue = parseDefault(attribute);
+  if (options && typeof defaultValue === 'string' && !options.some(({ value }) => value === defaultValue)) options.unshift({ label: optionLabel(defaultValue), value: defaultValue });
+  if (control === 'text' && options && options.length > 1 && options.length <= 12) control = 'select';
   return {
     key: toCamelCase(attribute.name),
     label: attribute.description || attribute.name,
     control,
     group: /boolean/.test(type) ? '状态' : control === 'json' ? '数据' : '属性',
     help: `${attribute.name} · ${type}`,
+    ...(control === 'select' ? { options } : {}),
   };
 }
 
 function attributesFor(path: string) {
+  const metadata = (generatedMetadata as Record<string, { attributes?: GeneratedAttribute[]; supportedProps?: string[]; booleanProps?: string[] }>)[path];
   const merged = new Map<string, WebTypeAttribute>();
-  for (const attribute of webTypeTags.get(`van-${path}`)?.attributes || []) merged.set(attribute.name, attribute);
-  const generated = (generatedMetadata as Record<string, { attributes?: GeneratedAttribute[] }>)[path]?.attributes || [];
+  for (const attribute of webTypeTags.get(`van-${path}`)?.attributes || []) {
+    const name = attribute.name.replace(/\s+v?\d[\d.]*$/, '');
+    merged.set(name, { ...attribute, name });
+  }
+  const generated = metadata?.attributes || [];
   for (const attribute of generated) {
     const previous = merged.get(attribute.name);
     merged.set(attribute.name, {
@@ -737,7 +758,7 @@ function attributesFor(path: string) {
   if (canvasPanelTypes.includes(path) && ![...merged.keys()].some((key) => toCamelCase(key) === 'show')) {
     merged.set('v-model:show', { name: 'v-model:show', default: '`false`', description: '是否显示控件', value: { type: 'boolean' } });
   }
-  return [...merged.values()];
+  return [...merged.values()].filter((attribute) => !metadata?.supportedProps || metadata.supportedProps.includes(toCamelCase(attribute.name))).map((attribute) => metadata?.booleanProps?.includes(toCamelCase(attribute.name)) ? { ...attribute, value: { type: 'boolean' } } : attribute);
 }
 
 function buildExtendedDefinition([path, title, category]: OfficialEntry): ComponentDefinition {
@@ -751,6 +772,8 @@ function buildExtendedDefinition([path, title, category]: OfficialEntry): Compon
     if (value !== undefined) defaultProps[toCamelCase(attribute.name)] = value;
   }
   Object.assign(defaultProps, previewOverrides[path]?.props || {});
+  const example = (documentedStyles as Record<string, { items: { props: Record<string, unknown>; seeds: Record<string, unknown>; content?: string }[] }>)[path]?.items[0];
+  if (example && !previewOverrides[path] && !curatedComponentStyles[path]) Object.assign(defaultProps, example.props, example.seeds);
   if (canvasPanelTypes.includes(path)) defaultProps.show = false;
 
   return {
@@ -762,9 +785,9 @@ function buildExtendedDefinition([path, title, category]: OfficialEntry): Compon
     keywords: [path, title, category],
     docsPath: path,
     defaultProps,
-    defaultContent: previewOverrides[path]?.content || (!canvasPanelTypes.includes(path) && tag?.slots?.some((slot) => slot.name === 'default') ? name : undefined),
+    defaultContent: previewOverrides[path]?.content || example?.content,
     properties: attributes.map(propertyFromAttribute),
-    previewMode: livePreviewTypes.has(path) ? 'live' : 'configured',
+    previewMode: livePreviewTypes.has(path) || example || (generatedMetadata as Record<string, { supportedProps?: string[] }>)[path]?.supportedProps ? 'live' : 'configured',
   };
 }
 
@@ -773,7 +796,12 @@ const enrichedCuratedCatalog = curatedCatalog.map((definition) => {
   const additions = attributesFor(definition.type)
     .map(propertyFromAttribute)
     .filter((item) => !existingKeys.has(item.key));
-  return { ...definition, properties: [...definition.properties, ...additions] };
+  const supported = (generatedMetadata as Record<string, { supportedProps?: string[] }>)[definition.type]?.supportedProps;
+  return {
+    ...definition,
+    defaultProps: Object.fromEntries(Object.entries(definition.defaultProps).filter(([key]) => !supported || supported.includes(key))),
+    properties: [...definition.properties, ...additions].filter((item) => item.target === 'content' || !supported || supported.includes(item.key)),
+  };
 });
 const curatedTypes = new Set(enrichedCuratedCatalog.map((item) => item.type));
 const extendedCatalog = officialComponents.filter(([path]) => !curatedTypes.has(path)).map(buildExtendedDefinition);
@@ -806,12 +834,32 @@ function localizeDefinition(definition: ComponentDefinition): ComponentDefinitio
   };
 }
 
-export const componentCatalog: ComponentDefinition[] = [...enrichedCuratedCatalog, ...extendedCatalog].map(localizeDefinition);
+const registered = new Set([...enrichedCuratedCatalog, ...extendedCatalog].map(({ type }) => type));
+const nativeChildren = new Map<string, string>();
+function collectNativeChildren(items: { type: string; children?: any[] }[], docsPath: string) {
+  for (const item of items) { if (!registered.has(item.type)) nativeChildren.set(item.type, docsPath); if (item.children) collectNativeChildren(item.children, docsPath); }
+}
+for (const [type, config] of Object.entries(documentedStyles)) {
+  if (!registered.has(type)) nativeChildren.set(type, config.docsPath);
+  for (const item of config.items) if ('children' in item) collectNativeChildren(item.children as any[], config.docsPath);
+}
+const internalCatalog = [...nativeChildren].filter(([type]) => (generatedMetadata as Record<string, { supportedProps?: string[] }>)[type]?.supportedProps).map(([type, docsPath]) => {
+  const englishName = type.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('');
+  const names: Record<string, string> = { tabs: '标签页', row: '行布局', 'grid-item': '宫格项', 'swipe-item': '轮播项', step: '步骤项', 'sidebar-item': '侧边导航项', 'index-anchor': '索引锚点', 'collapse-item': '折叠项', 'action-bar-icon': '动作栏图标', 'action-bar-button': '动作栏按钮', 'dropdown-item': '下拉菜单项', 'tabbar-item': '菜单栏项', 'checkbox-group': '复选框组', 'radio-group': '单选框组', 'cell-group': '单元格组', 'qr-scanner': '二维码扫描' };
+  const definition = buildExtendedDefinition([type, `${names[type] || englishName} ${englishName}`, '布局']);
+  return { ...definition, docsPath, previewMode: 'live' as const };
+});
+export const componentCatalog: ComponentDefinition[] = [...enrichedCuratedCatalog, ...extendedCatalog, ...internalCatalog].map(localizeDefinition);
 
 export const categories = ['基础', '导航', '表单', '展示', '业务', '反馈', '布局'];
 
 export function getDefinition(type: ComponentType) {
-  return componentCatalog.find((item) => item.type === type)!;
+  const definition = componentCatalog.find((item) => item.type === type);
+  if (definition) return definition;
+  const internal = (generatedMetadata as Record<string, { supportedProps?: string[] }>)[type];
+  if (!internal?.supportedProps) throw new Error(`Unsupported component: ${type}`);
+  const name = type.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('');
+  return localizeDefinition({ ...buildExtendedDefinition([type, name, '布局']), previewMode: 'live' });
 }
 
 export function makeId() {
@@ -821,11 +869,16 @@ export function makeId() {
 }
 
 export function createNode(type: ComponentType, overrides: Record<string, unknown> = {}): CanvasNode {
+  const documented = (documentedStyles as Record<string, { nativeType?: string; items: { children?: any[] }[] }>)[type];
+  if (documented?.nativeType) type = documented.nativeType;
   const definition = getDefinition(type);
+  const materialize = (item: any): CanvasNode => ({ ...item, props: structuredClone(item.props), id: makeId(), ...(item.children ? { children: item.children.map(materialize) } : {}) });
+  const children = documented?.items[0]?.children;
   return {
     id: makeId(),
     type,
     props: { ...structuredClone(definition.defaultProps), ...structuredClone(overrides) },
     content: definition.defaultContent,
+    ...(children && !curatedComponentStyles[type] ? { children: children.map(materialize) } : {}),
   };
 }

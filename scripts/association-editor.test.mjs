@@ -9,6 +9,13 @@ import { createSSRApp } from 'vue';
 import PersagyVant from 'persagy-vant';
 import { renderToString } from 'vue/server-renderer';
 
+function buttonsWithClass(html, ...classes) {
+  return (html.match(/<button\b[^>]*>/g) || []).filter((tag) => {
+    const tokens = tag.match(/class="([^"]*)"/)?.[1].split(/\s+/) || [];
+    return classes.every((name) => tokens.includes(name));
+  });
+}
+
 test('关联编辑器使用统一的可点击拖拽区域，移除旧关联选择器并回显当前控件', async () => {
   const cacheDir = await mkdtemp(path.join(os.tmpdir(), 'designer-association-editor-'));
   const server = await createServer({ configFile: false, plugins: [vue()], cacheDir, server: { middlewareMode: true, hmr: false, watch: null }, appType: 'custom' });
@@ -52,13 +59,41 @@ test('关联控件列表完整列出运行时支持的类型，可复用已有�
     const html = context.teleports.body;
     assert.match(html, /role="dialog" aria-modal="true"/);
     assert.match(html, /搜索关联控件/);
-    assert.equal((html.match(/class="association-type-option"/g) || []).length, canvasPanelTypes.length);
-    for (const type of canvasPanelTypes) assert(html.includes(`添加并关联${getDefinition(type).name}`));
+    assert.equal(buttonsWithClass(html, 'association-type-option').length, canvasPanelTypes.length);
+    for (const type of canvasPanelTypes) assert(html.includes(`${type === 'radio-panel' ? '已关联' : '添加并关联'}${getDefinition(type).name}`));
+    assert.match(buttonsWithClass(html, 'association-type-option', 'selected')[0], /data-association-type="radio-panel" aria-pressed="true" aria-label="已关联单选面板"/);
+    assert.equal((html.match(/class="association-option-state"/g) || []).length, 2);
     assert.match(html, /使用已有控件/);
     assert.match(html, /选择报事分类/);
     assert.match(html, /data-association-target="existing-radio" aria-pressed="true"/);
     assert.match(html, /删除关联控件会同步删除对应图层，可撤销恢复/);
     assert.doesNotMatch(html, /添加并关联按钮/);
+  } finally { await server.close(); await rm(cacheDir, { recursive: true, force: true }); }
+});
+
+test('当前关联只按真实实例回显，同类型其他实例和失效关联不误选', async () => {
+  const cacheDir = await mkdtemp(path.join(os.tmpdir(), 'designer-association-selected-'));
+  const server = await createServer({ configFile: false, plugins: [vue()], cacheDir, server: { middlewareMode: true, hmr: false, watch: null }, appType: 'custom' });
+  try {
+    const { default: Picker } = await server.ssrLoadModule('/src/components/AssociationPicker.vue');
+    const targets = [
+      { id: 'person-one', type: 'single-person-select', props: { title: '报事人' } },
+      { id: 'person-two', type: 'single-person-select', props: { title: '处理人' } },
+      { id: 'multi', type: 'multi-person-select', props: { title: '协作人员' } },
+    ];
+    for (const currentId of ['person-one', 'person-two', 'multi', 'missing', undefined]) {
+      const context = {};
+      await renderToString(createSSRApp(Picker, { targets, currentId }), context);
+      const html = context.teleports.body;
+      const current = targets.find((item) => item.id === currentId);
+      assert.equal(buttonsWithClass(html, 'association-type-option', 'selected').length, current ? 1 : 0);
+      assert.equal(buttonsWithClass(html, 'association-existing-option', 'selected').length, current ? 1 : 0);
+      for (const target of targets) {
+        assert(html.includes(`data-association-target="${target.id}" aria-pressed="${target.id === currentId}"`));
+        assert(html.includes(`data-association-type="${target.type}" aria-pressed="${current?.type === target.type}"`));
+      }
+      assert.equal((html.match(/class="association-option-state"/g) || []).length, current ? 2 : 0);
+    }
   } finally { await server.close(); await rm(cacheDir, { recursive: true, force: true }); }
 });
 
@@ -73,7 +108,7 @@ test('关联清单覆盖当前组件库所有具有 show 接口的独立控件�
     const app = createSSRApp({}); app.use(PersagyVant);
     const available = componentCatalog.filter(({ type }) => type !== 'tag' && app.component(`van-${type}`)?.props?.show !== undefined).map(({ type }) => type);
     assert.deepEqual([...canvasPanelTypes].sort(), available.sort());
-    assert.equal(canvasPanelTypes.length, 25);
+    assert.equal(canvasPanelTypes.length, 26);
     const nodes = [createNode('cell'), ...canvasPanelTypes.map((type) => createNode(type))];
     for (const panel of nodes.slice(1)) {
       assert.equal(panel.props.show, false, panel.type);

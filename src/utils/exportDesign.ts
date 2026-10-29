@@ -10,6 +10,10 @@ import { createContainerExtensionRuntime } from '../../shared/container-extensio
 const componentNames: Record<string, string> = {
   'tree-select': 'TreeSelect',
   'quantity-input': 'BatchMultiSelect',
+  'material-action-bar': 'MaterialActionList',
+  'material-display-bar': 'MaterialPreviewList',
+  'multi-person-select': 'MultiSelect',
+  'single-person-select': 'PersonSelect',
   'nav-bar': 'NavBar',
   'blue-mark-header': 'BlueMarkHeader',
   'title-bar': 'TitleBar',
@@ -32,6 +36,7 @@ const componentNames: Record<string, string> = {
 };
 
 const selectionTypes = new Set(['tree-select', 'quantity-input']);
+const namedModels = ['active', 'currentRate', 'showMore'];
 
 function pascalCase(value: string) {
   return value
@@ -73,7 +78,7 @@ function nodeToVue(node: CanvasNode, depth = 2, anchoredIds = new Set<string>(),
   }
   const component = componentNames[node.type] || pascalCase(node.type);
   const props = Object.entries(node.type === 'background' ? getBackgroundProps(node) : node.props)
-    .filter(([key]) => !['expanded', 'modelValue', 'show'].includes(key) && !(node.type === 'tree-select' && key === 'expandedKeys'))
+    .filter(([key]) => !['expanded', 'modelValue', 'show', ...namedModels].includes(key) && !(node.type === 'tree-select' && key === 'expandedKeys'))
     .map(([key, value]) => serializeProp(key, value))
     .join('') + (node.type === 'background' ? serializeStyle(getBackgroundStyle(node)) : '');
   const model = (Object.prototype.hasOwnProperty.call(node.props, 'modelValue') || selectionTypes.has(node.type)
@@ -82,7 +87,8 @@ function nodeToVue(node: CanvasNode, depth = 2, anchoredIds = new Set<string>(),
       ? ` v-model:expanded="state['${node.id}']"`
       : '') + (isCanvasPanel(node) || Object.prototype.hasOwnProperty.call(node.props, 'show') ? ` v-model:show="state['${node.id}:show']"` : '')
     + (node.type === 'tree-select' ? ` v-model:expanded-keys="state['${node.id}:expandedKeys']"` : '')
-    + (node.type === 'quantity-input' ? ` v-model:expanded="state['${node.id}:expanded']"` : '');
+    + (node.type === 'quantity-input' ? ` v-model:expanded="state['${node.id}:expanded']"` : '')
+    + namedModels.filter((key) => Object.prototype.hasOwnProperty.call(node.props, key)).map((key) => ` v-model:${kebabCase(key)}="state['${node.id}:${key}']"`).join('');
   const events = Object.entries(node.actions || {}).map(([event, action]) =>
     /^[a-z]+(?:-[a-z]+)*$/.test(event) ? anchoredIds.has(action.targetId)
       ? ` @${event}="openAssociatedControl('${action.targetId}', '${node.id}')"`
@@ -125,6 +131,7 @@ export function toVueSfc(title: string, nodes: CanvasNode[]) {
       ...(isCanvasPanel(node) || Object.prototype.hasOwnProperty.call(node.props, 'show') ? [`  '${node.id}:show': ${JSON.stringify(node.props.show ?? false)}`] : []),
       ...(node.type === 'tree-select' ? [`  '${node.id}:expandedKeys': ${JSON.stringify(node.props.expandedKeys ?? [])}`] : []),
       ...(node.type === 'quantity-input' ? [`  '${node.id}:expanded': ${JSON.stringify(node.props.expanded ?? false)}`] : []),
+      ...namedModels.filter((key) => Object.prototype.hasOwnProperty.call(node.props, key)).map((key) => `  '${node.id}:${key}': ${JSON.stringify(node.props[key])}`),
     ])
     .join(',\n');
 
@@ -132,7 +139,7 @@ export function toVueSfc(title: string, nodes: CanvasNode[]) {
 }
 
 export function toJson(title: string, nodes: CanvasNode[], report?: PageBuildReport) {
-  return JSON.stringify({ schema: 'meri-mobile-designer/v1', title, components: nodes, ...(report ? { report } : {}) }, null, 2);
+  return JSON.stringify({ schema: 'compose/v1', title, components: nodes, ...(report ? { report } : {}) }, null, 2);
 }
 
 export function toMarkdown(title: string, nodes: CanvasNode[], report?: PageBuildReport) {
@@ -165,7 +172,7 @@ export function toMarkdown(title: string, nodes: CanvasNode[], report?: PageBuil
     return `- ${name}（${node.id}）：[${definition.name}](${getComponentDocsUrl(kind)})，${config.enabled ? '启用' : '停用'}；参数 ${JSON.stringify(config.props)}。`;
   }));
 
-  return `# ${title}\n\n由 Meri Mobile Designer 生成。\n\n## 页面结构\n\n| 顺序 | 组件 / 容器 | 代码名 | 父级 | 职责 / 布局 |\n| --- | --- | --- | --- | --- |\n${rows.join('\n')}\n\n## 组件复用清单\n\n${links.join('\n')}\n${extensionNotes.length ? `\n## 容器扩展\n\n${extensionNotes.join('\n')}\n\n编辑态不执行扩展。预览模拟刷新和加载；Vue 导出保留真实组件、懒加载注册及 containerDataHandlers 接口接入位置。容器加载状态不写入设计文档。\n` : ''}\n## 规范落实项\n\n- 页面和容器采用纵向自动布局，容器的填充、圆角、内外边距和组件间距均保留在导出中。\n- 业务组件 Props 来自 Persagy Vant 公开 API；容器为页面布局元素。\n- 设计 JSON 保存完整父子关系，Vue 代码使用嵌套布局容器。\n${report ? skillReportMarkdown(report) : ''}`;
+  return `# ${title}\n\n由 Compose 生成。\n\n## 页面结构\n\n| 顺序 | 组件 / 容器 | 代码名 | 父级 | 职责 / 布局 |\n| --- | --- | --- | --- | --- |\n${rows.join('\n')}\n\n## 组件复用清单\n\n${links.join('\n')}\n${extensionNotes.length ? `\n## 容器扩展\n\n${extensionNotes.join('\n')}\n\n编辑态不执行扩展。预览模拟刷新和加载；Vue 导出保留真实组件、懒加载注册及 containerDataHandlers 接口接入位置。容器加载状态不写入设计文档。\n` : ''}\n## 规范落实项\n\n- 页面和容器采用纵向自动布局，容器的填充、圆角、内外边距和组件间距均保留在导出中。\n- 业务组件 Props 来自 Persagy Vant 公开 API；容器为页面布局元素。\n- 设计 JSON 保存完整父子关系，Vue 代码使用嵌套布局容器。\n${report ? skillReportMarkdown(report) : ''}`;
 }
 
 function skillReportMarkdown(report: PageBuildReport) {

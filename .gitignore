@@ -13,3 +13,7 @@ dist/
 # Local logs and test coverage.
 *.log
 coverage/
+
+# Local deployment state and generated server-only documentation snapshot.
+.netlify/
+/server/deploy-assets.json

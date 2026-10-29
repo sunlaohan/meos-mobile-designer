@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n, componentName } from '../utils/i18n';
+const { t } = useI18n();
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { Plus } from 'lucide-vue-next';
 import CanvasTreeNode from './CanvasTreeNode.vue';
@@ -188,7 +190,7 @@ function drop(event: DragEvent, index = props.nodes.length, parentId: string | n
         <span>9:41</span>
         <div class="status-icons"><span>▮▮▮</span><span>◒</span><span class="battery" /></div>
       </div>
-      <AssociatedEditBar v-if="editingPanel" :name="getDefinition(editingPanel.type).name" surface="phone" @exit="emit('exit-associated-edit')" />
+      <AssociatedEditBar v-if="editingPanel" :name="componentName(getDefinition(editingPanel.type))" surface="phone" @exit="emit('exit-associated-edit')" />
       <div ref="contentElement" class="phone-content" @click.self="!preview && emit('select', null)" @dragover.prevent @drop="!preview && drop($event)">
         <TransitionGroup name="canvas-reorder">
         <CanvasTreeNode
@@ -210,8 +212,8 @@ function drop(event: DragEvent, index = props.nodes.length, parentId: string | n
 
         <div v-if="!nodes.length" class="empty-canvas">
           <span><Plus :size="22" /></span>
-          <strong>拖入第一个组件</strong>
-          <small>组件会按纵向自动布局排列</small>
+          <strong>{{ t("拖入第一个组件") }}</strong>
+          <small>{{ t("组件会按纵向自动布局排列") }}</small>
         </div>
       </div>
       <div v-if="presentation.topFixed.length" ref="topFixedElement" class="phone-top-fixed-layer">
@@ -279,7 +281,7 @@ function drop(event: DragEvent, index = props.nodes.length, parentId: string | n
               @action="emit('action', $event)"
             />
             <p v-if="!item.node.children?.length && item.node.content" class="panel-text-content">{{ item.node.content }}</p>
-            <div v-else-if="!item.node.children?.length && !preview" class="empty-container">从左侧拖入组件，或将图层移入此面板</div>
+            <div v-else-if="!item.node.children?.length && !preview" class="empty-container">{{ t("从左侧拖入组件，或将图层移入此面板") }}</div>
             </div>
           </template>
         </DynamicPanelRenderer>

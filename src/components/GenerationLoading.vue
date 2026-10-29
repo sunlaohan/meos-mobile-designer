@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '../utils/i18n';
+const { t } = useI18n();
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { X } from 'lucide-vue-next';
 
@@ -35,7 +37,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="generation-loading" :class="{ 'generation-loading--paused': paused }" aria-label="页面生成等待区">
+  <div class="generation-loading" :class="{ 'generation-loading--paused': paused }" :aria-label="t('页面生成等待区')">
     <div class="kinetic-art" aria-hidden="true">
       <div class="kinetic-halo" />
       <div class="kinetic-floor" />
@@ -54,13 +56,13 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="generation-loading-copy" role="status" aria-live="polite">
-      <h2>正在构建你的页面</h2>
-      <p class="generation-loading-description">正在根据你的描述组织组件，完成后会自动呈现。</p>
+      <h2>{{ t("正在构建你的页面") }}</h2>
+      <p class="generation-loading-description">{{ t("正在根据你的描述组织组件，完成后会自动呈现。") }}</p>
     </div>
     <div class="generation-loading-actions">
-      <button type="button" aria-label="取消本次生成" @click="$emit('cancel')"><X :size="13" />取消生成</button>
+      <button type="button" :aria-label="t('取消本次生成')" @click="$emit('cancel')"><X :size="13" />{{ t("取消生成") }}</button>
     </div>
-    <p class="generation-loading-time" aria-live="off">已等待 <span>{{ elapsedLabel }}</span><span class="generation-loading-preserve">取消后保留原画板</span></p>
+    <p class="generation-loading-time" aria-live="off">{{ t("已等待") }} <span>{{ elapsedLabel }}</span><span class="generation-loading-preserve">{{ t("取消后保留原画板") }}</span></p>
   </div>
 </template>
 
@@ -89,14 +91,14 @@ onBeforeUnmount(() => {
 .kinetic-cubie--tracked .kinetic-face--top { background: linear-gradient(145deg, #edfff9, #b0f2e2); }
 .generation-loading--paused .kinetic-art, .generation-loading--paused .kinetic-art * { animation-play-state: paused; }
 .generation-loading-copy { position: relative; }
-.generation-loading h2 { margin: 0; color: #e7edf8; font-size: 22px; font-weight: 600; letter-spacing: .035em; }
-.generation-loading-description { max-width: 330px; margin: 12px 0 0; color: #939eaf; font-size: 12px; line-height: 1.8; }
+.generation-loading h2 { margin: 0; color: var(--text); font-size: 22px; font-weight: 600; letter-spacing: .035em; }
+.generation-loading-description { max-width: 330px; margin: 12px 0 0; color: var(--text-2); font-size: 12px; line-height: 1.8; }
 .generation-loading-actions { display: flex; align-items: center; margin-top: 20px; }
-.generation-loading-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 7px 9px; border: 0; border-radius: 6px; background: transparent; color: #a9b6cc; font-size: 11px; cursor: pointer; }
-.generation-loading-actions button:hover { background: rgb(145 175 222 / 9%); color: #e1eaff; }
-.generation-loading-time { margin: 12px 0 0; color: #7c899d; font-size: 10px; line-height: 1.8; }
+.generation-loading-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 7px 9px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); font-size: 11px; cursor: pointer; }
+.generation-loading-actions button:hover { background: rgb(145 175 222 / 9%); color: var(--text); }
+.generation-loading-time { margin: 12px 0 0; color: var(--text-3); font-size: 10px; line-height: 1.8; }
 .generation-loading-time > span:first-child { font-variant-numeric: tabular-nums; }
-.generation-loading-preserve { margin-left: 12px; color: #748197; }
+.generation-loading-preserve { margin-left: 12px; color: var(--text-3); }
 @keyframes kinetic-orbit { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
 @keyframes kinetic-layer-turn {
   0%, 8% { transform: translateY(var(--layer-y)) rotateY(0deg); }

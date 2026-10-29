@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n, componentName } from '../utils/i18n';
+const { t } = useI18n();
 import { computed, ref, watch } from 'vue';
 import { Layers3, Link2, PencilLine, Plus, Trash2 } from 'lucide-vue-next';
 import type { CanvasNode } from '../types';
@@ -61,22 +63,22 @@ function drop(event: DragEvent) {
 
 <template>
   <section v-if="events.length" class="property-group interaction-editor">
-    <h3><Link2 :size="15" />交互</h3>
-    <label class="property-row"><span class="property-label">触发时机</span>
-      <select v-model="eventName" aria-label="触发时机"><option v-for="event in events" :key="event.value" :value="event.value">{{ event.label }}</option></select>
+    <h3><Link2 :size="15" />{{ t("交互") }}</h3>
+    <label class="property-row"><span class="property-label">{{ t("触发时机") }}</span>
+      <select v-model="eventName" :aria-label="t('触发时机')"><option v-for="event in events" :key="event.value" :value="event.value">{{ t(event.label) }}</option></select>
     </label>
     <div class="interaction-drop-zone" :data-panel-trigger="node.id" :data-trigger-event="eventName" :data-associated-id="target?.id || ''" :class="{ active: dragging || componentDragState.associationId === node.id || layerDragState.association?.sourceId === node.id, 'has-association': !!target, 'has-binding': !!binding }" @click="zoneClick" @dragover.stop="dragOver" @dragleave="dragLeave" @drop.prevent.stop="drop">
-      <button type="button" class="interaction-association-trigger" :aria-label="binding ? '更换关联控件' : '选择关联控件'" aria-haspopup="dialog" :aria-expanded="pickerOpen" @click="pickerOpen = true">
-        <template v-if="target"><span class="association-bound-icon"><Layers3 :size="22" /></span><span class="association-bound-copy"><strong>{{ getDefinition(target.type).name }}</strong><span>点击更换，或拖入控件替换</span></span></template>
-        <template v-else-if="binding"><Link2 :size="22" /><strong>关联控件已不可用</strong><small>点击重新选择，或拖入控件替换</small></template>
-        <template v-else><Plus :size="23" /><strong>点击选择或拖入关联控件</strong><small>从左侧组件库或图层拖入</small></template>
+      <button type="button" class="interaction-association-trigger" :aria-label="binding ? t('更换关联控件') : t('选择关联控件')" aria-haspopup="dialog" :aria-expanded="pickerOpen" @click="pickerOpen = true">
+        <template v-if="target"><span class="association-bound-icon"><Layers3 :size="22" /></span><span class="association-bound-copy"><strong>{{ componentName(getDefinition(target.type)) }}</strong><span>{{ t("点击更换，或拖入控件替换") }}</span></span></template>
+        <template v-else-if="binding"><Link2 :size="22" /><strong>{{ t("关联控件已不可用") }}</strong><small>{{ t("点击重新选择，或拖入控件替换") }}</small></template>
+        <template v-else><Plus :size="23" /><strong>{{ t("点击选择或拖入关联控件") }}</strong><small>{{ t("从左侧组件库或图层拖入") }}</small></template>
       </button>
       <div v-if="binding" class="association-card-actions">
-        <button v-if="target" type="button" class="association-edit" title="编辑关联组件" aria-label="编辑关联组件" @click="emit('edit', eventName)"><PencilLine :size="14" /></button>
-        <button type="button" class="association-remove" :title="target ? '删除关联控件及对应图层（可撤销）' : '清除失效关联'" aria-label="删除关联控件" @click="emit('remove', eventName)"><Trash2 :size="14" /></button>
+        <button v-if="target" type="button" class="association-edit" :title="t('编辑关联组件')" :aria-label="t('编辑关联组件')" @click="emit('edit', eventName)"><PencilLine :size="14" /></button>
+        <button type="button" class="association-remove" :title="target ? t('删除关联控件及对应图层（可撤销）') : t('清除失效关联')" :aria-label="t('删除关联控件')" @click="emit('remove', eventName)"><Trash2 :size="14" /></button>
       </div>
     </div>
-    <p class="panel-description">编辑时点击组件用于选中；在右上角「预览」中点击，才会触发关联面板。</p>
+    <p class="panel-description">{{ t("编辑时点击组件用于选中；在右上角「预览」中点击，才会触发关联面板。") }}</p>
     <AssociationPicker v-if="pickerOpen" :targets="targets" :current-id="binding?.targetId" @select="choose" @create="create" @close="pickerOpen = false" />
   </section>
 </template>

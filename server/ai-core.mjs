@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { attachmentUserContent, supportsImageInput, validateAttachments } from '../shared/attachments.mjs';
-import { canvasPanelTypes, panelSlotTypes, triggerEventOptions } from '../shared/association-controls.mjs';
+import { canvasPanelTypes, panelSlotTypes, nativeSlotTypes, triggerEventOptions } from '../shared/association-controls.mjs';
 
 export class AiError extends Error {
   constructor(message, status = 502) { super(message); this.status = status; }
@@ -51,7 +51,7 @@ export function parseModelJson(text) {
   try { return JSON.parse(clean); } catch { throw new AiError('模型返回的页面数据不是完整 JSON，请重试或切换模型。'); }
 }
 
-const containers = new Set(['container-group', 'background', 'form', 'info-card', 'list', 'pull-refresh', ...panelSlotTypes]);
+const containers = new Set(['container-group', 'background', 'form', 'info-card', 'list', 'pull-refresh', ...nativeSlotTypes, ...panelSlotTypes]);
 const containerProps = new Set(['name', 'gap', 'fill', 'borderRadius', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft']);
 const panelTypes = new Set(canvasPanelTypes);
 

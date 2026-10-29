@@ -68,6 +68,10 @@
         "title": "输入框 Field"
       },
       {
+        "path": "qr-scanner",
+        "title": "二维码扫描 QrScanner"
+      },
+      {
         "path": "form",
         "title": "表单 Form"
       },

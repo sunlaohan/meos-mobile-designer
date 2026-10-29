@@ -27,11 +27,14 @@ export const associationControls = [
   { type: 'notify', group: '弹层与反馈', componentApi: true },
   { type: 'image-preview', group: '媒体预览', componentApi: true },
   { type: 'video-preview', group: '媒体预览', componentApi: true },
+  { type: 'qr-scanner', group: '媒体预览', componentApi: true },
 ];
 
 export const canvasPanelTypes = associationControls.map(({ type }) => type);
 export const panelSlotTypes = associationControls.filter(({ slot }) => slot).map(({ type }) => type);
 export const anchoredPanelTypes = associationControls.filter(({ anchor }) => anchor).map(({ type }) => type);
+export const nativeCompositionTypes = ['tabs', 'grid', 'row', 'swipe', 'steps', 'sidebar', 'index-bar', 'collapse', 'space', 'dropdown-menu', 'tabbar', 'action-bar'];
+export const nativeSlotTypes = [...nativeCompositionTypes, 'tab', 'grid-item', 'col', 'swipe-item', 'step', 'sidebar-item', 'index-anchor', 'collapse-item', 'sticky', 'config-provider', 'cell-group', 'dropdown-item', 'swipe-cell'];
 
 // Events implemented by ComponentRenderer, shared by the editor and AI validator.
 export const triggerEventOptions = {

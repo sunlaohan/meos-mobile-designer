@@ -50,6 +50,7 @@ const booleanLabels: Record<string, string> = {
 };
 
 const componentLabels: Record<string, Record<string, string>> = {
+  slider: { reverse: '反向模式' },
   'tree-select': { items: '树节点', modelValue: '选中节点', expandedKeys: '展开节点', showParentSelect: '父级可选', showSelectLevels: '各层选择控件' },
   'quantity-input': { items: '选项列表', modelValue: '勾选状态', expanded: '展开已选', confirmText: '确认文案', expandText: '展开文案', collapseText: '收起文案', clearText: '清空文案' },
   'blue-mark-header': { modelValue: '展开状态', expandText: '展开文案', collapseText: '收起文案', square: '方形标记' },
@@ -59,6 +60,7 @@ const componentLabels: Record<string, Record<string, string>> = {
     labelIcon: '备注左侧图标', labelSize: '备注字号', wrapTags: '换行标签', multiLineNotes: '多行备注数据',
     tags: '标题后标签', titleTag: '标题标签', titleIcon: '标题图标', titleStyle: '标题样式',
     noteTo: '备注跳转路由', noteUrl: '备注跳转链接', size: '单元格尺寸', background: '背景',
+    leftSelect: '前置选中状态', rightSelect: '后置选中状态', showLeftSelect: '前置选择控件', showRightSelect: '后置选择控件', selectType: '选择控件类型',
   },
   field: { autosize: '自适应高度', enterkeyhint: '回车键样式', autocomplete: '自动完成' },
   button: { square: '方角样式' },

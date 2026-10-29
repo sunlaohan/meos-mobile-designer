@@ -1,8 +1,18 @@
 import { createApp } from 'vue';
-import PersagyVant from 'persagy-vant';
-import Lazyload from 'persagy-vant/es/lazyload/index.mjs';
-import App from './App.vue';
-import 'persagy-vant/lib/index.css';
-import './styles.css';
+import MarketingApp from './MarketingApp.vue';
+import ProductBootstrap from './components/ProductBootstrap.vue';
+import { isProductUrl } from './utils/siteRouting';
+import { initializeTheme } from './utils/useTheme';
+import { initializeLanguage } from './utils/i18n';
+import './theme.css';
 
-createApp(App).use(PersagyVant).use(Lazyload, { lazyComponent: true }).mount('#app');
+const surface = isProductUrl(new URL(location.href)) ? 'product' : 'marketing';
+document.documentElement.dataset.surface = surface;
+initializeTheme(surface);
+initializeLanguage(surface);
+if (surface === 'product') {
+  const bootstrap = createApp(ProductBootstrap, { onReady(mountProduct: () => void) { bootstrap.unmount(); mountProduct(); } });
+  bootstrap.mount('#app');
+} else {
+  createApp(MarketingApp).mount('#app');
+}

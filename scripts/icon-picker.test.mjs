@@ -49,7 +49,7 @@ test('覆盖组件内图标和独立图标组件，不误处理尺寸、前缀�
   for (const [component, key] of [['cell', 'rightIcon'], ['cell', 'labelIcon'], ['button', 'icon'], ['nav-bar', 'rightPopoverIcon'], ['icon', 'name'], ['steps', 'finishIcon']]) {
     assert(icons.isIconProperty(component, property(component, key)), `${component}.${key}`);
   }
-  for (const [component, key] of [['cell', 'showIcon'], ['cell', 'iconPrefix'], ['button', 'iconPosition'], ['grid', 'iconSize'], ['grid', 'iconColor'], ['stepper', 'name']]) {
+  for (const [component, key] of [['cell', 'showIcon'], ['cell', 'iconPrefix'], ['button', 'iconPosition'], ['grid', 'iconSize'], ['icon', 'color'], ['stepper', 'name']]) {
     assert(!icons.isIconProperty(component, property(component, key)), `${component}.${key}`);
   }
   assert(!icons.isIconProperty('custom', { key: 'icon', label: '图标', control: 'json' }));

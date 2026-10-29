@@ -55,6 +55,7 @@ export interface CanvasNode {
   children?: CanvasNode[];
   actions?: Record<string, { type: 'open-panel'; targetId: string }>;
   layoutRole?: 'spacer';
+  styleId?: string;
   extensions?: ContainerExtensions;
 }
 

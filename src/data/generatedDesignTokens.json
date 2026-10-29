@@ -1317,49 +1317,49 @@
     "name": "--van-action-bar-icon-width",
     "value": "48px",
     "kind": "dimension",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-height",
     "value": "100%",
     "kind": "dimension",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-color",
     "value": "var(--van-text-color)",
     "kind": "color",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-size",
     "value": "18px",
     "kind": "dimension",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-font-size",
     "value": "var(--van-font-size-xs)",
     "kind": "font-size",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-active-color",
     "value": "var(--van-active-color)",
     "kind": "color",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-text-color",
     "value": "var(--van-gray-7)",
     "kind": "color",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-action-bar-icon-background-color",
     "value": "var(--van-background-color-light)",
     "kind": "color",
-    "scope": "action-bar"
+    "scope": "action-bar-icon"
   },
   {
     "name": "--van-loading-text-color",
@@ -2013,19 +2013,19 @@
     "name": "--van-action-bar-button-height",
     "value": "40px",
     "kind": "dimension",
-    "scope": "action-bar"
+    "scope": "action-bar-button"
   },
   {
     "name": "--van-action-bar-button-warning-color",
     "value": "var(--van-gradient-orange)",
     "kind": "color",
-    "scope": "action-bar"
+    "scope": "action-bar-button"
   },
   {
     "name": "--van-action-bar-button-danger-color",
     "value": "var(--van-gradient-red)",
     "kind": "color",
-    "scope": "action-bar"
+    "scope": "action-bar-button"
   },
   {
     "name": "--van-overlay-background-color",
@@ -2164,6 +2164,30 @@
     "value": "var(--van-background-color-light)",
     "kind": "color",
     "scope": "share-sheet"
+  },
+  {
+    "name": "--van-qr-scanner-background",
+    "value": "#111",
+    "kind": "color",
+    "scope": "qr-scanner"
+  },
+  {
+    "name": "--van-qr-scanner-text-color",
+    "value": "#fff",
+    "kind": "color",
+    "scope": "qr-scanner"
+  },
+  {
+    "name": "--van-qr-scanner-frame-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "qr-scanner"
+  },
+  {
+    "name": "--van-qr-scanner-frame-size",
+    "value": "240px",
+    "kind": "dimension",
+    "scope": "qr-scanner"
   },
   {
     "name": "--van-notify-text-color",
@@ -2874,6 +2898,102 @@
     "scope": "checkbox"
   },
   {
+    "name": "--van-coupon-margin",
+    "value": "0 var(--van-padding-sm) var(--van-padding-sm)",
+    "kind": "spacing",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-content-height",
+    "value": "84px",
+    "kind": "dimension",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-content-padding",
+    "value": "14px 0",
+    "kind": "spacing",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-content-text-color",
+    "value": "var(--van-text-color)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-background-color",
+    "value": "var(--van-background-color-light)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-active-background-color",
+    "value": "var(--van-active-color)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-border-radius",
+    "value": "var(--van-border-radius-lg)",
+    "kind": "radius",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-head-width",
+    "value": "96px",
+    "kind": "dimension",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-amount-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-amount-font-size",
+    "value": "30px",
+    "kind": "font-size",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-currency-font-size",
+    "value": "40%",
+    "kind": "font-size",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-name-font-size",
+    "value": "var(--van-font-size-md)",
+    "kind": "font-size",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-disabled-text-color",
+    "value": "var(--van-text-color-2)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-description-padding",
+    "value": "var(--van-padding-xs) var(--van-padding-md)",
+    "kind": "spacing",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-description-border-color",
+    "value": "var(--van-border-color)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
+    "name": "--van-coupon-corner-checkbox-icon-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "coupon"
+  },
+  {
     "name": "--van-bottom-action-bar-background-color",
     "value": "var(--van-background-color-light)",
     "kind": "color",
@@ -3276,6 +3396,12 @@
     "scope": "tree-select"
   },
   {
+    "name": "--van-coupon-cell-selected-text-color",
+    "value": "var(--van-text-color)",
+    "kind": "color",
+    "scope": "coupon-cell"
+  },
+  {
     "name": "--van-contact-list-edit-icon-size",
     "value": "16px",
     "kind": "dimension",
@@ -3315,37 +3441,37 @@
     "name": "--van-collapse-item-content-padding",
     "value": "var(--van-padding-sm) var(--van-padding-md)",
     "kind": "spacing",
-    "scope": "collapse"
+    "scope": "collapse-item"
   },
   {
     "name": "--van-collapse-item-content-font-size",
     "value": "var(--van-font-size-md)",
     "kind": "font-size",
-    "scope": "collapse"
+    "scope": "collapse-item"
   },
   {
     "name": "--van-collapse-item-content-line-height",
     "value": "1.5",
     "kind": "line-height",
-    "scope": "collapse"
+    "scope": "collapse-item"
   },
   {
     "name": "--van-collapse-item-content-text-color",
     "value": "var(--van-text-color-2)",
     "kind": "color",
-    "scope": "collapse"
+    "scope": "collapse-item"
   },
   {
     "name": "--van-collapse-item-content-background-color",
     "value": "var(--van-background-color-light)",
     "kind": "color",
-    "scope": "collapse"
+    "scope": "collapse-item"
   },
   {
     "name": "--van-collapse-item-title-disabled-color",
     "value": "var(--van-text-color-3)",
     "kind": "color",
-    "scope": "collapse"
+    "scope": "collapse-item"
   },
   {
     "name": "--van-address-list-padding",
@@ -3975,13 +4101,13 @@
     "name": "--van-blue-mark-header-padding",
     "value": "var(--van-padding-md) var(--van-padding-lg) 6px",
     "kind": "spacing",
-    "scope": "blue-mark"
+    "scope": "blue-mark-header"
   },
   {
     "name": "--van-blue-mark-header-gap",
     "value": "var(--van-padding-xs)",
     "kind": "spacing",
-    "scope": "blue-mark"
+    "scope": "blue-mark-header"
   },
   {
     "name": "--van-collapse-toggle-color",
@@ -4308,6 +4434,108 @@
     "scope": "tab"
   },
   {
+    "name": "--van-tabs-default-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-line-height",
+    "value": "44px",
+    "kind": "line-height",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-card-height",
+    "value": "30px",
+    "kind": "dimension",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-card-border-radius",
+    "value": "8px",
+    "kind": "radius",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-nav-background-color",
+    "value": "var(--van-background-color-light)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-bottom-bar-width",
+    "value": "40px",
+    "kind": "dimension",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-bottom-bar-height",
+    "value": "3px",
+    "kind": "dimension",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-bottom-bar-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-card-active-background-color",
+    "value": "var(--van-gray-2)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-card-border-color",
+    "value": "var(--van-gray-5)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-card-gray-background-color",
+    "value": "var(--van-gray-1)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-card-gray-active-background-color",
+    "value": "var(--van-white)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-filter-background-color",
+    "value": "var(--van-gray-2)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-filter-active-background-color",
+    "value": "var(--van-blue-100)",
+    "kind": "color",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-filter-border-radius",
+    "value": "var(--van-border-radius-lg)",
+    "kind": "radius",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-more-width",
+    "value": "44px",
+    "kind": "dimension",
+    "scope": "tabs"
+  },
+  {
+    "name": "--van-tabs-more-icon-size",
+    "value": "18px",
+    "kind": "dimension",
+    "scope": "tabs"
+  },
+  {
     "name": "--van-cascader-header-height",
     "value": "48px",
     "kind": "dimension",
@@ -4389,67 +4617,67 @@
     "name": "--van-cell-group-background-color",
     "value": "var(--van-background-color-light)",
     "kind": "color",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-title-color",
     "value": "var(--van-text-color-2)",
     "kind": "color",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-title-padding",
     "value": "var(--van-padding-md) var(--van-padding-md) var(--van-padding-xs)",
     "kind": "spacing",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-title-font-size",
     "value": "var(--van-font-size-md)",
     "kind": "font-size",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-title-line-height",
     "value": "16px",
     "kind": "line-height",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-inset-padding",
     "value": "0 var(--van-padding-md)",
     "kind": "spacing",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-inset-border-radius",
     "value": "var(--van-border-radius-lg)",
     "kind": "radius",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-inset-title-padding",
     "value": "var(--van-padding-md) var(--van-padding-md) var(--van-padding-xs) var(--van-padding-xl)",
     "kind": "spacing",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-gray-card-padding",
     "value": "var(--van-padding-xs)",
     "kind": "spacing",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-gray-card-background",
     "value": "var(--van-gradient-gray)",
     "kind": "color",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-cell-group-gray-card-cell-background",
     "value": "var(--van-white)",
     "kind": "color",
-    "scope": "cell"
+    "scope": "cell-group"
   },
   {
     "name": "--van-empty-padding",
@@ -4743,37 +4971,37 @@
     "name": "--van-grid-item-content-padding",
     "value": "var(--van-padding-md) var(--van-padding-xs)",
     "kind": "spacing",
-    "scope": "grid"
+    "scope": "grid-item"
   },
   {
     "name": "--van-grid-item-content-background-color",
     "value": "var(--van-background-color-light)",
     "kind": "color",
-    "scope": "grid"
+    "scope": "grid-item"
   },
   {
     "name": "--van-grid-item-content-active-color",
     "value": "var(--van-active-color)",
     "kind": "color",
-    "scope": "grid"
+    "scope": "grid-item"
   },
   {
     "name": "--van-grid-item-icon-size",
     "value": "28px",
     "kind": "dimension",
-    "scope": "grid"
+    "scope": "grid-item"
   },
   {
     "name": "--van-grid-item-text-color",
     "value": "var(--van-gray-7)",
     "kind": "color",
-    "scope": "grid"
+    "scope": "grid-item"
   },
   {
     "name": "--van-grid-item-text-font-size",
     "value": "var(--van-font-size-sm)",
     "kind": "font-size",
-    "scope": "grid"
+    "scope": "grid-item"
   },
   {
     "name": "--van-index-bar-index-font-size",
@@ -4792,6 +5020,48 @@
     "value": "var(--van-primary-color)",
     "kind": "color",
     "scope": "index-bar"
+  },
+  {
+    "name": "--van-index-anchor-padding",
+    "value": "0 var(--van-padding-md)",
+    "kind": "spacing",
+    "scope": "index-anchor"
+  },
+  {
+    "name": "--van-index-anchor-text-color",
+    "value": "var(--van-text-color)",
+    "kind": "color",
+    "scope": "index-anchor"
+  },
+  {
+    "name": "--van-index-anchor-font-size",
+    "value": "var(--van-font-size-md)",
+    "kind": "font-size",
+    "scope": "index-anchor"
+  },
+  {
+    "name": "--van-index-anchor-line-height",
+    "value": "32px",
+    "kind": "line-height",
+    "scope": "index-anchor"
+  },
+  {
+    "name": "--van-index-anchor-background-color",
+    "value": "transparent",
+    "kind": "color",
+    "scope": "index-anchor"
+  },
+  {
+    "name": "--van-index-anchor-sticky-text-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "index-anchor"
+  },
+  {
+    "name": "--van-index-anchor-sticky-background-color",
+    "value": "var(--van-background-color-light)",
+    "kind": "color",
+    "scope": "index-anchor"
   },
   {
     "name": "--van-stepper-background-color",
@@ -5244,6 +5514,72 @@
     "scope": "steps"
   },
   {
+    "name": "--van-step-text-color",
+    "value": "var(--van-text-color-2)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-active-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-process-text-color",
+    "value": "var(--van-text-color)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-font-size",
+    "value": "var(--van-font-size-md)",
+    "kind": "font-size",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-line-color",
+    "value": "var(--van-border-color)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-finish-line-color",
+    "value": "var(--van-primary-color)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-finish-text-color",
+    "value": "var(--van-text-color)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-icon-size",
+    "value": "12px",
+    "kind": "dimension",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-circle-size",
+    "value": "5px",
+    "kind": "dimension",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-circle-color",
+    "value": "var(--van-gray-6)",
+    "kind": "color",
+    "scope": "step"
+  },
+  {
+    "name": "--van-step-horizontal-title-font-size",
+    "value": "var(--van-font-size-sm)",
+    "kind": "font-size",
+    "scope": "step"
+  },
+  {
     "name": "--van-tabbar-height",
     "value": "60px",
     "kind": "dimension",
@@ -5259,42 +5595,42 @@
     "name": "--van-tabbar-item-font-size",
     "value": "var(--van-font-size-sm)",
     "kind": "font-size",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   },
   {
     "name": "--van-tabbar-item-text-color",
     "value": "var(--van-gray-7)",
     "kind": "color",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   },
   {
     "name": "--van-tabbar-item-active-color",
     "value": "var(--van-primary-color)",
     "kind": "color",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   },
   {
     "name": "--van-tabbar-item-active-background-color",
     "value": "var(--van-background-color-light)",
     "kind": "color",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   },
   {
     "name": "--van-tabbar-item-line-height",
     "value": "1",
     "kind": "line-height",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   },
   {
     "name": "--van-tabbar-item-icon-size",
     "value": "22px",
     "kind": "dimension",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   },
   {
     "name": "--van-tabbar-item-icon-margin-bottom",
     "value": "var(--van-padding-base)",
     "kind": "spacing",
-    "scope": "tabbar"
+    "scope": "tabbar-item"
   }
 ]

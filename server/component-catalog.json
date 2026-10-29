@@ -1,7 +1,7 @@
 {
   "skill": {
     "name": "use-persagy-vant",
-    "version": "0.0.51",
+    "version": "0.0.54",
     "fingerprint": "66366834",
     "sourceFiles": [
       "SKILL.md",
@@ -169,16 +169,16 @@
       "properties": [
         {
           "key": "title",
-          "label": "标题",
+          "label": "标题文本",
           "control": "text",
           "group": "内容",
-          "description": "Title text",
+          "description": "标题文本",
           "help": "title · number | string",
           "allowGradient": false
         },
         {
           "key": "size",
-          "label": "尺寸",
+          "label": "小蓝标尺寸",
           "control": "select",
           "group": "外观",
           "options": [
@@ -195,16 +195,16 @@
               "value": "large"
             }
           ],
-          "description": "BlueMark size",
+          "description": "小蓝标尺寸",
           "help": "size · string",
           "allowGradient": false
         },
         {
           "key": "actionText",
-          "label": "操作文案",
+          "label": "右侧操作文本",
           "control": "text",
           "group": "内容",
-          "description": "Text of the action",
+          "description": "右侧操作文本",
           "help": "action-text · string",
           "allowGradient": false
         },
@@ -213,7 +213,7 @@
           "label": "必填标识",
           "control": "boolean",
           "group": "状态",
-          "description": "Whether to show the required mark",
+          "description": "展示必填星号",
           "help": "required · boolean",
           "allowGradient": false
         },
@@ -222,7 +222,7 @@
           "label": "展开收起",
           "control": "boolean",
           "group": "状态",
-          "description": "Whether to enable expand/collapse; the whole header toggles state",
+          "description": "启用展开收起，点击整个标题栏可切换",
           "help": "expandable · boolean",
           "allowGradient": false
         },
@@ -231,17 +231,8 @@
           "label": "展开图标",
           "control": "boolean",
           "group": "状态",
-          "description": "Whether to show the right-side expand/collapse arrow",
+          "description": "展示右侧展开收起箭头",
           "help": "show-expand-icon · boolean",
-          "allowGradient": false
-        },
-        {
-          "key": "divider",
-          "label": "分割线",
-          "control": "boolean",
-          "group": "状态",
-          "description": "Whether to show dividers on both sides",
-          "help": "divider · boolean",
           "allowGradient": false
         },
         {
@@ -250,7 +241,7 @@
           "control": "boolean",
           "group": "状态",
           "help": "v-model · boolean",
-          "description": "Whether the content is expanded",
+          "description": "展开",
           "allowGradient": false
         },
         {
@@ -259,7 +250,7 @@
           "control": "text",
           "group": "属性",
           "help": "expand-text · string",
-          "description": "Text when collapsed",
+          "description": "收起状态的操作文案",
           "allowGradient": false
         },
         {
@@ -268,7 +259,7 @@
           "control": "text",
           "group": "属性",
           "help": "collapse-text · string",
-          "description": "Text when expanded",
+          "description": "展开状态的操作文案",
           "allowGradient": false
         }
       ]
@@ -412,9 +403,19 @@
         {
           "key": "size",
           "label": "尺寸",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "size · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "迷你",
+              "value": "mini"
+            }
+          ],
           "description": "尺寸，可选值为 default mini；mini 不展示备注双行",
           "allowGradient": false
         },
@@ -643,18 +644,42 @@
         {
           "key": "formatTrigger",
           "label": "格式化函数触发的时机",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "format-trigger · string",
+          "options": [
+            {
+              "label": "onChange",
+              "value": "onChange"
+            },
+            {
+              "label": "onBlur",
+              "value": "onBlur"
+            }
+          ],
           "description": "格式化函数触发的时机，可选值为 onBlur",
           "allowGradient": false
         },
         {
           "key": "inputAlign",
           "label": "输入框内容对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "input-align · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "输入框内容对齐方式，可选值为 center right",
           "allowGradient": false
         },
@@ -744,6 +769,10 @@
             {
               "label": "数字",
               "value": "number"
+            },
+            {
+              "label": "password",
+              "value": "password"
             }
           ],
           "description": "输入框类型, 支持原生 input 标签的所有 type 属性，额外支持了 digit 类型",
@@ -878,9 +907,19 @@
         {
           "key": "size",
           "label": "大小",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "size · 'normal' | 'large'",
+          "options": [
+            {
+              "label": "标准",
+              "value": "normal"
+            },
+            {
+              "label": "大",
+              "value": "large"
+            }
+          ],
           "description": "大小，可选值为 normal large",
           "allowGradient": false
         },
@@ -977,9 +1016,23 @@
         {
           "key": "errorMessageAlign",
           "label": "错误提示文案对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "error-message-align · FieldTextAlign",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "错误提示文案对齐方式，可选值为 center right",
           "allowGradient": false
         },
@@ -995,18 +1048,46 @@
         {
           "key": "formatTrigger",
           "label": "格式化函数触发的时机",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "format-trigger · FieldFormatTrigger",
+          "options": [
+            {
+              "label": "onChange",
+              "value": "onChange"
+            },
+            {
+              "label": "onBlur",
+              "value": "onBlur"
+            }
+          ],
           "description": "格式化函数触发的时机，可选值为 onBlur",
           "allowGradient": false
         },
         {
           "key": "arrowDirection",
           "label": "箭头方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "arrow-direction · string",
+          "options": [
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "up",
+              "value": "up"
+            },
+            {
+              "label": "down",
+              "value": "down"
+            }
+          ],
           "description": "箭头方向，可选值为 left up down",
           "allowGradient": false
         },
@@ -1032,9 +1113,23 @@
         {
           "key": "labelAlign",
           "label": "左侧文本对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "label-align · FieldTextAlign",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "左侧文本对齐方式，可选值为 center right",
           "allowGradient": false
         },
@@ -1262,6 +1357,43 @@
           "allowGradient": false
         },
         {
+          "key": "size",
+          "label": "单元格尺寸",
+          "control": "select",
+          "group": "外观",
+          "options": [
+            {
+              "label": "标准",
+              "value": "normal"
+            },
+            {
+              "label": "大",
+              "value": "large"
+            }
+          ],
+          "description": "单元格大小，可选值为 normal large",
+          "help": "size · string",
+          "allowGradient": false
+        },
+        {
+          "key": "selectType",
+          "label": "选择控件类型",
+          "control": "select",
+          "group": "外观",
+          "options": [
+            {
+              "label": "复选框",
+              "value": "checkbox"
+            },
+            {
+              "label": "单选框",
+              "value": "radio"
+            }
+          ],
+          "description": "选择控件",
+          "help": "selectType"
+        },
+        {
           "key": "labelClickable",
           "label": "备注可点击",
           "control": "boolean",
@@ -1344,15 +1476,6 @@
           "allowGradient": false
         },
         {
-          "key": "size",
-          "label": "单元格尺寸",
-          "control": "text",
-          "group": "属性",
-          "help": "size · string",
-          "description": "单元格大小，可选值为 normal large",
-          "allowGradient": false
-        },
-        {
           "key": "background",
           "label": "背景",
           "control": "text",
@@ -1400,7 +1523,7 @@
         },
         {
           "key": "leftSelect",
-          "label": "前置选择图标",
+          "label": "前置选中状态",
           "control": "boolean",
           "group": "状态",
           "help": "left-select · boolean",
@@ -1409,7 +1532,7 @@
         },
         {
           "key": "showLeftSelect",
-          "label": "前置选择元素",
+          "label": "前置选择控件",
           "control": "boolean",
           "group": "状态",
           "help": "show-left-select · boolean",
@@ -1517,7 +1640,7 @@
         },
         {
           "key": "rightSelect",
-          "label": "后置选择图标",
+          "label": "后置选中状态",
           "control": "boolean",
           "group": "状态",
           "help": "right-select · boolean",
@@ -1526,7 +1649,7 @@
         },
         {
           "key": "showRightSelect",
-          "label": "后置选择元素",
+          "label": "后置选择控件",
           "control": "boolean",
           "group": "状态",
           "help": "show-right-select · boolean",
@@ -1680,9 +1803,27 @@
         {
           "key": "arrowDirection",
           "label": "箭头方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "arrow-direction · string",
+          "options": [
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "up",
+              "value": "up"
+            },
+            {
+              "label": "down",
+              "value": "down"
+            }
+          ],
           "description": "箭头方向，可选值为 left up down",
           "allowGradient": false
         },
@@ -1721,24 +1862,6 @@
           "help": "label-class · string | Array | object",
           "description": "描述信息额外类名",
           "allowGradient": false
-        },
-        {
-          "key": "inset",
-          "label": "圆角卡片",
-          "control": "boolean",
-          "group": "状态",
-          "help": "inset · boolean",
-          "description": "展示为圆角卡片风格",
-          "allowGradient": false
-        },
-        {
-          "key": "grayCard",
-          "label": "灰色渐变卡片",
-          "control": "boolean",
-          "group": "状态",
-          "help": "gray-card · boolean",
-          "description": "展示为灰色渐变卡片包裹的白底单元格样式",
-          "allowGradient": true
         },
         {
           "key": "threeLineEllipsis",
@@ -1912,9 +2035,19 @@
         {
           "key": "iconPosition",
           "label": "图标展示位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "icon-position · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "图标展示位置，可选值为 right",
           "allowGradient": false
         },
@@ -1957,9 +2090,19 @@
         {
           "key": "loadingType",
           "label": "加载图标类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "loading-type · string",
+          "options": [
+            {
+              "label": "环形加载",
+              "value": "circular"
+            },
+            {
+              "label": "旋转加载",
+              "value": "spinner"
+            }
+          ],
           "description": "加载图标类型，可选值为 spinner",
           "allowGradient": false
         },
@@ -2857,9 +3000,35 @@
         {
           "key": "position",
           "label": "图片位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · string",
+          "options": [
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "string",
+              "value": "string"
+            }
+          ],
           "description": "图片位置，等同于原生的 object-position 属性，可选值为 top right bottom left 或 string",
           "allowGradient": false
         },
@@ -2869,7 +3038,7 @@
           "control": "boolean",
           "group": "状态",
           "help": "block · boolean",
-          "description": "Whether the root node is a block element",
+          "description": "将根节点设置为块级元素，默认情况下为 inline-block 元素",
           "allowGradient": false
         },
         {
@@ -2916,15 +3085,6 @@
           "group": "属性",
           "help": "icon-prefix · string",
           "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "block 3.6.3",
-          "label": "块级布局",
-          "control": "boolean",
-          "group": "状态",
-          "help": "block 3.6.3 · boolean",
-          "description": "将根节点设置为块级元素，默认情况下为 inline-block 元素",
           "allowGradient": false
         }
       ]
@@ -3101,9 +3261,19 @@
         {
           "key": "collapsePosition",
           "label": "展开收起触发位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "collapse-position · string",
+          "options": [
+            {
+              "label": "bottom",
+              "value": "bottom"
+            },
+            {
+              "label": "title",
+              "value": "title"
+            }
+          ],
           "description": "展开收起触发位置，可选值为 bottom title；设为 title 时点击标题与三角所在整行切换",
           "allowGradient": false
         }
@@ -3707,18 +3877,54 @@
         {
           "key": "type",
           "label": "提示类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "type · ToastType",
+          "options": [
+            {
+              "label": "文字",
+              "value": "text"
+            },
+            {
+              "label": "loading",
+              "value": "loading"
+            },
+            {
+              "label": "成功",
+              "value": "success"
+            },
+            {
+              "label": "fail",
+              "value": "fail"
+            },
+            {
+              "label": "html",
+              "value": "html"
+            }
+          ],
           "description": "提示类型，可选值为 loading success fail html",
           "allowGradient": false
         },
         {
           "key": "position",
           "label": "位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · ToastPosition",
+          "options": [
+            {
+              "label": "middle",
+              "value": "middle"
+            },
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            }
+          ],
           "description": "位置，可选值为 top bottom",
           "allowGradient": false
         },
@@ -3798,9 +4004,19 @@
         {
           "key": "loadingType",
           "label": "加载图标类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "loadingType · string",
+          "options": [
+            {
+              "label": "环形加载",
+              "value": "circular"
+            },
+            {
+              "label": "旋转加载",
+              "value": "spinner"
+            }
+          ],
           "description": "加载图标类型, 可选值为 spinner",
           "allowGradient": false
         },
@@ -3940,7 +4156,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "col",
@@ -3973,45 +4189,9 @@
           "help": "tag · string",
           "description": "自定义元素标签",
           "allowGradient": false
-        },
-        {
-          "key": "gutter",
-          "label": "列间距",
-          "control": "text",
-          "group": "属性",
-          "help": "gutter · number | string",
-          "description": "列元素之间的间距（单位为 px）",
-          "allowGradient": false
-        },
-        {
-          "key": "justify",
-          "label": "主轴对齐方式",
-          "control": "text",
-          "group": "属性",
-          "help": "justify · string",
-          "description": "主轴对齐方式，可选值为 end center   space-around space-between",
-          "allowGradient": false
-        },
-        {
-          "key": "align",
-          "label": "交叉轴对齐方式",
-          "control": "text",
-          "group": "属性",
-          "help": "align · string",
-          "description": "交叉轴对齐方式，可选值为 center bottom",
-          "allowGradient": false
-        },
-        {
-          "key": "wrap",
-          "label": "自动换行",
-          "control": "boolean",
-          "group": "状态",
-          "help": "wrap · boolean",
-          "description": "自动换行",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "popup",
@@ -4039,9 +4219,31 @@
         {
           "key": "position",
           "label": "弹出位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · string",
+          "options": [
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            }
+          ],
           "description": "弹出位置，可选值为 top bottom right left",
           "allowGradient": false
         },
@@ -4138,9 +4340,27 @@
         {
           "key": "closeIconPosition",
           "label": "关闭图标位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "close-icon-position · string",
+          "options": [
+            {
+              "label": "top-right",
+              "value": "top-right"
+            },
+            {
+              "label": "top-left",
+              "value": "top-left"
+            },
+            {
+              "label": "bottom-left",
+              "value": "bottom-left"
+            },
+            {
+              "label": "bottom-right",
+              "value": "bottom-right"
+            }
+          ],
           "description": "关闭图标位置，可选值为 top-left bottom-left bottom-right",
           "allowGradient": false
         },
@@ -4252,7 +4472,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "tree-select",
@@ -4458,9 +4678,19 @@
         {
           "key": "shape",
           "label": "形状",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "shape · string",
+          "options": [
+            {
+              "label": "圆形",
+              "value": "round"
+            },
+            {
+              "label": "square",
+              "value": "square"
+            }
+          ],
           "description": "形状，可选值为 square",
           "allowGradient": false
         },
@@ -4485,9 +4715,19 @@
         {
           "key": "labelPosition",
           "label": "文本位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "label-position · string",
+          "options": [
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            }
+          ],
           "description": "文本位置，可选值为 left",
           "allowGradient": false
         },
@@ -4528,24 +4768,6 @@
           "group": "状态",
           "help": "bind-group · boolean",
           "description": "与复选框组绑定",
-          "allowGradient": false
-        },
-        {
-          "key": "max",
-          "label": "最大可选数",
-          "control": "text",
-          "group": "属性",
-          "help": "max · number | string",
-          "description": "最大可选数，0 为无限制",
-          "allowGradient": false
-        },
-        {
-          "key": "direction",
-          "label": "排列方向",
-          "control": "text",
-          "group": "属性",
-          "help": "direction · string",
-          "description": "排列方向，可选值为 horizontal",
           "allowGradient": false
         }
       ],
@@ -4595,9 +4817,19 @@
         {
           "key": "shape",
           "label": "形状",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "shape · string",
+          "options": [
+            {
+              "label": "圆形",
+              "value": "round"
+            },
+            {
+              "label": "square",
+              "value": "square"
+            }
+          ],
           "description": "形状，可选值为 square",
           "allowGradient": false
         },
@@ -4622,9 +4854,19 @@
         {
           "key": "labelPosition",
           "label": "文本位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "label-position · string",
+          "options": [
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            }
+          ],
           "description": "文本位置，可选值为 left",
           "allowGradient": false
         },
@@ -4657,15 +4899,6 @@
           "description": "所有单选框的选中状态颜色",
           "tokenKind": "color",
           "allowGradient": false
-        },
-        {
-          "key": "direction",
-          "label": "排列方向",
-          "control": "text",
-          "group": "属性",
-          "help": "direction · string",
-          "description": "排列方向，可选值为 horizontal",
-          "allowGradient": false
         }
       ],
       "previewMode": "live"
@@ -4688,27 +4921,69 @@
         {
           "key": "labelAlign",
           "label": "标签对齐",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "label-align · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "表单项 label 对齐方式，可选值为 center right",
           "allowGradient": false
         },
         {
           "key": "inputAlign",
           "label": "输入框对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "input-align · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "输入框对齐方式，可选值为 center right",
           "allowGradient": false
         },
         {
           "key": "errorMessageAlign",
           "label": "错误提示文案对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "error-message-align · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "错误提示文案对齐方式，可选值为 center right",
           "allowGradient": false
         },
@@ -4794,7 +5069,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "picker",
@@ -4849,9 +5124,19 @@
         {
           "key": "toolbarPosition",
           "label": "顶部栏位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "toolbar-position · string",
+          "options": [
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            }
+          ],
           "description": "顶部栏位置，可选值为 bottom",
           "allowGradient": false
         },
@@ -4919,7 +5204,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "rate",
@@ -5056,60 +5341,6 @@
           "help": "touchable · boolean",
           "description": "可以通过滑动手势选择评分",
           "allowGradient": false
-        },
-        {
-          "key": "title",
-          "label": "单元格标题",
-          "control": "text",
-          "group": "属性",
-          "help": "title · string",
-          "description": "单元格标题",
-          "allowGradient": false
-        },
-        {
-          "key": "required",
-          "label": "必填标识",
-          "control": "boolean",
-          "group": "状态",
-          "help": "required · boolean",
-          "description": "显示必填标识",
-          "allowGradient": false
-        },
-        {
-          "key": "description",
-          "label": "跟随评分的描述",
-          "control": "text",
-          "group": "属性",
-          "help": "description · string",
-          "description": "跟随评分的描述文本",
-          "allowGradient": false
-        },
-        {
-          "key": "showDescription",
-          "label": "描述文本",
-          "control": "boolean",
-          "group": "状态",
-          "help": "show-description · boolean",
-          "description": "显示描述文本",
-          "allowGradient": false
-        },
-        {
-          "key": "layout",
-          "label": "布局",
-          "control": "text",
-          "group": "属性",
-          "help": "layout · string",
-          "description": "布局，可选值为 default、between",
-          "allowGradient": false
-        },
-        {
-          "key": "border",
-          "label": "底部分割线",
-          "control": "boolean",
-          "group": "状态",
-          "help": "border · boolean",
-          "description": "展示底部分割线",
-          "allowGradient": false
         }
       ],
       "previewMode": "live"
@@ -5122,9 +5353,35 @@
         {
           "key": "type",
           "label": "时间类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "type · string",
+          "options": [
+            {
+              "label": "datetime",
+              "value": "datetime"
+            },
+            {
+              "label": "date",
+              "value": "date"
+            },
+            {
+              "label": "time",
+              "value": "time"
+            },
+            {
+              "label": "year-month",
+              "value": "year-month"
+            },
+            {
+              "label": "month-day",
+              "value": "month-day"
+            },
+            {
+              "label": "datehour",
+              "value": "datehour"
+            }
+          ],
           "description": "时间类型，可选值为 date time   year-month month-day datehour",
           "allowGradient": false
         },
@@ -5345,7 +5602,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "calendar",
@@ -5528,9 +5785,27 @@
         {
           "key": "position",
           "label": "弹出位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · string",
+          "options": [
+            {
+              "label": "bottom",
+              "value": "bottom"
+            },
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            }
+          ],
           "description": "弹出位置，可选值为 top right left",
           "allowGradient": false
         },
@@ -5642,15 +5917,6 @@
           "allowGradient": false
         },
         {
-          "key": "value",
-          "label": "选中项的值",
-          "control": "text",
-          "group": "属性",
-          "help": "value · string | number",
-          "description": "选中项的值",
-          "allowGradient": false
-        },
-        {
           "key": "options",
           "label": "可选项数据源",
           "control": "json",
@@ -5724,7 +5990,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "number-keyboard",
@@ -5761,9 +6027,19 @@
         {
           "key": "theme",
           "label": "样式风格",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "theme · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "custom",
+              "value": "custom"
+            }
+          ],
           "description": "样式风格，可选值为 custom",
           "allowGradient": false
         },
@@ -5957,7 +6233,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "slider",
@@ -5967,8 +6243,8 @@
         {
           "key": "modelValue",
           "label": "当前进度百分比",
-          "control": "text",
-          "group": "属性",
+          "control": "json",
+          "group": "数据",
           "help": "v-model · number | [number, number]",
           "description": "当前进度百分比，在双滑块模式下为数组格式",
           "allowGradient": false
@@ -6052,9 +6328,9 @@
         {
           "key": "reverse",
           "label": "反向模式",
-          "control": "text",
-          "group": "属性",
-          "help": "reverse · `false`",
+          "control": "boolean",
+          "group": "状态",
+          "help": "reverse · boolean",
           "description": "Whether to reverse slider",
           "allowGradient": false
         },
@@ -6250,9 +6526,19 @@
         {
           "key": "capture",
           "label": "拍摄设备",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "capture · string",
+          "options": [
+            {
+              "label": "user",
+              "value": "user"
+            },
+            {
+              "label": "environment",
+              "value": "environment"
+            }
+          ],
           "description": "拍摄设备，可选值为 user（前置摄像头）或 environment（后置摄像头）；旧值 camera 的行为取决于浏览器",
           "allowGradient": false
         },
@@ -6305,9 +6591,23 @@
         {
           "key": "resultType",
           "label": "文件读取结果类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "result-type · string",
+          "options": [
+            {
+              "label": "dataUrl",
+              "value": "dataUrl"
+            },
+            {
+              "label": "file",
+              "value": "file"
+            },
+            {
+              "label": "文字",
+              "value": "text"
+            }
+          ],
           "description": "文件读取结果类型，可选值为 file text",
           "allowGradient": false
         },
@@ -7217,18 +7517,46 @@
         {
           "key": "messageAlign",
           "label": "内容对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "messageAlign · string",
+          "options": [
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "justify",
+              "value": "justify"
+            }
+          ],
           "description": "内容对齐方式，可选值为 left right",
           "allowGradient": false
         },
         {
           "key": "theme",
           "label": "样式风格",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "theme · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "round-button",
+              "value": "round-button"
+            }
+          ],
           "description": "样式风格，可选值为 round-button",
           "allowGradient": false
         },
@@ -7444,9 +7772,23 @@
         {
           "key": "messageAlign",
           "label": "内容对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "messageAlign · string",
+          "options": [
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "内容对齐方式，可选值为 left right",
           "allowGradient": false
         },
@@ -7507,9 +7849,23 @@
         {
           "key": "inputAlign",
           "label": "输入框内容对齐方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "inputAlign · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "输入框内容对齐方式，可选值为 left center right",
           "allowGradient": false
         },
@@ -7689,9 +8045,27 @@
         {
           "key": "type",
           "label": "类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "type · NotifyType",
+          "options": [
+            {
+              "label": "危险",
+              "value": "danger"
+            },
+            {
+              "label": "主要",
+              "value": "primary"
+            },
+            {
+              "label": "成功",
+              "value": "success"
+            },
+            {
+              "label": "警告",
+              "value": "warning"
+            }
+          ],
           "description": "类型，可选值为 primary success warning",
           "allowGradient": false
         },
@@ -7716,9 +8090,19 @@
         {
           "key": "position",
           "label": "弹出位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · NotifyPosition",
+          "options": [
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            }
+          ],
           "description": "弹出位置，可选值为 bottom",
           "allowGradient": false
         },
@@ -7758,33 +8142,6 @@
           "group": "状态",
           "help": "lockScroll · boolean",
           "description": "锁定背景滚动",
-          "allowGradient": false
-        },
-        {
-          "key": "onClick",
-          "label": "点击时的回调函数",
-          "control": "text",
-          "group": "属性",
-          "help": "onClick · (event: MouseEvent): void",
-          "description": "点击时的回调函数",
-          "allowGradient": false
-        },
-        {
-          "key": "onOpened",
-          "label": "完全展示后的回调函数",
-          "control": "text",
-          "group": "属性",
-          "help": "onOpened · () => void",
-          "description": "完全展示后的回调函数",
-          "allowGradient": false
-        },
-        {
-          "key": "onClose",
-          "label": "关闭时的回调函数",
-          "control": "text",
-          "group": "属性",
-          "help": "onClose · () => void",
-          "description": "关闭时的回调函数",
           "allowGradient": false
         },
         {
@@ -7838,15 +8195,6 @@
           "group": "属性",
           "help": "class-name · string",
           "description": "自定义类名",
-          "allowGradient": false
-        },
-        {
-          "key": "customClass",
-          "label": "样式类名",
-          "control": "json",
-          "group": "数据",
-          "help": "custom-class · object",
-          "description": "Custom style",
           "allowGradient": false
         },
         {
@@ -7975,7 +8323,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "share-sheet",
@@ -8198,7 +8546,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "dropdown-menu",
@@ -8236,9 +8584,19 @@
         {
           "key": "direction",
           "label": "菜单展开方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "direction · string",
+          "options": [
+            {
+              "label": "down",
+              "value": "down"
+            },
+            {
+              "label": "up",
+              "value": "up"
+            }
+          ],
           "description": "菜单展开方向，可选值为up",
           "allowGradient": false
         },
@@ -8286,72 +8644,9 @@
           "help": "close-on-click-outside · boolean",
           "description": "在点击外部元素后关闭菜单",
           "allowGradient": false
-        },
-        {
-          "key": "modelValue",
-          "label": "当前值",
-          "control": "text",
-          "group": "属性",
-          "help": "v-model · number | string",
-          "description": "当前选中项对应的 value",
-          "allowGradient": false
-        },
-        {
-          "key": "title",
-          "label": "菜单项标题",
-          "control": "text",
-          "group": "属性",
-          "help": "title · string",
-          "description": "菜单项标题",
-          "allowGradient": false
-        },
-        {
-          "key": "options",
-          "label": "选项数组",
-          "control": "json",
-          "group": "数据",
-          "help": "options · Option[]",
-          "description": "选项数组",
-          "allowGradient": false
-        },
-        {
-          "key": "disabled",
-          "label": "禁用",
-          "control": "boolean",
-          "group": "状态",
-          "help": "disabled · boolean",
-          "description": "禁用菜单",
-          "allowGradient": false
-        },
-        {
-          "key": "lazyRender",
-          "label": "延迟渲染",
-          "control": "boolean",
-          "group": "状态",
-          "help": "lazy-render · boolean",
-          "description": "在首次展开时才渲染菜单内容",
-          "allowGradient": false
-        },
-        {
-          "key": "titleClass",
-          "label": "标题额外类名",
-          "control": "json",
-          "group": "数据",
-          "help": "title-class · string | Array | object",
-          "description": "标题额外类名",
-          "allowGradient": false
-        },
-        {
-          "key": "teleport",
-          "label": "指定挂载的节点",
-          "control": "text",
-          "group": "属性",
-          "help": "teleport · string | Element",
-          "description": "指定挂载的节点，等同于 Teleport 组件的 to 属性",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "blue-mark",
@@ -8435,96 +8730,6 @@
           "help": "is-link · boolean",
           "description": "展示跳转箭头",
           "allowGradient": false
-        },
-        {
-          "key": "title",
-          "label": "标题文本",
-          "control": "text",
-          "group": "属性",
-          "help": "title · number | string",
-          "description": "标题文本",
-          "allowGradient": false
-        },
-        {
-          "key": "required",
-          "label": "必填标识",
-          "control": "boolean",
-          "group": "状态",
-          "help": "required · boolean",
-          "description": "展示必填星号",
-          "allowGradient": false
-        },
-        {
-          "key": "actionText",
-          "label": "右侧操作文本",
-          "control": "text",
-          "group": "属性",
-          "help": "action-text · string",
-          "description": "右侧操作文本",
-          "allowGradient": false
-        },
-        {
-          "key": "expandable",
-          "label": "展开收起",
-          "control": "boolean",
-          "group": "状态",
-          "help": "expandable · boolean",
-          "description": "启用展开收起，点击整个标题栏可切换",
-          "allowGradient": false
-        },
-        {
-          "key": "showExpandIcon",
-          "label": "展开图标",
-          "control": "boolean",
-          "group": "状态",
-          "help": "show-expand-icon · boolean",
-          "description": "展示右侧展开收起箭头",
-          "allowGradient": false
-        },
-        {
-          "key": "modelValue",
-          "label": "选中状态",
-          "control": "boolean",
-          "group": "状态",
-          "help": "v-model · boolean",
-          "description": "展开",
-          "allowGradient": false
-        },
-        {
-          "key": "divider",
-          "label": "分割线",
-          "control": "boolean",
-          "group": "状态",
-          "help": "divider · boolean",
-          "description": "在两侧显示分割线",
-          "allowGradient": false
-        },
-        {
-          "key": "expandText",
-          "label": "收起状态的操作文案",
-          "control": "text",
-          "group": "属性",
-          "help": "expand-text · string",
-          "description": "收起状态的操作文案",
-          "allowGradient": false
-        },
-        {
-          "key": "collapseText",
-          "label": "展开状态的操作文案",
-          "control": "text",
-          "group": "属性",
-          "help": "collapse-text · string",
-          "description": "展开状态的操作文案",
-          "allowGradient": false
-        },
-        {
-          "key": "showIcon",
-          "label": "图标",
-          "control": "boolean",
-          "group": "状态",
-          "help": "show-icon · boolean",
-          "description": "展示箭头图标",
-          "allowGradient": false
         }
       ],
       "previewMode": "live"
@@ -8565,9 +8770,19 @@
         {
           "key": "size",
           "label": "徽标尺寸",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "size · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "迷你",
+              "value": "mini"
+            }
+          ],
           "description": "徽标尺寸，可选值为 default mini；mini 小红点为 6 × 6px",
           "allowGradient": false
         },
@@ -8583,8 +8798,8 @@
         {
           "key": "offset",
           "label": "设置徽标的偏移量",
-          "control": "text",
-          "group": "属性",
+          "control": "json",
+          "group": "数据",
           "help": "offset · [number | string, number | string]",
           "description": "设置徽标的偏移量，数组的两项分别对应水平和垂直方向的偏移量，默认单位为 px",
           "allowGradient": false
@@ -8601,9 +8816,27 @@
         {
           "key": "position",
           "label": "徽标位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · string",
+          "options": [
+            {
+              "label": "top-right",
+              "value": "top-right"
+            },
+            {
+              "label": "top-left",
+              "value": "top-left"
+            },
+            {
+              "label": "bottom-left",
+              "value": "bottom-left"
+            },
+            {
+              "label": "bottom-right",
+              "value": "bottom-right"
+            }
+          ],
           "description": "徽标位置，可选值为 top-left bottom-left bottom-right",
           "allowGradient": false
         }
@@ -8725,7 +8958,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "collapse-toggle",
@@ -8778,7 +9011,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "label",
@@ -8842,27 +9075,69 @@
         {
           "key": "type",
           "label": "展示类型",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "type · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "bold",
+              "value": "bold"
+            },
+            {
+              "label": "链接",
+              "value": "link"
+            },
+            {
+              "label": "tag",
+              "value": "tag"
+            },
+            {
+              "label": "media",
+              "value": "media"
+            }
+          ],
           "description": "展示类型，可选值为 default bold link tag media",
           "allowGradient": false
         },
         {
           "key": "size",
           "label": "尺寸",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "size · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "迷你",
+              "value": "mini"
+            }
+          ],
           "description": "尺寸，可选值为 default mini",
           "allowGradient": false
         },
         {
           "key": "contentAlign",
           "label": "回显内容位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "content-align · string",
+          "options": [
+            {
+              "label": "follow",
+              "value": "follow"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "回显内容位置，可选值为 follow right",
           "allowGradient": false
         },
@@ -9059,9 +9334,19 @@
         {
           "key": "avatarShape",
           "label": "头像占位图形状",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "avatar-shape · string",
+          "options": [
+            {
+              "label": "圆形",
+              "value": "round"
+            },
+            {
+              "label": "square",
+              "value": "square"
+            }
+          ],
           "description": "头像占位图形状，可选值为 square",
           "allowGradient": false
         }
@@ -9103,18 +9388,38 @@
         {
           "key": "theme",
           "label": "主题风格",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "theme · PopoverTheme",
+          "options": [
+            {
+              "label": "light",
+              "value": "light"
+            },
+            {
+              "label": "dark",
+              "value": "dark"
+            }
+          ],
           "description": "主题风格，可选值为 dark",
           "allowGradient": false
         },
         {
           "key": "trigger",
           "label": "触发方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "trigger · PopoverTrigger",
+          "options": [
+            {
+              "label": "click",
+              "value": "click"
+            },
+            {
+              "label": "manual",
+              "value": "manual"
+            }
+          ],
           "description": "触发方式，可选值为 manual",
           "allowGradient": false
         },
@@ -9130,8 +9435,8 @@
         {
           "key": "offset",
           "label": "出现位置的偏移量",
-          "control": "text",
-          "group": "属性",
+          "control": "json",
+          "group": "数据",
           "help": "offset · [number, number]",
           "description": "出现位置的偏移量",
           "allowGradient": false
@@ -9273,8 +9578,8 @@
         {
           "key": "offset",
           "label": "出现位置的偏移量",
-          "control": "text",
-          "group": "属性",
+          "control": "json",
+          "group": "数据",
           "help": "offset · [number, number]",
           "description": "出现位置的偏移量",
           "allowGradient": false
@@ -9434,9 +9739,27 @@
         {
           "key": "closeIconPosition",
           "label": "关闭图标位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "close-icon-position · string",
+          "options": [
+            {
+              "label": "top-right",
+              "value": "top-right"
+            },
+            {
+              "label": "top-left",
+              "value": "top-left"
+            },
+            {
+              "label": "bottom-left",
+              "value": "bottom-left"
+            },
+            {
+              "label": "bottom-right",
+              "value": "bottom-right"
+            }
+          ],
           "description": "关闭图标位置，可选值为 top-left bottom-left bottom-right",
           "allowGradient": false
         },
@@ -9465,15 +9788,6 @@
           "group": "数据",
           "help": "overlay-style · object",
           "description": "自定义遮罩层样式",
-          "allowGradient": false
-        },
-        {
-          "key": "teleport",
-          "label": "指定挂载的节点",
-          "control": "text",
-          "group": "属性",
-          "help": "teleport · string | Element",
-          "description": "指定挂载的节点，等同于 Teleport 组件的 to 属性",
           "allowGradient": false
         }
       ],
@@ -9541,9 +9855,19 @@
         {
           "key": "fit",
           "label": "视频填充方式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "fit · string",
+          "options": [
+            {
+              "label": "完整显示",
+              "value": "contain"
+            },
+            {
+              "label": "填满裁剪",
+              "value": "cover"
+            }
+          ],
           "description": "视频填充方式，可选值为 contain、cover",
           "allowGradient": false
         },
@@ -9581,69 +9905,6 @@
           "group": "数据",
           "help": "playbackRates · number[]",
           "description": "可选倍速",
-          "allowGradient": false
-        },
-        {
-          "key": "teleport",
-          "label": "指定挂载位置",
-          "control": "text",
-          "group": "属性",
-          "help": "teleport · string | Element",
-          "description": "指定挂载位置",
-          "allowGradient": false
-        },
-        {
-          "key": "onClose",
-          "label": "关闭预览时触发",
-          "control": "text",
-          "group": "属性",
-          "help": "onClose · Function",
-          "description": "关闭预览时触发",
-          "allowGradient": false
-        },
-        {
-          "key": "onPlay",
-          "label": "开始播放时触发",
-          "control": "text",
-          "group": "属性",
-          "help": "onPlay · Function",
-          "description": "开始播放时触发",
-          "allowGradient": false
-        },
-        {
-          "key": "onPause",
-          "label": "暂停时触发",
-          "control": "text",
-          "group": "属性",
-          "help": "onPause · Function",
-          "description": "暂停时触发",
-          "allowGradient": false
-        },
-        {
-          "key": "onEnded",
-          "label": "播放结束时触发",
-          "control": "text",
-          "group": "属性",
-          "help": "onEnded · Function",
-          "description": "播放结束时触发",
-          "allowGradient": false
-        },
-        {
-          "key": "onTimeupdate",
-          "label": "播放进度更新时触发",
-          "control": "text",
-          "group": "属性",
-          "help": "onTimeupdate · Function",
-          "description": "播放进度更新时触发",
-          "allowGradient": false
-        },
-        {
-          "key": "onError",
-          "label": "播放出错时触发",
-          "control": "text",
-          "group": "属性",
-          "help": "onError · Function",
-          "description": "播放出错时触发",
           "allowGradient": false
         },
         {
@@ -9751,9 +10012,23 @@
         {
           "key": "strokeLinecap",
           "label": "进度条端点的形状",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "stroke-linecap · string",
+          "options": [
+            {
+              "label": "圆形",
+              "value": "round"
+            },
+            {
+              "label": "square",
+              "value": "square"
+            },
+            {
+              "label": "butt",
+              "value": "butt"
+            }
+          ],
           "description": "进度条端点的形状，可选值为 square butt",
           "allowGradient": false
         },
@@ -9769,9 +10044,27 @@
         {
           "key": "startPosition",
           "label": "进度起始位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "start-position · CircleStartPosition",
+          "options": [
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            }
+          ],
           "description": "进度起始位置，可选值为 left、right、bottom",
           "allowGradient": false
         }
@@ -9809,126 +10102,9 @@
           "help": "border · boolean",
           "description": "显示内边框",
           "allowGradient": false
-        },
-        {
-          "key": "name",
-          "label": "唯一标识符",
-          "control": "text",
-          "group": "属性",
-          "help": "name · number | string",
-          "description": "唯一标识符，默认为索引值",
-          "allowGradient": false
-        },
-        {
-          "key": "icon",
-          "label": "图标",
-          "control": "text",
-          "group": "属性",
-          "help": "icon · string",
-          "description": "标题栏左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "size",
-          "label": "标题栏大小",
-          "control": "text",
-          "group": "属性",
-          "help": "size · string",
-          "description": "标题栏大小，可选值为 large",
-          "allowGradient": false
-        },
-        {
-          "key": "title",
-          "label": "标题栏左侧内容",
-          "control": "text",
-          "group": "属性",
-          "help": "title · number | string",
-          "description": "标题栏左侧内容",
-          "allowGradient": false
-        },
-        {
-          "key": "value",
-          "label": "标题栏右侧内容",
-          "control": "text",
-          "group": "属性",
-          "help": "value · number | string",
-          "description": "标题栏右侧内容",
-          "allowGradient": false
-        },
-        {
-          "key": "label",
-          "label": "标题栏描述信息",
-          "control": "text",
-          "group": "属性",
-          "help": "label · number | string",
-          "description": "标题栏描述信息",
-          "allowGradient": false
-        },
-        {
-          "key": "isLink",
-          "label": "跳转箭头",
-          "control": "boolean",
-          "group": "状态",
-          "help": "is-link · boolean",
-          "description": "展示标题栏右侧箭头并开启点击反馈",
-          "allowGradient": false
-        },
-        {
-          "key": "disabled",
-          "label": "禁用",
-          "control": "boolean",
-          "group": "状态",
-          "help": "disabled · boolean",
-          "description": "禁用面板",
-          "allowGradient": false
-        },
-        {
-          "key": "readonly",
-          "label": "只读",
-          "control": "boolean",
-          "group": "状态",
-          "help": "readonly · boolean",
-          "description": "为只读状态，只读状态下无法操作面板",
-          "allowGradient": false
-        },
-        {
-          "key": "lazyRender",
-          "label": "延迟渲染",
-          "control": "boolean",
-          "group": "状态",
-          "help": "lazy-render · boolean",
-          "description": "在首次展开时才渲染面板内容",
-          "allowGradient": false
-        },
-        {
-          "key": "titleClass",
-          "label": "左侧标题额外类名",
-          "control": "text",
-          "group": "属性",
-          "help": "title-class · string",
-          "description": "左侧标题额外类名",
-          "allowGradient": false
-        },
-        {
-          "key": "valueClass",
-          "label": "右侧内容额外类名",
-          "control": "text",
-          "group": "属性",
-          "help": "value-class · string",
-          "description": "右侧内容额外类名",
-          "allowGradient": false
-        },
-        {
-          "key": "labelClass",
-          "label": "描述信息额外类名",
-          "control": "text",
-          "group": "属性",
-          "help": "label-class · string",
-          "description": "描述信息额外类名",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "count-down",
@@ -10054,14 +10230,24 @@
         {
           "key": "direction",
           "label": "滚动触发加载的方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "direction · string",
+          "options": [
+            {
+              "label": "down",
+              "value": "down"
+            },
+            {
+              "label": "up",
+              "value": "up"
+            }
+          ],
           "description": "滚动触发加载的方向，可选值为 up",
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "steps",
@@ -10080,9 +10266,19 @@
         {
           "key": "direction",
           "label": "步骤条方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "direction · string",
+          "options": [
+            {
+              "label": "horizontal",
+              "value": "horizontal"
+            },
+            {
+              "label": "vertical",
+              "value": "vertical"
+            }
+          ],
           "description": "步骤条方向，可选值为 vertical",
           "allowGradient": false
         },
@@ -10143,7 +10339,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "sticky",
@@ -10153,9 +10349,19 @@
         {
           "key": "position",
           "label": "吸附位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "position · string",
+          "options": [
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            }
+          ],
           "description": "吸附位置，可选值为 bottom",
           "allowGradient": false
         },
@@ -10196,7 +10402,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "tab",
@@ -10310,231 +10516,9 @@
           "help": "show-zero-badge · boolean",
           "description": "当 badge 为数字 0 时，展示徽标",
           "allowGradient": false
-        },
-        {
-          "key": "active",
-          "label": "绑定当前选中标签的标识符",
-          "control": "text",
-          "group": "属性",
-          "help": "v-model:active · number | string",
-          "description": "绑定当前选中标签的标识符",
-          "allowGradient": false
-        },
-        {
-          "key": "type",
-          "label": "样式风格类型",
-          "control": "text",
-          "group": "属性",
-          "help": "type · string",
-          "description": "样式风格类型，可选值为 card（风格 1）、card-gray（风格 2）、filter（风格 3）",
-          "allowGradient": false
-        },
-        {
-          "key": "color",
-          "label": "标签主题色",
-          "control": "text",
-          "group": "属性",
-          "help": "color · string",
-          "description": "标签主题色",
-          "tokenKind": "color",
-          "allowGradient": false
-        },
-        {
-          "key": "background",
-          "label": "标签栏背景色",
-          "control": "text",
-          "group": "属性",
-          "help": "background · string",
-          "description": "标签栏背景色",
-          "tokenKind": "color",
-          "allowGradient": false
-        },
-        {
-          "key": "duration",
-          "label": "动画时间",
-          "control": "text",
-          "group": "属性",
-          "help": "duration · number | string",
-          "description": "动画时间，单位秒，设置为 0 可以禁用动画",
-          "allowGradient": false
-        },
-        {
-          "key": "lineWidth",
-          "label": "底部条宽度",
-          "control": "text",
-          "group": "属性",
-          "help": "line-width · number | string",
-          "description": "底部条宽度，默认单位 px",
-          "tokenKind": "dimension",
-          "allowGradient": false
-        },
-        {
-          "key": "lineHeight",
-          "label": "底部条高度",
-          "control": "text",
-          "group": "属性",
-          "help": "line-height · number | string",
-          "description": "底部条高度，默认单位 px",
-          "tokenKind": "dimension",
-          "allowGradient": false
-        },
-        {
-          "key": "animated",
-          "label": "切换动画",
-          "control": "boolean",
-          "group": "状态",
-          "help": "animated · boolean",
-          "description": "开启切换标签内容时的转场动画",
-          "allowGradient": false
-        },
-        {
-          "key": "border",
-          "label": "标签栏外边框",
-          "control": "boolean",
-          "group": "状态",
-          "help": "border · boolean",
-          "description": "显示标签栏外边框，仅在 type=\"line\" 时有效",
-          "allowGradient": false
-        },
-        {
-          "key": "ellipsis",
-          "label": "超长文本省略",
-          "control": "boolean",
-          "group": "状态",
-          "help": "ellipsis · boolean",
-          "description": "省略过长的标题文字",
-          "allowGradient": false
-        },
-        {
-          "key": "sticky",
-          "label": "粘性布局",
-          "control": "boolean",
-          "group": "状态",
-          "help": "sticky · boolean",
-          "description": "使用粘性布局",
-          "allowGradient": false
-        },
-        {
-          "key": "shrink",
-          "label": "左侧收缩布局",
-          "control": "boolean",
-          "group": "状态",
-          "help": "shrink · boolean",
-          "description": "开启左侧收缩布局",
-          "allowGradient": false
-        },
-        {
-          "key": "swipeable",
-          "label": "滑动切换",
-          "control": "boolean",
-          "group": "状态",
-          "help": "swipeable · boolean",
-          "description": "开启手势左右滑动切换",
-          "allowGradient": false
-        },
-        {
-          "key": "lazyRender",
-          "label": "延迟渲染",
-          "control": "boolean",
-          "group": "状态",
-          "help": "lazy-render · boolean",
-          "description": "开启延迟渲染（首次切换到标签时才触发内容渲染）",
-          "allowGradient": false
-        },
-        {
-          "key": "scrollspy",
-          "label": "滚动导航",
-          "control": "boolean",
-          "group": "状态",
-          "help": "scrollspy · boolean",
-          "description": "开启滚动导航",
-          "allowGradient": false
-        },
-        {
-          "key": "offsetTop",
-          "label": "粘性布局下吸顶时与顶部的距离",
-          "control": "text",
-          "group": "属性",
-          "help": "offset-top · number | string",
-          "description": "粘性布局下吸顶时与顶部的距离，支持 px vw vh rem 单位，默认 px",
-          "allowGradient": false
-        },
-        {
-          "key": "swipeThreshold",
-          "label": "滚动阈值",
-          "control": "text",
-          "group": "属性",
-          "help": "swipe-threshold · number | string",
-          "description": "滚动阈值，标签数量超过阈值且总宽度超过标签栏宽度时开始横向滚动",
-          "allowGradient": false
-        },
-        {
-          "key": "titleActiveColor",
-          "label": "标题选中态颜色",
-          "control": "text",
-          "group": "属性",
-          "help": "title-active-color · string",
-          "description": "标题选中态颜色",
-          "tokenKind": "color",
-          "allowGradient": false
-        },
-        {
-          "key": "titleInactiveColor",
-          "label": "标题默认态颜色",
-          "control": "text",
-          "group": "属性",
-          "help": "title-inactive-color · string",
-          "description": "标题默认态颜色",
-          "tokenKind": "color",
-          "allowGradient": false
-        },
-        {
-          "key": "more",
-          "label": "右侧更多按钮",
-          "control": "boolean",
-          "group": "状态",
-          "help": "more · boolean",
-          "description": "显示右侧更多按钮",
-          "allowGradient": false
-        },
-        {
-          "key": "showMore",
-          "label": "更多动作面板",
-          "control": "boolean",
-          "group": "状态",
-          "help": "v-model:show-more · boolean",
-          "description": "展示更多动作面板",
-          "allowGradient": false
-        },
-        {
-          "key": "moreTitle",
-          "label": "更多动作面板标题",
-          "control": "text",
-          "group": "属性",
-          "help": "more-title · string",
-          "description": "更多动作面板标题",
-          "allowGradient": false
-        },
-        {
-          "key": "moreOptions",
-          "label": "自定义更多动作面板选项",
-          "control": "json",
-          "group": "数据",
-          "help": "more-options · ActionSheetAction[]",
-          "description": "自定义更多动作面板选项，默认为全部标签",
-          "allowGradient": false
-        },
-        {
-          "key": "beforeChange",
-          "label": "切换标签前的回调函数",
-          "control": "text",
-          "group": "状态",
-          "help": "before-change · (name: number | string) => boolean | Promise\\",
-          "description": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "filter-tag",
@@ -10562,9 +10546,19 @@
         {
           "key": "size",
           "label": "标签尺寸",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "size · string",
+          "options": [
+            {
+              "label": "标准",
+              "value": "normal"
+            },
+            {
+              "label": "大",
+              "value": "large"
+            }
+          ],
           "description": "标签尺寸，可选值为 normal、large",
           "allowGradient": false
         },
@@ -10589,9 +10583,19 @@
         {
           "key": "iconPosition",
           "label": "图标位置",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "icon-position · string",
+          "options": [
+            {
+              "label": "左侧",
+              "value": "left"
+            },
+            {
+              "label": "右侧",
+              "value": "right"
+            }
+          ],
           "description": "图标位置，可选值为 left、right",
           "allowGradient": false
         },
@@ -10689,9 +10693,19 @@
         {
           "key": "direction",
           "label": "格子内容排列的方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "direction · string",
+          "options": [
+            {
+              "label": "vertical",
+              "value": "vertical"
+            },
+            {
+              "label": "horizontal",
+              "value": "horizontal"
+            }
+          ],
           "description": "格子内容排列的方向，可选值为 horizontal",
           "allowGradient": false
         },
@@ -10703,100 +10717,9 @@
           "help": "reverse · boolean",
           "description": "调换图标和文本的位置",
           "allowGradient": false
-        },
-        {
-          "key": "text",
-          "label": "文字",
-          "control": "text",
-          "group": "属性",
-          "help": "text · string",
-          "description": "文字",
-          "allowGradient": false
-        },
-        {
-          "key": "icon",
-          "label": "图标",
-          "control": "text",
-          "group": "属性",
-          "help": "icon · string",
-          "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "iconPrefix",
-          "label": "图标类名前缀",
-          "control": "text",
-          "group": "属性",
-          "help": "icon-prefix · string",
-          "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "iconColor",
-          "label": "图标颜色",
-          "control": "text",
-          "group": "属性",
-          "help": "icon-color · string",
-          "description": "图标颜色，等同于 Icon 组件的 color 属性",
-          "tokenKind": "color",
-          "allowGradient": false
-        },
-        {
-          "key": "dot",
-          "label": "小红点",
-          "control": "boolean",
-          "group": "状态",
-          "help": "dot · boolean",
-          "description": "显示图标右上角小红点",
-          "allowGradient": false
-        },
-        {
-          "key": "badge",
-          "label": "图标右上角徽标的内容",
-          "control": "text",
-          "group": "属性",
-          "help": "badge · number | string",
-          "description": "图标右上角徽标的内容",
-          "allowGradient": false
-        },
-        {
-          "key": "badgeProps",
-          "label": "自定义徽标的属性",
-          "control": "json",
-          "group": "数据",
-          "help": "badge-props · BadgeProps",
-          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-          "allowGradient": false
-        },
-        {
-          "key": "url",
-          "label": "点击后跳转的链接地址",
-          "control": "text",
-          "group": "属性",
-          "help": "url · string",
-          "description": "点击后跳转的链接地址",
-          "allowGradient": false
-        },
-        {
-          "key": "to",
-          "label": "点击后跳转的目标路由对象",
-          "control": "json",
-          "group": "数据",
-          "help": "to · string | object",
-          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "replace",
-          "label": "跳转替换历史",
-          "control": "boolean",
-          "group": "状态",
-          "help": "replace · boolean",
-          "description": "在跳转时替换当前页面历史",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "index-bar",
@@ -10857,18 +10780,9 @@
           "help": "teleport · string | Element",
           "description": "指定索引栏挂载的节点",
           "allowGradient": false
-        },
-        {
-          "key": "index",
-          "label": "索引字符",
-          "control": "text",
-          "group": "属性",
-          "help": "index · number | string",
-          "description": "索引字符",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "pagination",
@@ -10887,9 +10801,19 @@
         {
           "key": "mode",
           "label": "显示模式",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "mode · string",
+          "options": [
+            {
+              "label": "multi",
+              "value": "multi"
+            },
+            {
+              "label": "simple",
+              "value": "simple"
+            }
+          ],
           "description": "显示模式，可选值为 simple",
           "allowGradient": false
         },
@@ -10972,81 +10896,9 @@
           "help": "v-model · number | string",
           "description": "当前导航项的索引",
           "allowGradient": false
-        },
-        {
-          "key": "title",
-          "label": "内容",
-          "control": "text",
-          "group": "属性",
-          "help": "title · string",
-          "description": "内容",
-          "allowGradient": false
-        },
-        {
-          "key": "dot",
-          "label": "小红点",
-          "control": "boolean",
-          "group": "状态",
-          "help": "dot · boolean",
-          "description": "显示右上角小红点",
-          "allowGradient": false
-        },
-        {
-          "key": "badge",
-          "label": "图标右上角徽标的内容",
-          "control": "text",
-          "group": "属性",
-          "help": "badge · number | string",
-          "description": "图标右上角徽标的内容",
-          "allowGradient": false
-        },
-        {
-          "key": "badgeProps",
-          "label": "自定义徽标的属性",
-          "control": "json",
-          "group": "数据",
-          "help": "badge-props · BadgeProps",
-          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-          "allowGradient": false
-        },
-        {
-          "key": "disabled",
-          "label": "禁用",
-          "control": "boolean",
-          "group": "状态",
-          "help": "disabled · boolean",
-          "description": "禁用该项",
-          "allowGradient": false
-        },
-        {
-          "key": "url",
-          "label": "点击后跳转的链接地址",
-          "control": "text",
-          "group": "属性",
-          "help": "url · string",
-          "description": "点击后跳转的链接地址",
-          "allowGradient": false
-        },
-        {
-          "key": "to",
-          "label": "点击后跳转的目标路由对象",
-          "control": "json",
-          "group": "数据",
-          "help": "to · string | object",
-          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "replace",
-          "label": "跳转替换历史",
-          "control": "boolean",
-          "group": "状态",
-          "help": "replace · boolean",
-          "description": "在跳转时替换当前页面历史",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "tabbar",
@@ -11144,90 +10996,9 @@
           "help": "before-change · (name: number | string) => boolean | Promise\\",
           "description": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
           "allowGradient": false
-        },
-        {
-          "key": "name",
-          "label": "标签名称",
-          "control": "text",
-          "group": "属性",
-          "help": "name · number | string",
-          "description": "标签名称，作为匹配的标识符",
-          "allowGradient": false
-        },
-        {
-          "key": "icon",
-          "label": "图标",
-          "control": "text",
-          "group": "属性",
-          "help": "icon · string",
-          "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "iconPrefix",
-          "label": "图标类名前缀",
-          "control": "text",
-          "group": "属性",
-          "help": "icon-prefix · string",
-          "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "dot",
-          "label": "小红点",
-          "control": "boolean",
-          "group": "状态",
-          "help": "dot · boolean",
-          "description": "显示图标右上角小红点",
-          "allowGradient": false
-        },
-        {
-          "key": "badge",
-          "label": "图标右上角徽标的内容",
-          "control": "text",
-          "group": "属性",
-          "help": "badge · number | string",
-          "description": "图标右上角徽标的内容",
-          "allowGradient": false
-        },
-        {
-          "key": "badgeProps",
-          "label": "自定义徽标的属性",
-          "control": "json",
-          "group": "数据",
-          "help": "badge-props · BadgeProps",
-          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-          "allowGradient": false
-        },
-        {
-          "key": "url",
-          "label": "点击后跳转的链接地址",
-          "control": "text",
-          "group": "属性",
-          "help": "url · string",
-          "description": "点击后跳转的链接地址",
-          "allowGradient": false
-        },
-        {
-          "key": "to",
-          "label": "点击后跳转的目标路由对象",
-          "control": "json",
-          "group": "数据",
-          "help": "to · string | object",
-          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-          "allowGradient": false
-        },
-        {
-          "key": "replace",
-          "label": "跳转替换历史",
-          "control": "boolean",
-          "group": "状态",
-          "help": "replace · boolean",
-          "description": "在跳转时替换当前页面历史",
-          "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "floor-select",
@@ -11271,7 +11042,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "location-select",
@@ -11330,6 +11101,15 @@
           "group": "属性",
           "help": "search-debounce · number | string",
           "description": "输入搜索的防抖时间，单位 ms",
+          "allowGradient": false
+        },
+        {
+          "key": "showScan",
+          "label": "扫码入口",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-scan · boolean",
+          "description": "展示扫码入口，点击触发 click-scan",
           "allowGradient": false
         }
       ],
@@ -11654,7 +11434,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "material-display-bar",
@@ -11797,7 +11577,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "object-select",
@@ -11865,6 +11645,15 @@
           "group": "属性",
           "help": "search-debounce · number | string",
           "description": "输入搜索的防抖时间，单位 ms",
+          "allowGradient": false
+        },
+        {
+          "key": "showScan",
+          "label": "扫码入口",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-scan · boolean",
+          "description": "展示扫码入口，点击触发 click-scan",
           "allowGradient": false
         },
         {
@@ -12422,7 +12211,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "address-list",
@@ -12493,7 +12282,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "area",
@@ -12618,7 +12407,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "contact-edit",
@@ -12689,7 +12478,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "contact-list",
@@ -12733,7 +12522,7 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
     },
     {
       "type": "submit-bar",
@@ -12779,9 +12568,19 @@
         {
           "key": "textAlign",
           "label": "金额文案对齐方向",
-          "control": "text",
+          "control": "select",
           "group": "属性",
           "help": "text-align · string",
+          "options": [
+            {
+              "label": "右侧",
+              "value": "right"
+            },
+            {
+              "label": "左侧",
+              "value": "left"
+            }
+          ],
           "description": "金额文案对齐方向，可选值为 left",
           "allowGradient": false
         },
@@ -12877,7 +12676,1685 @@
           "allowGradient": false
         }
       ],
-      "previewMode": "configured"
+      "previewMode": "live"
+    },
+    {
+      "type": "action-bar",
+      "name": "ActionBar",
+      "docsPath": "action-bar",
+      "properties": [
+        {
+          "key": "safeAreaInsetBottom",
+          "label": "底部安全区",
+          "control": "boolean",
+          "group": "状态",
+          "help": "safe-area-inset-bottom · boolean",
+          "description": "开启底部安全区适配",
+          "allowGradient": false
+        },
+        {
+          "key": "placeholder",
+          "label": "保留占位",
+          "control": "boolean",
+          "group": "状态",
+          "help": "placeholder · boolean",
+          "description": "在标签位置生成一个等高的占位元素",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "action-bar-icon",
+      "name": "动作栏图标",
+      "docsPath": "action-bar",
+      "properties": [
+        {
+          "key": "text",
+          "label": "按钮文字",
+          "control": "text",
+          "group": "属性",
+          "help": "text · string",
+          "description": "按钮文字",
+          "allowGradient": false
+        },
+        {
+          "key": "icon",
+          "label": "左侧图标",
+          "control": "text",
+          "group": "属性",
+          "help": "icon · string",
+          "description": "左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "color",
+          "label": "按钮颜色",
+          "control": "text",
+          "group": "属性",
+          "help": "color · string",
+          "description": "按钮颜色，支持传入 linear-gradient 渐变色",
+          "tokenKind": "color",
+          "allowGradient": true
+        },
+        {
+          "key": "iconClass",
+          "label": "图标额外类名",
+          "control": "json",
+          "group": "数据",
+          "help": "icon-class · string | Array | object",
+          "description": "图标额外类名",
+          "allowGradient": false
+        },
+        {
+          "key": "iconPrefix",
+          "label": "图标类名前缀",
+          "control": "text",
+          "group": "属性",
+          "help": "icon-prefix · string",
+          "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "dot",
+          "label": "小红点",
+          "control": "boolean",
+          "group": "状态",
+          "help": "dot · boolean",
+          "description": "显示图标右上角小红点",
+          "allowGradient": false
+        },
+        {
+          "key": "badge",
+          "label": "图标右上角徽标的内容",
+          "control": "text",
+          "group": "属性",
+          "help": "badge · number | string",
+          "description": "图标右上角徽标的内容",
+          "allowGradient": false
+        },
+        {
+          "key": "badgeProps",
+          "label": "自定义徽标的属性",
+          "control": "json",
+          "group": "数据",
+          "help": "badge-props · BadgeProps",
+          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+          "allowGradient": false
+        },
+        {
+          "key": "url",
+          "label": "点击后跳转的链接地址",
+          "control": "text",
+          "group": "属性",
+          "help": "url · string",
+          "description": "点击后跳转的链接地址",
+          "allowGradient": false
+        },
+        {
+          "key": "to",
+          "label": "点击后跳转的目标路由对象",
+          "control": "json",
+          "group": "数据",
+          "help": "to · string | object",
+          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "replace",
+          "label": "跳转替换历史",
+          "control": "boolean",
+          "group": "状态",
+          "help": "replace · boolean",
+          "description": "在跳转时替换当前页面历史",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "action-bar-button",
+      "name": "动作栏按钮",
+      "docsPath": "action-bar",
+      "properties": [
+        {
+          "key": "text",
+          "label": "按钮文字",
+          "control": "text",
+          "group": "属性",
+          "help": "text · string",
+          "description": "按钮文字",
+          "allowGradient": false
+        },
+        {
+          "key": "type",
+          "label": "按钮类型",
+          "control": "select",
+          "group": "属性",
+          "help": "type · string",
+          "options": [
+            {
+              "label": "默认",
+              "value": "default"
+            },
+            {
+              "label": "主要",
+              "value": "primary"
+            },
+            {
+              "label": "info",
+              "value": "info"
+            },
+            {
+              "label": "警告",
+              "value": "warning"
+            },
+            {
+              "label": "危险",
+              "value": "danger"
+            }
+          ],
+          "description": "按钮类型，可选值为 primary info warning danger",
+          "allowGradient": false
+        },
+        {
+          "key": "color",
+          "label": "按钮颜色",
+          "control": "text",
+          "group": "属性",
+          "help": "color · string",
+          "description": "按钮颜色，支持传入 linear-gradient 渐变色",
+          "tokenKind": "color",
+          "allowGradient": true
+        },
+        {
+          "key": "icon",
+          "label": "左侧图标",
+          "control": "text",
+          "group": "属性",
+          "help": "icon · string",
+          "description": "左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "disabled",
+          "label": "禁用",
+          "control": "boolean",
+          "group": "状态",
+          "help": "disabled · boolean",
+          "description": "禁用按钮",
+          "allowGradient": false
+        },
+        {
+          "key": "loading",
+          "label": "加载状态",
+          "control": "boolean",
+          "group": "状态",
+          "help": "loading · boolean",
+          "description": "显示为加载状态",
+          "allowGradient": false
+        },
+        {
+          "key": "url",
+          "label": "点击后跳转的链接地址",
+          "control": "text",
+          "group": "属性",
+          "help": "url · string",
+          "description": "点击后跳转的链接地址",
+          "allowGradient": false
+        },
+        {
+          "key": "to",
+          "label": "点击后跳转的目标路由对象",
+          "control": "json",
+          "group": "数据",
+          "help": "to · string | object",
+          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "replace",
+          "label": "跳转替换历史",
+          "control": "boolean",
+          "group": "状态",
+          "help": "replace · boolean",
+          "description": "在跳转时替换当前页面历史",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "cell-group",
+      "name": "单元格组",
+      "docsPath": "form",
+      "properties": [
+        {
+          "key": "title",
+          "label": "左侧标题",
+          "control": "text",
+          "group": "属性",
+          "help": "title · number | string",
+          "description": "左侧标题",
+          "allowGradient": false
+        },
+        {
+          "key": "inset",
+          "label": "圆角卡片",
+          "control": "boolean",
+          "group": "状态",
+          "help": "inset · boolean",
+          "description": "展示为圆角卡片风格",
+          "allowGradient": false
+        },
+        {
+          "key": "grayCard",
+          "label": "灰色渐变卡片",
+          "control": "boolean",
+          "group": "状态",
+          "help": "gray-card · boolean",
+          "description": "展示为灰色渐变卡片包裹的白底单元格样式",
+          "allowGradient": true
+        },
+        {
+          "key": "border",
+          "label": "内边框",
+          "control": "boolean",
+          "group": "状态",
+          "help": "border · boolean",
+          "description": "显示内边框",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "card",
+      "name": "Card",
+      "docsPath": "card",
+      "properties": [
+        {
+          "key": "thumb",
+          "label": "左侧图片 URL",
+          "control": "text",
+          "group": "属性",
+          "help": "thumb · string",
+          "description": "左侧图片 URL",
+          "allowGradient": false
+        },
+        {
+          "key": "title",
+          "label": "标题",
+          "control": "text",
+          "group": "属性",
+          "help": "title · string",
+          "description": "标题",
+          "allowGradient": false
+        },
+        {
+          "key": "desc",
+          "label": "描述",
+          "control": "text",
+          "group": "属性",
+          "help": "desc · string",
+          "description": "描述",
+          "allowGradient": false
+        },
+        {
+          "key": "tag",
+          "label": "图片角标",
+          "control": "text",
+          "group": "属性",
+          "help": "tag · string",
+          "description": "图片角标",
+          "allowGradient": false
+        },
+        {
+          "key": "num",
+          "label": "商品数量",
+          "control": "text",
+          "group": "属性",
+          "help": "num · number | string",
+          "description": "商品数量",
+          "allowGradient": false
+        },
+        {
+          "key": "price",
+          "label": "商品价格",
+          "control": "text",
+          "group": "属性",
+          "help": "price · number | string",
+          "description": "商品价格",
+          "allowGradient": false
+        },
+        {
+          "key": "originPrice",
+          "label": "商品划线原价",
+          "control": "text",
+          "group": "属性",
+          "help": "origin-price · number | string",
+          "description": "商品划线原价",
+          "allowGradient": false
+        },
+        {
+          "key": "centered",
+          "label": "内容垂直居中",
+          "control": "boolean",
+          "group": "状态",
+          "help": "centered · boolean",
+          "description": "内容垂直居中",
+          "allowGradient": false
+        },
+        {
+          "key": "currency",
+          "label": "货币符号",
+          "control": "text",
+          "group": "属性",
+          "help": "currency · string",
+          "description": "货币符号",
+          "allowGradient": false
+        },
+        {
+          "key": "thumbLink",
+          "label": "点击左侧图片后跳转的链接地址",
+          "control": "text",
+          "group": "属性",
+          "help": "thumb-link · string",
+          "description": "点击左侧图片后跳转的链接地址",
+          "allowGradient": false
+        },
+        {
+          "key": "lazyLoad",
+          "label": "图片懒加载",
+          "control": "boolean",
+          "group": "状态",
+          "help": "lazy-load · boolean",
+          "description": "开启图片懒加载，须配合 Lazyload 组件使用",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "row",
+      "name": "行布局",
+      "docsPath": "col",
+      "properties": [
+        {
+          "key": "gutter",
+          "label": "列间距",
+          "control": "text",
+          "group": "属性",
+          "help": "gutter · number | string",
+          "description": "列元素之间的间距（单位为 px）",
+          "allowGradient": false
+        },
+        {
+          "key": "tag",
+          "label": "自定义元素标签",
+          "control": "text",
+          "group": "属性",
+          "help": "tag · string",
+          "description": "自定义元素标签",
+          "allowGradient": false
+        },
+        {
+          "key": "justify",
+          "label": "主轴对齐方式",
+          "control": "select",
+          "group": "属性",
+          "help": "justify · string",
+          "options": [
+            {
+              "label": "start",
+              "value": "start"
+            },
+            {
+              "label": "end",
+              "value": "end"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "space-around",
+              "value": "space-around"
+            },
+            {
+              "label": "space-between",
+              "value": "space-between"
+            }
+          ],
+          "description": "主轴对齐方式，可选值为 end center   space-around space-between",
+          "allowGradient": false
+        },
+        {
+          "key": "align",
+          "label": "交叉轴对齐方式",
+          "control": "select",
+          "group": "属性",
+          "help": "align · string",
+          "options": [
+            {
+              "label": "上方",
+              "value": "top"
+            },
+            {
+              "label": "居中",
+              "value": "center"
+            },
+            {
+              "label": "bottom",
+              "value": "bottom"
+            }
+          ],
+          "description": "交叉轴对齐方式，可选值为 center bottom",
+          "allowGradient": false
+        },
+        {
+          "key": "wrap",
+          "label": "自动换行",
+          "control": "boolean",
+          "group": "状态",
+          "help": "wrap · boolean",
+          "description": "自动换行",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "collapse-item",
+      "name": "折叠项",
+      "docsPath": "collapse",
+      "properties": [
+        {
+          "key": "name",
+          "label": "唯一标识符",
+          "control": "text",
+          "group": "属性",
+          "help": "name · number | string",
+          "description": "唯一标识符，默认为索引值",
+          "allowGradient": false
+        },
+        {
+          "key": "icon",
+          "label": "图标",
+          "control": "text",
+          "group": "属性",
+          "help": "icon · string",
+          "description": "标题栏左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "size",
+          "label": "标题栏大小",
+          "control": "text",
+          "group": "属性",
+          "help": "size · string",
+          "description": "标题栏大小，可选值为 large",
+          "allowGradient": false
+        },
+        {
+          "key": "title",
+          "label": "标题栏左侧内容",
+          "control": "text",
+          "group": "属性",
+          "help": "title · number | string",
+          "description": "标题栏左侧内容",
+          "allowGradient": false
+        },
+        {
+          "key": "value",
+          "label": "标题栏右侧内容",
+          "control": "text",
+          "group": "属性",
+          "help": "value · number | string",
+          "description": "标题栏右侧内容",
+          "allowGradient": false
+        },
+        {
+          "key": "label",
+          "label": "标题栏描述信息",
+          "control": "text",
+          "group": "属性",
+          "help": "label · number | string",
+          "description": "标题栏描述信息",
+          "allowGradient": false
+        },
+        {
+          "key": "border",
+          "label": "内边框",
+          "control": "boolean",
+          "group": "状态",
+          "help": "border · boolean",
+          "description": "显示内边框",
+          "allowGradient": false
+        },
+        {
+          "key": "disabled",
+          "label": "禁用",
+          "control": "boolean",
+          "group": "状态",
+          "help": "disabled · boolean",
+          "description": "禁用面板",
+          "allowGradient": false
+        },
+        {
+          "key": "readonly",
+          "label": "只读",
+          "control": "boolean",
+          "group": "状态",
+          "help": "readonly · boolean",
+          "description": "为只读状态，只读状态下无法操作面板",
+          "allowGradient": false
+        },
+        {
+          "key": "isLink",
+          "label": "跳转箭头",
+          "control": "boolean",
+          "group": "状态",
+          "help": "is-link · boolean",
+          "description": "展示标题栏右侧箭头并开启点击反馈",
+          "allowGradient": false
+        },
+        {
+          "key": "lazyRender",
+          "label": "延迟渲染",
+          "control": "boolean",
+          "group": "状态",
+          "help": "lazy-render · boolean",
+          "description": "在首次展开时才渲染面板内容",
+          "allowGradient": false
+        },
+        {
+          "key": "titleClass",
+          "label": "左侧标题额外类名",
+          "control": "text",
+          "group": "属性",
+          "help": "title-class · string",
+          "description": "左侧标题额外类名",
+          "allowGradient": false
+        },
+        {
+          "key": "valueClass",
+          "label": "右侧内容额外类名",
+          "control": "text",
+          "group": "属性",
+          "help": "value-class · string",
+          "description": "右侧内容额外类名",
+          "allowGradient": false
+        },
+        {
+          "key": "labelClass",
+          "label": "描述信息额外类名",
+          "control": "text",
+          "group": "属性",
+          "help": "label-class · string",
+          "description": "描述信息额外类名",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "contact-card",
+      "name": "ContactCard",
+      "docsPath": "contact-card",
+      "properties": [
+        {
+          "key": "type",
+          "label": "卡片类型",
+          "control": "select",
+          "group": "属性",
+          "help": "type · string",
+          "options": [
+            {
+              "label": "add",
+              "value": "add"
+            },
+            {
+              "label": "edit",
+              "value": "edit"
+            }
+          ],
+          "description": "卡片类型，可选值为 edit",
+          "allowGradient": false
+        },
+        {
+          "key": "name",
+          "label": "联系人姓名",
+          "control": "text",
+          "group": "属性",
+          "help": "name · string",
+          "description": "联系人姓名",
+          "allowGradient": false
+        },
+        {
+          "key": "tel",
+          "label": "联系人手机号",
+          "control": "text",
+          "group": "属性",
+          "help": "tel · string",
+          "description": "联系人手机号",
+          "allowGradient": false
+        },
+        {
+          "key": "addText",
+          "label": "添加时的文案提示",
+          "control": "text",
+          "group": "属性",
+          "help": "add-text · string",
+          "description": "添加时的文案提示",
+          "allowGradient": false
+        },
+        {
+          "key": "editable",
+          "label": "可以编辑联系人",
+          "control": "boolean",
+          "group": "状态",
+          "help": "editable · boolean",
+          "description": "可以编辑联系人",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "coupon-list",
+      "name": "CouponList",
+      "docsPath": "coupon-list",
+      "properties": [
+        {
+          "key": "chosenCoupon",
+          "label": "当前选中优惠券的索引",
+          "control": "number",
+          "group": "属性",
+          "help": "chosen-coupon · number",
+          "description": "当前选中优惠券的索引",
+          "allowGradient": false
+        },
+        {
+          "key": "coupons",
+          "label": "可用优惠券列表",
+          "control": "json",
+          "group": "数据",
+          "help": "coupons · Coupon[]",
+          "description": "可用优惠券列表",
+          "allowGradient": false
+        },
+        {
+          "key": "disabledCoupons",
+          "label": "不可用优惠券列表",
+          "control": "json",
+          "group": "数据",
+          "help": "disabled-coupons · Coupon[]",
+          "description": "不可用优惠券列表",
+          "allowGradient": false
+        },
+        {
+          "key": "enabledTitle",
+          "label": "可用优惠券列表标题",
+          "control": "text",
+          "group": "属性",
+          "help": "enabled-title · string",
+          "description": "可用优惠券列表标题",
+          "allowGradient": false
+        },
+        {
+          "key": "disabledTitle",
+          "label": "不可用优惠券列表标题",
+          "control": "text",
+          "group": "属性",
+          "help": "disabled-title · string",
+          "description": "不可用优惠券列表标题",
+          "allowGradient": false
+        },
+        {
+          "key": "exchangeButtonText",
+          "label": "兑换按钮文字",
+          "control": "text",
+          "group": "属性",
+          "help": "exchange-button-text · string",
+          "description": "兑换按钮文字",
+          "allowGradient": false
+        },
+        {
+          "key": "exchangeButtonLoading",
+          "label": "兑换按钮加载动画",
+          "control": "boolean",
+          "group": "状态",
+          "help": "exchange-button-loading · boolean",
+          "description": "显示兑换按钮加载动画",
+          "allowGradient": false
+        },
+        {
+          "key": "exchangeButtonDisabled",
+          "label": "禁用兑换按钮",
+          "control": "boolean",
+          "group": "状态",
+          "help": "exchange-button-disabled · boolean",
+          "description": "禁用兑换按钮",
+          "allowGradient": false
+        },
+        {
+          "key": "exchangeMinLength",
+          "label": "兑换码最小长度",
+          "control": "number",
+          "group": "属性",
+          "help": "exchange-min-length · number",
+          "description": "兑换码最小长度",
+          "allowGradient": false
+        },
+        {
+          "key": "displayedCouponIndex",
+          "label": "滚动至特定优惠券位置",
+          "control": "number",
+          "group": "属性",
+          "help": "displayed-coupon-index · number",
+          "description": "滚动至特定优惠券位置",
+          "allowGradient": false
+        },
+        {
+          "key": "closeButtonText",
+          "label": "列表底部按钮文字",
+          "control": "text",
+          "group": "属性",
+          "help": "close-button-text · string",
+          "description": "列表底部按钮文字",
+          "allowGradient": false
+        },
+        {
+          "key": "inputPlaceholder",
+          "label": "输入框文字提示",
+          "control": "text",
+          "group": "属性",
+          "help": "input-placeholder · string",
+          "description": "输入框文字提示",
+          "allowGradient": false
+        },
+        {
+          "key": "currency",
+          "label": "货币符号",
+          "control": "text",
+          "group": "属性",
+          "help": "currency · string",
+          "description": "货币符号",
+          "allowGradient": false
+        },
+        {
+          "key": "emptyImage",
+          "label": "列表为空时的占位图",
+          "control": "text",
+          "group": "属性",
+          "help": "empty-image · string",
+          "description": "列表为空时的占位图",
+          "allowGradient": false
+        },
+        {
+          "key": "showCount",
+          "label": "可用 / 不可用数量",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-count · boolean",
+          "description": "展示可用 / 不可用数量",
+          "allowGradient": false
+        },
+        {
+          "key": "code",
+          "label": "当前输入的兑换码",
+          "control": "text",
+          "group": "属性",
+          "help": "v-model:code · string",
+          "description": "当前输入的兑换码",
+          "allowGradient": false
+        },
+        {
+          "key": "showCloseButton",
+          "label": "列表底部按钮",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-close-button · boolean",
+          "description": "显示列表底部按钮",
+          "allowGradient": false
+        },
+        {
+          "key": "showExchangeBar",
+          "label": "兑换栏",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-exchange-bar · boolean",
+          "description": "展示兑换栏",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "dropdown-item",
+      "name": "下拉菜单项",
+      "docsPath": "dropdown-menu",
+      "properties": [
+        {
+          "key": "modelValue",
+          "label": "当前值",
+          "control": "text",
+          "group": "属性",
+          "help": "v-model · number | string",
+          "description": "当前选中项对应的 value",
+          "allowGradient": false
+        },
+        {
+          "key": "title",
+          "label": "菜单项标题",
+          "control": "text",
+          "group": "属性",
+          "help": "title · string",
+          "description": "菜单项标题",
+          "allowGradient": false
+        },
+        {
+          "key": "options",
+          "label": "选项数组",
+          "control": "json",
+          "group": "数据",
+          "help": "options · Option[]",
+          "description": "选项数组",
+          "allowGradient": false
+        },
+        {
+          "key": "disabled",
+          "label": "禁用",
+          "control": "boolean",
+          "group": "状态",
+          "help": "disabled · boolean",
+          "description": "禁用菜单",
+          "allowGradient": false
+        },
+        {
+          "key": "lazyRender",
+          "label": "延迟渲染",
+          "control": "boolean",
+          "group": "状态",
+          "help": "lazy-render · boolean",
+          "description": "在首次展开时才渲染菜单内容",
+          "allowGradient": false
+        },
+        {
+          "key": "titleClass",
+          "label": "标题额外类名",
+          "control": "json",
+          "group": "数据",
+          "help": "title-class · string | Array | object",
+          "description": "标题额外类名",
+          "allowGradient": false
+        },
+        {
+          "key": "teleport",
+          "label": "指定挂载的节点",
+          "control": "text",
+          "group": "属性",
+          "help": "teleport · string | Element",
+          "description": "指定挂载的节点，等同于 Teleport 组件的 to 属性",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "grid-item",
+      "name": "宫格项",
+      "docsPath": "grid",
+      "properties": [
+        {
+          "key": "text",
+          "label": "文字",
+          "control": "text",
+          "group": "属性",
+          "help": "text · string",
+          "description": "文字",
+          "allowGradient": false
+        },
+        {
+          "key": "icon",
+          "label": "图标",
+          "control": "text",
+          "group": "属性",
+          "help": "icon · string",
+          "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "iconPrefix",
+          "label": "图标类名前缀",
+          "control": "text",
+          "group": "属性",
+          "help": "icon-prefix · string",
+          "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "iconColor",
+          "label": "图标颜色",
+          "control": "text",
+          "group": "属性",
+          "help": "icon-color · string",
+          "description": "图标颜色，等同于 Icon 组件的 color 属性",
+          "tokenKind": "color",
+          "allowGradient": false
+        },
+        {
+          "key": "dot",
+          "label": "小红点",
+          "control": "boolean",
+          "group": "状态",
+          "help": "dot · boolean",
+          "description": "显示图标右上角小红点",
+          "allowGradient": false
+        },
+        {
+          "key": "badge",
+          "label": "图标右上角徽标的内容",
+          "control": "text",
+          "group": "属性",
+          "help": "badge · number | string",
+          "description": "图标右上角徽标的内容",
+          "allowGradient": false
+        },
+        {
+          "key": "badgeProps",
+          "label": "自定义徽标的属性",
+          "control": "json",
+          "group": "数据",
+          "help": "badge-props · BadgeProps",
+          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+          "allowGradient": false
+        },
+        {
+          "key": "url",
+          "label": "点击后跳转的链接地址",
+          "control": "text",
+          "group": "属性",
+          "help": "url · string",
+          "description": "点击后跳转的链接地址",
+          "allowGradient": false
+        },
+        {
+          "key": "to",
+          "label": "点击后跳转的目标路由对象",
+          "control": "json",
+          "group": "数据",
+          "help": "to · string | object",
+          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "replace",
+          "label": "跳转替换历史",
+          "control": "boolean",
+          "group": "状态",
+          "help": "replace · boolean",
+          "description": "在跳转时替换当前页面历史",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "index-anchor",
+      "name": "索引锚点",
+      "docsPath": "index-bar",
+      "properties": [
+        {
+          "key": "index",
+          "label": "索引字符",
+          "control": "text",
+          "group": "属性",
+          "help": "index · number | string",
+          "description": "索引字符",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "swipe-item",
+      "name": "轮播项",
+      "docsPath": "swipe",
+      "properties": [],
+      "previewMode": "live"
+    },
+    {
+      "type": "qr-scanner",
+      "name": "二维码扫描",
+      "docsPath": "qr-scanner",
+      "properties": [
+        {
+          "key": "show",
+          "label": "（仅组件）",
+          "control": "boolean",
+          "group": "状态",
+          "help": "v-model:show · boolean",
+          "description": "展示（仅组件）",
+          "allowGradient": false
+        },
+        {
+          "key": "title",
+          "label": "标题",
+          "control": "text",
+          "group": "属性",
+          "help": "title · string",
+          "description": "标题",
+          "allowGradient": false
+        },
+        {
+          "key": "tip",
+          "label": "取景提示",
+          "control": "text",
+          "group": "属性",
+          "help": "tip · string",
+          "description": "取景提示",
+          "allowGradient": false
+        },
+        {
+          "key": "processingText",
+          "label": "识别/业务处理中的提示",
+          "control": "text",
+          "group": "属性",
+          "help": "processing-text · string",
+          "description": "识别/业务处理中的提示",
+          "allowGradient": false
+        },
+        {
+          "key": "startupTimeout",
+          "label": "H5 启动总超时",
+          "control": "text",
+          "group": "属性",
+          "help": "startup-timeout · number | string",
+          "description": "H5 启动总超时，ms；0 关闭，仅本轮启动时读取",
+          "allowGradient": false
+        },
+        {
+          "key": "startupTexts",
+          "label": "局部覆盖 camera / preview / decoder 阶段提示",
+          "control": "text",
+          "group": "属性",
+          "help": "startup-texts · QrScannerStartupTexts",
+          "description": "局部覆盖 camera / preview / decoder 阶段提示",
+          "allowGradient": false
+        },
+        {
+          "key": "formats",
+          "label": "识别格式",
+          "control": "json",
+          "group": "数据",
+          "help": "formats · QrScannerFormat[]",
+          "description": "识别格式，可按需开启条形码",
+          "allowGradient": false
+        },
+        {
+          "key": "facingMode",
+          "label": "首选摄像头",
+          "control": "text",
+          "group": "属性",
+          "help": "facing-mode · string",
+          "description": "首选摄像头，environment / user",
+          "allowGradient": false
+        },
+        {
+          "key": "showAlbum",
+          "label": "相册识别入口",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-album · boolean",
+          "description": "展示相册识别入口",
+          "allowGradient": false
+        },
+        {
+          "key": "showTorch",
+          "label": "常驻手电筒入口",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-torch · boolean",
+          "description": "展示常驻手电筒入口；不可用时置灰并提示原因",
+          "allowGradient": false
+        },
+        {
+          "key": "showSwitchCamera",
+          "label": "多摄像头时展示切换入口",
+          "control": "boolean",
+          "group": "状态",
+          "help": "show-switch-camera · boolean",
+          "description": "多摄像头时展示切换入口",
+          "allowGradient": false
+        },
+        {
+          "key": "closeAfterScan",
+          "label": "成功后关闭",
+          "control": "boolean",
+          "group": "状态",
+          "help": "close-after-scan · boolean",
+          "description": "成功后关闭，关闭此项可连续扫描",
+          "allowGradient": false
+        },
+        {
+          "key": "scanInterval",
+          "label": "识别帧之间的最小间隔",
+          "control": "text",
+          "group": "属性",
+          "help": "scan-interval · number | string",
+          "description": "识别帧之间的最小间隔，ms，最低 100",
+          "allowGradient": false
+        },
+        {
+          "key": "duplicateInterval",
+          "label": "摄像头相同结果的重复抑制时间",
+          "control": "text",
+          "group": "属性",
+          "help": "duplicate-interval · number | string",
+          "description": "摄像头相同结果的重复抑制时间，ms",
+          "allowGradient": false
+        },
+        {
+          "key": "maxImageSize",
+          "label": "相册图片大小上限",
+          "control": "text",
+          "group": "属性",
+          "help": "max-image-size · number | string",
+          "description": "相册图片大小上限，字节",
+          "tokenKind": "dimension",
+          "allowGradient": false
+        },
+        {
+          "key": "paused",
+          "label": "暂停扫描并释放摄像头",
+          "control": "boolean",
+          "group": "状态",
+          "help": "paused · boolean",
+          "description": "暂停扫描并释放摄像头",
+          "allowGradient": false
+        },
+        {
+          "key": "beforeConfirm",
+          "label": "异步业务校验",
+          "control": "text",
+          "group": "属性",
+          "help": "before-confirm · QrScannerBeforeConfirm",
+          "description": "异步业务校验",
+          "allowGradient": false
+        },
+        {
+          "key": "nativeScan",
+          "label": "宿主原生扫码适配器",
+          "control": "text",
+          "group": "属性",
+          "help": "native-scan · QrScannerNativeScan",
+          "description": "宿主原生扫码适配器",
+          "allowGradient": false
+        },
+        {
+          "key": "wasmUrl",
+          "label": "自托管 reader WASM URL",
+          "control": "text",
+          "group": "属性",
+          "help": "wasm-url · string",
+          "description": "自托管 reader WASM URL，须与依赖版本一致",
+          "allowGradient": false
+        },
+        {
+          "key": "teleport",
+          "label": "挂载节点",
+          "control": "text",
+          "group": "属性",
+          "help": "teleport · string | Element",
+          "description": "挂载节点",
+          "allowGradient": false
+        },
+        {
+          "key": "zIndex",
+          "label": "层级",
+          "control": "text",
+          "group": "属性",
+          "help": "z-index · number | string",
+          "description": "层级",
+          "allowGradient": false
+        },
+        {
+          "key": "closeOnPopstate",
+          "label": "页面回退时关闭",
+          "control": "boolean",
+          "group": "状态",
+          "help": "close-on-popstate · boolean",
+          "description": "路由回退时关闭",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "sidebar-item",
+      "name": "侧边导航项",
+      "docsPath": "sidebar",
+      "properties": [
+        {
+          "key": "title",
+          "label": "内容",
+          "control": "text",
+          "group": "属性",
+          "help": "title · string",
+          "description": "内容",
+          "allowGradient": false
+        },
+        {
+          "key": "dot",
+          "label": "小红点",
+          "control": "boolean",
+          "group": "状态",
+          "help": "dot · boolean",
+          "description": "显示右上角小红点",
+          "allowGradient": false
+        },
+        {
+          "key": "badge",
+          "label": "图标右上角徽标的内容",
+          "control": "text",
+          "group": "属性",
+          "help": "badge · number | string",
+          "description": "图标右上角徽标的内容",
+          "allowGradient": false
+        },
+        {
+          "key": "badgeProps",
+          "label": "自定义徽标的属性",
+          "control": "json",
+          "group": "数据",
+          "help": "badge-props · BadgeProps",
+          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+          "allowGradient": false
+        },
+        {
+          "key": "disabled",
+          "label": "禁用",
+          "control": "boolean",
+          "group": "状态",
+          "help": "disabled · boolean",
+          "description": "禁用该项",
+          "allowGradient": false
+        },
+        {
+          "key": "url",
+          "label": "点击后跳转的链接地址",
+          "control": "text",
+          "group": "属性",
+          "help": "url · string",
+          "description": "点击后跳转的链接地址",
+          "allowGradient": false
+        },
+        {
+          "key": "to",
+          "label": "点击后跳转的目标路由对象",
+          "control": "json",
+          "group": "数据",
+          "help": "to · string | object",
+          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "replace",
+          "label": "跳转替换历史",
+          "control": "boolean",
+          "group": "状态",
+          "help": "replace · boolean",
+          "description": "在跳转时替换当前页面历史",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "step",
+      "name": "步骤项",
+      "docsPath": "steps",
+      "properties": [],
+      "previewMode": "live"
+    },
+    {
+      "type": "tabs",
+      "name": "标签页",
+      "docsPath": "tab",
+      "properties": [
+        {
+          "key": "active",
+          "label": "绑定当前选中标签的标识符",
+          "control": "text",
+          "group": "属性",
+          "help": "v-model:active · number | string",
+          "description": "绑定当前选中标签的标识符",
+          "allowGradient": false
+        },
+        {
+          "key": "type",
+          "label": "样式风格类型",
+          "control": "select",
+          "group": "属性",
+          "help": "type · string",
+          "options": [
+            {
+              "label": "line",
+              "value": "line"
+            },
+            {
+              "label": "card",
+              "value": "card"
+            },
+            {
+              "label": "card-gray",
+              "value": "card-gray"
+            },
+            {
+              "label": "filter",
+              "value": "filter"
+            }
+          ],
+          "description": "样式风格类型，可选值为 card（风格 1）、card-gray（风格 2）、filter（风格 3）",
+          "allowGradient": false
+        },
+        {
+          "key": "color",
+          "label": "标签主题色",
+          "control": "text",
+          "group": "属性",
+          "help": "color · string",
+          "description": "标签主题色",
+          "tokenKind": "color",
+          "allowGradient": false
+        },
+        {
+          "key": "background",
+          "label": "标签栏背景色",
+          "control": "text",
+          "group": "属性",
+          "help": "background · string",
+          "description": "标签栏背景色",
+          "tokenKind": "color",
+          "allowGradient": false
+        },
+        {
+          "key": "duration",
+          "label": "动画时间",
+          "control": "text",
+          "group": "属性",
+          "help": "duration · number | string",
+          "description": "动画时间，单位秒，设置为 0 可以禁用动画",
+          "allowGradient": false
+        },
+        {
+          "key": "lineWidth",
+          "label": "底部条宽度",
+          "control": "text",
+          "group": "属性",
+          "help": "line-width · number | string",
+          "description": "底部条宽度，默认单位 px",
+          "tokenKind": "dimension",
+          "allowGradient": false
+        },
+        {
+          "key": "lineHeight",
+          "label": "底部条高度",
+          "control": "text",
+          "group": "属性",
+          "help": "line-height · number | string",
+          "description": "底部条高度，默认单位 px",
+          "tokenKind": "dimension",
+          "allowGradient": false
+        },
+        {
+          "key": "animated",
+          "label": "切换动画",
+          "control": "boolean",
+          "group": "状态",
+          "help": "animated · boolean",
+          "description": "开启切换标签内容时的转场动画",
+          "allowGradient": false
+        },
+        {
+          "key": "border",
+          "label": "标签栏外边框",
+          "control": "boolean",
+          "group": "状态",
+          "help": "border · boolean",
+          "description": "显示标签栏外边框，仅在 type=\"line\" 时有效",
+          "allowGradient": false
+        },
+        {
+          "key": "ellipsis",
+          "label": "超长文本省略",
+          "control": "boolean",
+          "group": "状态",
+          "help": "ellipsis · boolean",
+          "description": "省略过长的标题文字",
+          "allowGradient": false
+        },
+        {
+          "key": "sticky",
+          "label": "粘性布局",
+          "control": "boolean",
+          "group": "状态",
+          "help": "sticky · boolean",
+          "description": "使用粘性布局",
+          "allowGradient": false
+        },
+        {
+          "key": "shrink",
+          "label": "左侧收缩布局",
+          "control": "boolean",
+          "group": "状态",
+          "help": "shrink · boolean",
+          "description": "开启左侧收缩布局",
+          "allowGradient": false
+        },
+        {
+          "key": "swipeable",
+          "label": "滑动切换",
+          "control": "boolean",
+          "group": "状态",
+          "help": "swipeable · boolean",
+          "description": "开启手势左右滑动切换",
+          "allowGradient": false
+        },
+        {
+          "key": "lazyRender",
+          "label": "延迟渲染",
+          "control": "boolean",
+          "group": "状态",
+          "help": "lazy-render · boolean",
+          "description": "开启延迟渲染（首次切换到标签时才触发内容渲染）",
+          "allowGradient": false
+        },
+        {
+          "key": "scrollspy",
+          "label": "滚动导航",
+          "control": "boolean",
+          "group": "状态",
+          "help": "scrollspy · boolean",
+          "description": "开启滚动导航",
+          "allowGradient": false
+        },
+        {
+          "key": "offsetTop",
+          "label": "粘性布局下吸顶时与顶部的距离",
+          "control": "text",
+          "group": "属性",
+          "help": "offset-top · number | string",
+          "description": "粘性布局下吸顶时与顶部的距离，支持 px vw vh rem 单位，默认 px",
+          "allowGradient": false
+        },
+        {
+          "key": "swipeThreshold",
+          "label": "滚动阈值",
+          "control": "text",
+          "group": "属性",
+          "help": "swipe-threshold · number | string",
+          "description": "滚动阈值，标签数量超过阈值且总宽度超过标签栏宽度时开始横向滚动",
+          "allowGradient": false
+        },
+        {
+          "key": "titleActiveColor",
+          "label": "标题选中态颜色",
+          "control": "text",
+          "group": "属性",
+          "help": "title-active-color · string",
+          "description": "标题选中态颜色",
+          "tokenKind": "color",
+          "allowGradient": false
+        },
+        {
+          "key": "titleInactiveColor",
+          "label": "标题默认态颜色",
+          "control": "text",
+          "group": "属性",
+          "help": "title-inactive-color · string",
+          "description": "标题默认态颜色",
+          "tokenKind": "color",
+          "allowGradient": false
+        },
+        {
+          "key": "more",
+          "label": "右侧更多按钮",
+          "control": "boolean",
+          "group": "状态",
+          "help": "more · boolean",
+          "description": "显示右侧更多按钮",
+          "allowGradient": false
+        },
+        {
+          "key": "showMore",
+          "label": "更多动作面板",
+          "control": "boolean",
+          "group": "状态",
+          "help": "v-model:show-more · boolean",
+          "description": "展示更多动作面板",
+          "allowGradient": false
+        },
+        {
+          "key": "moreTitle",
+          "label": "更多动作面板标题",
+          "control": "text",
+          "group": "属性",
+          "help": "more-title · string",
+          "description": "更多动作面板标题",
+          "allowGradient": false
+        },
+        {
+          "key": "moreOptions",
+          "label": "自定义更多动作面板选项",
+          "control": "json",
+          "group": "数据",
+          "help": "more-options · ActionSheetAction[]",
+          "description": "自定义更多动作面板选项，默认为全部标签",
+          "allowGradient": false
+        },
+        {
+          "key": "beforeChange",
+          "label": "切换标签前的回调函数",
+          "control": "text",
+          "group": "状态",
+          "help": "before-change · (name: number | string) => boolean | Promise\\",
+          "description": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
+    },
+    {
+      "type": "tabbar-item",
+      "name": "菜单栏项",
+      "docsPath": "tabbar",
+      "properties": [
+        {
+          "key": "name",
+          "label": "标签名称",
+          "control": "text",
+          "group": "属性",
+          "help": "name · number | string",
+          "description": "标签名称，作为匹配的标识符",
+          "allowGradient": false
+        },
+        {
+          "key": "icon",
+          "label": "图标",
+          "control": "text",
+          "group": "属性",
+          "help": "icon · string",
+          "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "iconPrefix",
+          "label": "图标类名前缀",
+          "control": "text",
+          "group": "属性",
+          "help": "icon-prefix · string",
+          "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "dot",
+          "label": "小红点",
+          "control": "boolean",
+          "group": "状态",
+          "help": "dot · boolean",
+          "description": "显示图标右上角小红点",
+          "allowGradient": false
+        },
+        {
+          "key": "badge",
+          "label": "图标右上角徽标的内容",
+          "control": "text",
+          "group": "属性",
+          "help": "badge · number | string",
+          "description": "图标右上角徽标的内容",
+          "allowGradient": false
+        },
+        {
+          "key": "badgeProps",
+          "label": "自定义徽标的属性",
+          "control": "json",
+          "group": "数据",
+          "help": "badge-props · BadgeProps",
+          "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+          "allowGradient": false
+        },
+        {
+          "key": "url",
+          "label": "点击后跳转的链接地址",
+          "control": "text",
+          "group": "属性",
+          "help": "url · string",
+          "description": "点击后跳转的链接地址",
+          "allowGradient": false
+        },
+        {
+          "key": "to",
+          "label": "点击后跳转的目标路由对象",
+          "control": "json",
+          "group": "数据",
+          "help": "to · string | object",
+          "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+          "allowGradient": false
+        },
+        {
+          "key": "replace",
+          "label": "跳转替换历史",
+          "control": "boolean",
+          "group": "状态",
+          "help": "replace · boolean",
+          "description": "在跳转时替换当前页面历史",
+          "allowGradient": false
+        }
+      ],
+      "previewMode": "live"
     }
   ]
 }

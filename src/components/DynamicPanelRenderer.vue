@@ -23,6 +23,7 @@ const panelProps = computed(() => ({
   ...props.node.props,
   teleport: null,
   ...(props.node.type === 'calendar' ? { poppable: true } : {}),
+  ...(props.editing && props.node.type === 'qr-scanner' ? { paused: true } : {}),
   ...(props.editing ? { closeOnClickOverlay: false, closeOnClickOutside: false, hideOnClickOutside: false, closeOnClickAction: false, ...(props.node.type === 'toast' ? { duration: 0 } : {}) } : {}),
 }));
 function close() { emit('update:show', false); }

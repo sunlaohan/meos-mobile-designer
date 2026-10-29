@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n, componentName } from '../utils/i18n';
+const { t } = useI18n();
 import {
   BlueMarkHeader,
   Background,
@@ -33,6 +35,7 @@ import { getDefinition } from '../data/componentCatalog';
 import type { CanvasNode } from '../types';
 import { isCanvasPanel } from '../utils/canvasPresentation';
 import { getBackgroundProps, getBackgroundStyle } from '../utils/nodeTree';
+import { initialComponentStateKey } from '../utils/componentStyles';
 
 const props = withDefaults(
   defineProps<{
@@ -40,14 +43,19 @@ const props = withDefaults(
     thumbnail?: boolean;
     interactive?: boolean;
     docked?: boolean;
+    followed?: boolean;
+    stylePreview?: boolean;
+    nativeSlot?: boolean;
   }>(),
   { thumbnail: false, interactive: false },
 );
 
 const emit = defineEmits<{
   (event: 'patch', value: Record<string, unknown>): void;
+  (event: 'patch-child', id: string, value: Record<string, unknown>): void;
   (event: 'action', message: string): void;
   (event: 'trigger', name: string, message: string): void;
+  (event: 'trigger-child', id: string, name: string, message: string): void;
 }>();
 
 const definition = computed(() => getDefinition(props.node.type));
@@ -69,6 +77,7 @@ function trigger(name: string, message: string) {
 
 <template>
   <div
+    :key="initialComponentStateKey(node)"
     class="renderer"
     :class="{
       'renderer--padded': ['button', 'tag', 'switch', 'stepper', 'progress', 'loading'].includes(node.type),
@@ -76,20 +85,23 @@ function trigger(name: string, message: string) {
       'renderer--interactive': interactive,
       'renderer--selection': ['tree-select', 'quantity-input'].includes(node.type),
       'renderer--contained': node.type === 'quantity-input',
+      'renderer--followed': followed,
+      'renderer--panel-preview': stylePreview && isCanvasPanel(node),
+      'renderer--native-slot': nativeSlot,
     }"
   >
-    <NavBar v-if="node.type === 'nav-bar'" v-bind="{ ...node.props, ...((docked || thumbnail) ? { fixed: false, placeholder: false, safeAreaInsetTop: false } : {}) }" @click-left="trigger('click-left', '点击了返回')" @click-right="trigger('click-right', '点击了右侧操作')" />
+    <NavBar v-if="node.type === 'nav-bar'" v-bind="{ ...node.props, ...((docked || thumbnail) ? { fixed: false, placeholder: false, safeAreaInsetTop: false } : {}) }" @click-left="trigger('click-left', t('点击了返回'))" @click-right="trigger('click-right', t('点击了右侧操作'))" />
     <BlueMarkHeader v-else-if="node.type === 'blue-mark-header'" v-bind="node.props" />
     <TitleBar v-else-if="node.type === 'title-bar'" v-bind="node.props" />
     <Search
       v-else-if="node.type === 'search'"
       v-bind="node.props"
       @update:model-value="patch('modelValue', $event)"
-      @search="action(`搜索：${$event}`)"
+      @search="action(t('搜索：{0}', [$event]))"
     />
-    <Cell v-else-if="node.type === 'cell'" v-bind="node.props" @click="trigger('click', `打开：${node.props.title || '单元格'}`)" />
-    <Field v-else-if="node.type === 'field'" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @click="trigger('click', '点击了输入框')" />
-    <Button v-else-if="node.type === 'button'" v-bind="node.props" @click="trigger('click', node.props.text || '按钮操作')" />
+    <Cell v-else-if="node.type === 'cell'" v-bind="node.props" @click="trigger('click', t('打开：{0}', [node.props.title || '单元格']))" />
+    <Field v-else-if="node.type === 'field'" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @click="trigger('click', t('点击了输入框'))" />
+    <Button v-else-if="node.type === 'button'" v-bind="node.props" @click="trigger('click', node.props.text || t('按钮操作'))" />
     <Tag v-else-if="node.type === 'tag'" v-bind="node.props">{{ node.content }}</Tag>
     <Switch v-else-if="node.type === 'switch'" v-bind="node.props" @update:model-value="patch('modelValue', $event)" />
     <Stepper v-else-if="node.type === 'stepper'" v-bind="node.props" @update:model-value="patch('modelValue', $event)" />
@@ -107,23 +119,23 @@ function trigger(name: string, message: string) {
       v-else-if="node.type === 'work-order-card'"
       v-bind="node.props"
       @update:expanded="patch('expanded', $event)"
-      @click-action="trigger('click-action', '执行工单操作')"
+      @click-action="trigger('click-action', t('执行工单操作'))"
     />
     <BottomActionBar
       v-else-if="node.type === 'bottom-action-bar'"
       v-bind="{ ...node.props, ...((docked || thumbnail) ? { fixed: false, placeholder: false } : {}) }"
-      @confirm="trigger('confirm', node.props.confirmText || '确认')"
-      @secondary="trigger('secondary', node.props.secondaryText || '次要操作')"
-      @icon="trigger('icon', '图标操作')"
-      @more="trigger('more', '更多操作')"
+      @confirm="trigger('confirm', node.props.confirmText || t('确认'))"
+      @secondary="trigger('secondary', node.props.secondaryText || t('次要操作'))"
+      @icon="trigger('icon', t('图标操作'))"
+      @more="trigger('more', t('更多操作'))"
     />
     <Empty v-else-if="node.type === 'empty'" v-bind="node.props" />
     <Loading v-else-if="node.type === 'loading'" v-bind="node.props">{{ node.content }}</Loading>
-    <Background v-else-if="node.type === 'background'" v-bind="getBackgroundProps(node)" :style="getBackgroundStyle(node)"><slot>{{ node.content }}</slot></Background>
-    <Form v-else-if="node.type === 'form' && node.children" v-bind="node.props"><slot /></Form>
-    <List v-else-if="node.type === 'list' && node.children" v-bind="node.props"><slot /></List>
-    <PullRefresh v-else-if="node.type === 'pull-refresh' && node.children" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @refresh="patch('modelValue', false); action('本地示例数据，刷新接口待接入')"><slot /></PullRefresh>
-    <Uploader v-else-if="node.type === 'uploader'" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @oversize="action('文件超出大小限制')" />
+    <Background v-else-if="node.type === 'background'" v-bind="getBackgroundProps(node)" :style="getBackgroundStyle(node)"><slot><ComponentRenderer v-for="child in node.children" :key="child.id" :node="child" :thumbnail="thumbnail" :interactive="interactive" :style-preview="stylePreview" @patch="emit('patch-child', child.id, $event)" @patch-child="(id, value) => emit('patch-child', id, value)" @trigger="(name, message) => emit('trigger-child', child.id, name, message)" @trigger-child="(id, name, message) => emit('trigger-child', id, name, message)" @action="action" /><template v-if="!node.children?.length">{{ node.content }}</template></slot></Background>
+    <Form v-else-if="node.type === 'form' && node.children" v-bind="node.props"><slot><ComponentRenderer v-for="child in node.children" :key="child.id" :node="child" :thumbnail="thumbnail" :interactive="interactive" :style-preview="stylePreview" @patch="emit('patch-child', child.id, $event)" @patch-child="(id, value) => emit('patch-child', id, value)" @trigger="(name, message) => emit('trigger-child', child.id, name, message)" @trigger-child="(id, name, message) => emit('trigger-child', id, name, message)" @action="action" /></slot></Form>
+    <List v-else-if="node.type === 'list' && node.children" v-bind="node.props"><slot><ComponentRenderer v-for="child in node.children" :key="child.id" :node="child" :thumbnail="thumbnail" :interactive="interactive" :style-preview="stylePreview" @patch="emit('patch-child', child.id, $event)" @patch-child="(id, value) => emit('patch-child', id, value)" @trigger="(name, message) => emit('trigger-child', child.id, name, message)" @trigger-child="(id, name, message) => emit('trigger-child', id, name, message)" @action="action" /></slot></List>
+    <PullRefresh v-else-if="node.type === 'pull-refresh' && node.children" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @refresh="patch('modelValue', false); action(t('本地示例数据，刷新接口待接入'))"><slot><ComponentRenderer v-for="child in node.children" :key="child.id" :node="child" :thumbnail="thumbnail" :interactive="interactive" :style-preview="stylePreview" @patch="emit('patch-child', child.id, $event)" @patch-child="(id, value) => emit('patch-child', id, value)" @trigger="(name, message) => emit('trigger-child', child.id, name, message)" @trigger-child="(id, name, message) => emit('trigger-child', id, name, message)" @action="action" /></slot></PullRefresh>
+    <Uploader v-else-if="node.type === 'uploader'" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @oversize="action(t('文件超出大小限制'))" />
     <TreeSelect
       v-else-if="node.type === 'tree-select'"
       v-bind="node.props"
@@ -135,20 +147,21 @@ function trigger(name: string, message: string) {
       v-bind="node.props"
       @update:model-value="patch('modelValue', $event)"
       @update:expanded="patch('expanded', $event)"
-      @confirm="action(`已选择 ${$event.filter(Boolean).length} 项`)"
+      @confirm="action(t('已选择 {0} 项', [$event.filter(Boolean).length]))"
     />
     <template v-else-if="isCanvasPanel(node)">
-      <DynamicPanelRenderer v-if="interactive" :node="node" :show="!!node.props.show" @update:show="patch('show', $event)" @patch="emit('patch', $event)" @action="action"><template v-if="$slots.default" #default><slot /></template></DynamicPanelRenderer>
-      <div v-else class="configured-component"><span class="configured-icon">P</span><span class="configured-copy"><strong>{{ node.props.title || definition.name }}</strong><small>弹出面板 · 在图层中选择预览</small></span></div>
+      <DynamicPanelRenderer v-if="interactive || stylePreview" :node="stylePreview ? { ...node, props: { ...node.props, overlay: false, duration: 0, lazyRender: false } } : node" :show="stylePreview || !!node.props.show" :editing="stylePreview" @update:show="patch('show', $event)" @patch="emit('patch', $event)" @action="action"><template v-if="$slots.default || node.children?.length" #default><slot><ComponentRenderer v-for="child in node.children" :key="child.id" :node="child" :thumbnail="thumbnail" :interactive="interactive" :style-preview="stylePreview" @patch="emit('patch-child', child.id, $event)" @patch-child="(id, value) => emit('patch-child', id, value)" @trigger="(name, message) => emit('trigger-child', child.id, name, message)" @trigger-child="(id, name, message) => emit('trigger-child', id, name, message)" @action="action" /></slot></template></DynamicPanelRenderer>
+      <div v-else class="configured-component"><span class="configured-icon">P</span><span class="configured-copy"><strong>{{ node.props.title || componentName(definition) }}</strong><small>{{ t("弹出面板 · 在图层中选择预览") }}</small></span></div>
     </template>
-    <component v-else-if="definition.previewMode === 'live'" :is="dynamicComponent" v-bind="node.props">
-      <template v-if="node.content !== undefined" #default>{{ node.content }}</template>
+    <component v-else-if="definition.previewMode === 'live' || stylePreview" :is="dynamicComponent" v-bind="node.props" @update:model-value="patch('modelValue', $event)" @update:active="patch('active', $event)" @update:current-rate="patch('currentRate', $event)" @update:show-more="patch('showMore', $event)">
+      <template v-if="$slots.default || node.children?.length" #default><slot><ComponentRenderer v-for="child in node.children" :key="child.id" :node="child" :thumbnail="thumbnail" :interactive="interactive" :style-preview="stylePreview" native-slot @patch="emit('patch-child', child.id, $event)" @patch-child="(id, value) => emit('patch-child', id, value)" @trigger="(name, message) => emit('trigger-child', child.id, name, message)" @trigger-child="(id, name, message) => emit('trigger-child', id, name, message)" @action="action" /></slot></template>
+      <template v-else-if="node.content !== undefined" #default>{{ node.content }}</template>
     </component>
     <div v-else class="configured-component">
       <span class="configured-icon">{{ definition.englishName.slice(0, 1) }}</span>
       <span class="configured-copy">
-        <strong>{{ definition.name }}</strong>
-        <small>{{ definition.englishName }} · 需要业务数据/插槽</small>
+        <strong>{{ componentName(definition) }}</strong>
+        <small>{{ definition.englishName }} {{ t("· 需要业务数据/插槽") }}</small>
       </span>
       <span class="configured-count">{{ definition.properties.length }} Props</span>
     </div>
@@ -160,6 +173,7 @@ function trigger(name: string, message: string) {
   width: 100%;
   min-width: 0;
 }
+.renderer--native-slot { display: contents; }
 
 /* Contain the component's fixed action panel and overlay in its own canvas block. */
 .renderer--contained {
@@ -183,6 +197,15 @@ function trigger(name: string, message: string) {
 
 .renderer--thumbnail.renderer--padded {
   padding: 8px;
+}
+
+.renderer--panel-preview { position: relative; height: 160px; overflow: hidden; --phone-viewport-height: 160px; --phone-screen-height: 256px; }
+.renderer--panel-preview :deep(.van-popup) { position: absolute; inset: 0; width: 100%; max-width: 100%; max-height: 100%; transform: none; }
+.renderer--panel-preview :deep(.dynamic-panel-renderer--anchored) { left: 40px !important; top: 20px !important; }
+
+/* Canvas selection wrappers otherwise make every native Cell a last child. */
+.renderer--followed > :deep(.van-cell:not(.van-cell--borderless)::after) {
+  display: block;
 }
 
 .configured-component {

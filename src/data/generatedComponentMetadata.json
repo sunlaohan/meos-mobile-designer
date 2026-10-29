@@ -12,92 +12,20 @@
         "description": "是否在标签位置生成一个等高的占位元素",
         "type": "boolean",
         "default": "`false`"
-      },
-      {
-        "name": "text",
-        "description": "按钮文字",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "icon",
-        "description": "左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "color",
-        "description": "按钮颜色，支持传入 linear-gradient 渐变色",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "icon-class",
-        "description": "图标额外类名",
-        "type": "string | Array | object",
-        "default": "-"
-      },
-      {
-        "name": "icon-prefix",
-        "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
-        "type": "string",
-        "default": "`van-icon`"
-      },
-      {
-        "name": "dot",
-        "description": "是否显示图标右上角小红点",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "badge",
-        "description": "图标右上角徽标的内容",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "badge-props",
-        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-        "type": "BadgeProps",
-        "default": "-"
-      },
-      {
-        "name": "url",
-        "description": "点击后跳转的链接地址",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "to",
-        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-        "type": "string | object",
-        "default": "-"
-      },
-      {
-        "name": "replace",
-        "description": "是否在跳转时替换当前页面历史",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "type",
-        "description": "按钮类型，可选值为 primary info warning danger",
-        "type": "string",
-        "default": "`default`"
-      },
-      {
-        "name": "disabled",
-        "description": "是否禁用按钮",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "loading",
-        "description": "是否显示为加载状态",
-        "type": "boolean",
-        "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "placeholder",
+      "safeAreaInsetBottom"
+    ],
+    "booleanProps": [
+      "placeholder",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "placeholder": false,
+      "safeAreaInsetBottom": true
+    }
   },
   "action-sheet": {
     "attributes": [
@@ -221,7 +149,59 @@
         "type": "(action: string) => boolean | Promise\\",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "zIndex",
+      "overlay",
+      "duration",
+      "teleport",
+      "lockScroll",
+      "lazyRender",
+      "beforeClose",
+      "overlayStyle",
+      "overlayClass",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "title",
+      "round",
+      "actions",
+      "closeable",
+      "cancelText",
+      "description",
+      "contentAdaptive",
+      "closeOnPopstate",
+      "closeOnClickAction",
+      "safeAreaInsetBottom"
+    ],
+    "booleanProps": [
+      "show",
+      "overlay",
+      "lockScroll",
+      "lazyRender",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "round",
+      "closeable",
+      "contentAdaptive",
+      "closeOnPopstate",
+      "closeOnClickAction",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "show": false,
+      "overlay": true,
+      "lockScroll": true,
+      "lazyRender": true,
+      "transitionAppear": false,
+      "closeOnClickOverlay": true,
+      "round": true,
+      "closeable": true,
+      "contentAdaptive": false,
+      "closeOnPopstate": true,
+      "closeOnClickAction": false,
+      "safeAreaInsetBottom": true
+    }
   },
   "address-edit": {
     "attributes": [
@@ -357,7 +337,55 @@
         "type": "(key, val) => string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "areaList",
+      "isSaving",
+      "isDeleting",
+      "validator",
+      "showArea",
+      "showDetail",
+      "showDelete",
+      "showPostal",
+      "disableArea",
+      "searchResult",
+      "telMaxlength",
+      "showSetDefault",
+      "saveButtonText",
+      "areaPlaceholder",
+      "deleteButtonText",
+      "showSearchResult",
+      "detailRows",
+      "detailMaxlength",
+      "areaColumnsPlaceholder",
+      "addressInfo",
+      "telValidator",
+      "postalValidator"
+    ],
+    "booleanProps": [
+      "isSaving",
+      "isDeleting",
+      "showArea",
+      "showDetail",
+      "showDelete",
+      "showPostal",
+      "disableArea",
+      "showSetDefault",
+      "showSearchResult"
+    ],
+    "defaults": {
+      "isSaving": false,
+      "isDeleting": false,
+      "showArea": true,
+      "showDetail": true,
+      "showDelete": false,
+      "showPostal": false,
+      "disableArea": false,
+      "showSetDefault": false,
+      "showSearchResult": false,
+      "detailRows": 1,
+      "detailMaxlength": 200
+    }
   },
   "address-list": {
     "attributes": [
@@ -403,7 +431,22 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "list",
+      "modelValue",
+      "switchable",
+      "disabledText",
+      "disabledList",
+      "addButtonText",
+      "defaultTagText"
+    ],
+    "booleanProps": [
+      "switchable"
+    ],
+    "defaults": {
+      "switchable": true
+    }
   },
   "area": {
     "attributes": [
@@ -485,7 +528,42 @@
         "type": "() => boolean",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "loading",
+      "readonly",
+      "allowHtml",
+      "itemHeight",
+      "showToolbar",
+      "swipeDuration",
+      "visibleItemCount",
+      "cancelButtonText",
+      "confirmButtonText",
+      "rotateDirection",
+      "value",
+      "columnsNum",
+      "columnsPlaceholder",
+      "areaList",
+      "isOverseaCode"
+    ],
+    "booleanProps": [
+      "loading",
+      "readonly",
+      "allowHtml",
+      "showToolbar"
+    ],
+    "defaults": {
+      "loading": false,
+      "readonly": false,
+      "allowHtml": false,
+      "itemHeight": 44,
+      "showToolbar": true,
+      "swipeDuration": 1000,
+      "visibleItemCount": 6,
+      "rotateDirection": "",
+      "columnsNum": 3
+    }
   },
   "background": {
     "attributes": [
@@ -495,7 +573,14 @@
         "type": "BackgroundTheme",
         "default": "`default`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "theme"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "theme": "default"
+    }
   },
   "badge": {
     "attributes": [
@@ -547,7 +632,29 @@
         "type": "string",
         "default": "`top-right`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "dot",
+      "max",
+      "tag",
+      "color",
+      "offset",
+      "content",
+      "showZero",
+      "size",
+      "position"
+    ],
+    "booleanProps": [
+      "dot",
+      "showZero"
+    ],
+    "defaults": {
+      "dot": false,
+      "tag": "div",
+      "showZero": true,
+      "size": "default",
+      "position": "top-right"
+    }
   },
   "blue-mark": {
     "attributes": [
@@ -598,68 +705,25 @@
         "description": "是否展示跳转箭头",
         "type": "boolean",
         "default": "`false`"
-      },
-      {
-        "name": "title",
-        "description": "标题文本",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "required",
-        "description": "是否展示必填星号",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "action-text",
-        "description": "右侧操作文本",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "expandable",
-        "description": "是否启用展开收起，点击整个标题栏可切换",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "show-expand-icon",
-        "description": "是否展示右侧展开收起箭头",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "v-model",
-        "description": "是否展开",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "divider",
-        "description": "是否在两侧显示分割线",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "expand-text",
-        "description": "收起状态的操作文案",
-        "type": "string",
-        "default": "`展开`"
-      },
-      {
-        "name": "collapse-text",
-        "description": "展开状态的操作文案",
-        "type": "string",
-        "default": "`收起`"
-      },
-      {
-        "name": "show-icon",
-        "description": "是否展示箭头图标",
-        "type": "boolean",
-        "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "size",
+      "color",
+      "markColor",
+      "fontSize",
+      "markWidth",
+      "markHeight",
+      "gap",
+      "isLink"
+    ],
+    "booleanProps": [
+      "isLink"
+    ],
+    "defaults": {
+      "size": "normal",
+      "isLink": false
+    }
   },
   "bot-mobile": {
     "attributes": [
@@ -1003,7 +1067,65 @@
         "type": "string",
         "default": "`保存为我的默认筛选`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "confirmText",
+      "confirmType",
+      "confirmLoading",
+      "confirmDisabled",
+      "secondaryText",
+      "secondaryType",
+      "secondaryLoading",
+      "secondaryDisabled",
+      "icon",
+      "iconDisabled",
+      "moreIcon",
+      "moreText",
+      "moreBadge",
+      "moreBadgeMax",
+      "moreDisabled",
+      "morePopoverActions",
+      "placeholder",
+      "fixed",
+      "safeAreaInsetBottom",
+      "iconPrefix",
+      "showCheckboxAction",
+      "checkboxActionChecked",
+      "checkboxActionDisabled",
+      "checkboxActionText"
+    ],
+    "booleanProps": [
+      "confirmLoading",
+      "confirmDisabled",
+      "secondaryLoading",
+      "secondaryDisabled",
+      "iconDisabled",
+      "moreDisabled",
+      "placeholder",
+      "fixed",
+      "safeAreaInsetBottom",
+      "showCheckboxAction",
+      "checkboxActionChecked",
+      "checkboxActionDisabled"
+    ],
+    "defaults": {
+      "confirmText": "确定",
+      "confirmType": "primary",
+      "confirmLoading": false,
+      "confirmDisabled": false,
+      "secondaryType": "default",
+      "secondaryLoading": false,
+      "secondaryDisabled": false,
+      "iconDisabled": false,
+      "moreDisabled": false,
+      "placeholder": false,
+      "fixed": true,
+      "safeAreaInsetBottom": true,
+      "showCheckboxAction": false,
+      "checkboxActionChecked": false,
+      "checkboxActionDisabled": false,
+      "checkboxActionText": "保存为我的默认筛选"
+    }
   },
   "button": {
     "attributes": [
@@ -1145,7 +1267,58 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "tag",
+      "text",
+      "icon",
+      "rightIcon",
+      "iconSize",
+      "type",
+      "size",
+      "color",
+      "block",
+      "plain",
+      "round",
+      "square",
+      "loading",
+      "hairline",
+      "disabled",
+      "iconPrefix",
+      "nativeType",
+      "loadingSize",
+      "loadingText",
+      "loadingType",
+      "iconPosition"
+    ],
+    "booleanProps": [
+      "replace",
+      "block",
+      "plain",
+      "round",
+      "square",
+      "loading",
+      "hairline",
+      "disabled"
+    ],
+    "defaults": {
+      "replace": false,
+      "tag": "button",
+      "type": "default",
+      "size": "normal",
+      "block": false,
+      "plain": false,
+      "round": false,
+      "square": false,
+      "loading": false,
+      "hairline": false,
+      "disabled": false,
+      "nativeType": "button",
+      "iconPosition": "left"
+    }
   },
   "calendar": {
     "attributes": [
@@ -1329,7 +1502,77 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "type",
+      "title",
+      "color",
+      "round",
+      "readonly",
+      "poppable",
+      "maxRange",
+      "position",
+      "teleport",
+      "showMark",
+      "showTitle",
+      "formatter",
+      "rowHeight",
+      "confirmText",
+      "rangePrompt",
+      "lazyRender",
+      "showConfirm",
+      "defaultDate",
+      "allowSameDay",
+      "showSubtitle",
+      "closeOnPopstate",
+      "showRangePrompt",
+      "confirmDisabledText",
+      "closeOnClickOverlay",
+      "safeAreaInsetTop",
+      "safeAreaInsetBottom",
+      "minDate",
+      "maxDate",
+      "firstDayOfWeek"
+    ],
+    "booleanProps": [
+      "show",
+      "round",
+      "readonly",
+      "poppable",
+      "showMark",
+      "showTitle",
+      "lazyRender",
+      "showConfirm",
+      "allowSameDay",
+      "showSubtitle",
+      "closeOnPopstate",
+      "showRangePrompt",
+      "closeOnClickOverlay",
+      "safeAreaInsetTop",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "show": false,
+      "type": "single",
+      "round": true,
+      "readonly": false,
+      "poppable": true,
+      "maxRange": null,
+      "position": "bottom",
+      "showMark": true,
+      "showTitle": true,
+      "lazyRender": true,
+      "showConfirm": true,
+      "allowSameDay": false,
+      "showSubtitle": true,
+      "closeOnPopstate": true,
+      "showRangePrompt": true,
+      "closeOnClickOverlay": true,
+      "safeAreaInsetTop": false,
+      "safeAreaInsetBottom": true,
+      "firstDayOfWeek": 0
+    }
   },
   "card": {
     "attributes": [
@@ -1399,7 +1642,29 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "tag",
+      "num",
+      "desc",
+      "thumb",
+      "title",
+      "price",
+      "centered",
+      "lazyLoad",
+      "currency",
+      "thumbLink",
+      "originPrice"
+    ],
+    "booleanProps": [
+      "centered",
+      "lazyLoad"
+    ],
+    "defaults": {
+      "centered": false,
+      "lazyLoad": false,
+      "currency": "¥"
+    }
   },
   "cascader": {
     "attributes": [
@@ -1407,12 +1672,6 @@
         "name": "title",
         "description": "顶部标题",
         "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "value",
-        "description": "选中项的值",
-        "type": "string | number",
         "default": "-"
       },
       {
@@ -1463,7 +1722,30 @@
         "type": "object",
         "default": "`{ text: 'text', value: 'value', children: 'children' }`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "options",
+      "closeable",
+      "swipeable",
+      "closeIcon",
+      "showHeader",
+      "modelValue",
+      "fieldNames",
+      "placeholder",
+      "activeColor"
+    ],
+    "booleanProps": [
+      "closeable",
+      "swipeable",
+      "showHeader"
+    ],
+    "defaults": {
+      "closeable": true,
+      "swipeable": true,
+      "closeIcon": "cross",
+      "showHeader": true
+    }
   },
   "cell": {
     "attributes": [
@@ -1472,18 +1754,6 @@
         "description": "左侧标题",
         "type": "number | string",
         "default": "-"
-      },
-      {
-        "name": "inset",
-        "description": "是否展示为圆角卡片风格",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "gray-card",
-        "description": "是否展示为灰色渐变卡片包裹的白底单元格样式",
-        "type": "boolean",
-        "default": "`false`"
       },
       {
         "name": "border",
@@ -1863,7 +2133,135 @@
         "type": "string | Array | object",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "icon",
+      "size",
+      "background",
+      "title",
+      "value",
+      "label",
+      "labelClickable",
+      "labelIcon",
+      "showLabelIcon",
+      "description",
+      "descriptionClickable",
+      "multiLineNotes",
+      "showMultiLineNotes",
+      "showTitleCollapseIcon",
+      "defaultMultiLineNotesCollapsed",
+      "threeLine",
+      "threeLineEllipsis",
+      "labelSize",
+      "avatar",
+      "showAvatar",
+      "rightAvatar",
+      "showRightAvatar",
+      "tags",
+      "showTags",
+      "titleTag",
+      "showTitleTag",
+      "wrapTags",
+      "showWrapTags",
+      "titleIcon",
+      "titleIconClickable",
+      "showTitleIcon",
+      "rightIcon",
+      "showIcon",
+      "showRightIcon",
+      "note",
+      "showNote",
+      "noteBold",
+      "noteClickable",
+      "noteTo",
+      "noteUrl",
+      "noteReplace",
+      "badge",
+      "showBadge",
+      "leftSelect",
+      "showLeftSelect",
+      "rightSelect",
+      "showRightSelect",
+      "selectType",
+      "blueMark",
+      "showBlueMark",
+      "titleBold",
+      "center",
+      "isLink",
+      "border",
+      "errorBorder",
+      "required",
+      "iconPrefix",
+      "valueClass",
+      "labelClass",
+      "titleClass",
+      "titleStyle",
+      "arrowDirection",
+      "clickable",
+      "to",
+      "url",
+      "replace"
+    ],
+    "booleanProps": [
+      "labelClickable",
+      "showLabelIcon",
+      "descriptionClickable",
+      "showMultiLineNotes",
+      "showTitleCollapseIcon",
+      "defaultMultiLineNotesCollapsed",
+      "threeLine",
+      "threeLineEllipsis",
+      "showAvatar",
+      "showRightAvatar",
+      "showTags",
+      "showTitleTag",
+      "showWrapTags",
+      "titleIconClickable",
+      "showTitleIcon",
+      "showIcon",
+      "showRightIcon",
+      "showNote",
+      "noteBold",
+      "noteClickable",
+      "noteReplace",
+      "showBadge",
+      "leftSelect",
+      "showLeftSelect",
+      "rightSelect",
+      "showRightSelect",
+      "blueMark",
+      "showBlueMark",
+      "titleBold",
+      "center",
+      "isLink",
+      "border",
+      "errorBorder",
+      "required",
+      "clickable",
+      "replace"
+    ],
+    "defaults": {
+      "labelClickable": false,
+      "descriptionClickable": false,
+      "showTitleCollapseIcon": false,
+      "defaultMultiLineNotesCollapsed": false,
+      "threeLine": false,
+      "threeLineEllipsis": false,
+      "titleIconClickable": false,
+      "noteBold": false,
+      "noteClickable": false,
+      "noteReplace": false,
+      "selectType": "checkbox",
+      "blueMark": false,
+      "titleBold": false,
+      "center": false,
+      "isLink": false,
+      "border": true,
+      "errorBorder": false,
+      "required": false,
+      "clickable": null,
+      "replace": false
+    }
   },
   "checkbox": {
     "attributes": [
@@ -1932,20 +2330,35 @@
         "description": "是否与复选框组绑定",
         "type": "boolean",
         "default": "`true`"
-      },
-      {
-        "name": "max",
-        "description": "最大可选数，0 为无限制",
-        "type": "number | string",
-        "default": "`0`"
-      },
-      {
-        "name": "direction",
-        "description": "排列方向，可选值为 horizontal",
-        "type": "string",
-        "default": "`vertical`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "name",
+      "size",
+      "shape",
+      "disabled",
+      "iconSize",
+      "labelFontSize",
+      "modelValue",
+      "checkedColor",
+      "labelPosition",
+      "labelDisabled",
+      "allowUncheck",
+      "bindGroup"
+    ],
+    "booleanProps": [
+      "disabled",
+      "labelDisabled",
+      "allowUncheck",
+      "bindGroup"
+    ],
+    "defaults": {
+      "shape": "round",
+      "disabled": false,
+      "labelDisabled": false,
+      "allowUncheck": false,
+      "bindGroup": true
+    }
   },
   "checkbox-panel": {
     "attributes": [
@@ -2075,7 +2488,56 @@
         "type": "string",
         "default": "`清空已选`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "options",
+      "modelValue",
+      "searchable",
+      "searchPlaceholder",
+      "filterable",
+      "filterActive",
+      "loading",
+      "finished",
+      "error",
+      "lazy",
+      "loadingText",
+      "finishedText",
+      "errorText",
+      "confirmText",
+      "selectAllText",
+      "cancelSelectAllText",
+      "selectedText",
+      "collapseSelectedText",
+      "clearSelectedText"
+    ],
+    "booleanProps": [
+      "show",
+      "searchable",
+      "filterable",
+      "filterActive",
+      "loading",
+      "finished",
+      "error",
+      "lazy"
+    ],
+    "defaults": {
+      "show": false,
+      "searchable": false,
+      "filterable": false,
+      "filterActive": false,
+      "loading": false,
+      "finished": false,
+      "error": false,
+      "lazy": false,
+      "confirmText": "确定",
+      "selectAllText": "全选",
+      "cancelSelectAllText": "取消全选",
+      "selectedText": "展开已选",
+      "collapseSelectedText": "收起已选",
+      "clearSelectedText": "清空已选"
+    }
   },
   "circle": {
     "attributes": [
@@ -2151,39 +2613,41 @@
         "type": "CircleStartPosition",
         "default": "`top`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "text",
+      "size",
+      "fill",
+      "rate",
+      "speed",
+      "color",
+      "clockwise",
+      "layerColor",
+      "currentRate",
+      "strokeWidth",
+      "strokeLinecap",
+      "startPosition"
+    ],
+    "booleanProps": [
+      "clockwise"
+    ],
+    "defaults": {
+      "fill": "none",
+      "rate": 100,
+      "speed": 0,
+      "clockwise": true,
+      "currentRate": 0,
+      "strokeWidth": 40,
+      "startPosition": "top"
+    }
   },
   "col": {
     "attributes": [
-      {
-        "name": "gutter",
-        "description": "列元素之间的间距（单位为 px）",
-        "type": "number | string",
-        "default": "-"
-      },
       {
         "name": "tag",
         "description": "自定义元素标签",
         "type": "string",
         "default": "`div`"
-      },
-      {
-        "name": "justify",
-        "description": "主轴对齐方式，可选值为 end center   space-around space-between",
-        "type": "string",
-        "default": "`start`"
-      },
-      {
-        "name": "align",
-        "description": "交叉轴对齐方式，可选值为 center bottom",
-        "type": "string",
-        "default": "`top`"
-      },
-      {
-        "name": "wrap",
-        "description": "是否自动换行",
-        "type": "boolean",
-        "default": "`true`"
       },
       {
         "name": "span",
@@ -2197,7 +2661,17 @@
         "type": "number | string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "tag",
+      "span",
+      "offset"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "tag": "div",
+      "span": 0
+    }
   },
   "collapse": {
     "attributes": [
@@ -2218,86 +2692,22 @@
         "description": "是否显示内边框",
         "type": "boolean",
         "default": "`true`"
-      },
-      {
-        "name": "name",
-        "description": "唯一标识符，默认为索引值",
-        "type": "number | string",
-        "default": "`index`"
-      },
-      {
-        "name": "icon",
-        "description": "标题栏左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "size",
-        "description": "标题栏大小，可选值为 large",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "title",
-        "description": "标题栏左侧内容",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "value",
-        "description": "标题栏右侧内容",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "label",
-        "description": "标题栏描述信息",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "is-link",
-        "description": "是否展示标题栏右侧箭头并开启点击反馈",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "disabled",
-        "description": "是否禁用面板",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "readonly",
-        "description": "是否为只读状态，只读状态下无法操作面板",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "lazy-render",
-        "description": "是否在首次展开时才渲染面板内容",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "title-class",
-        "description": "左侧标题额外类名",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "value-class",
-        "description": "右侧内容额外类名",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "label-class",
-        "description": "描述信息额外类名",
-        "type": "string",
-        "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "border",
+      "accordion",
+      "modelValue"
+    ],
+    "booleanProps": [
+      "border",
+      "accordion"
+    ],
+    "defaults": {
+      "border": true,
+      "accordion": false,
+      "modelValue": ""
+    }
   },
   "collapse-toggle": {
     "attributes": [
@@ -2325,7 +2735,26 @@
         "type": "string",
         "default": "`收起`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "modelValue",
+      "divider",
+      "showIcon",
+      "expandText",
+      "collapseText"
+    ],
+    "booleanProps": [
+      "modelValue",
+      "divider",
+      "showIcon"
+    ],
+    "defaults": {
+      "modelValue": false,
+      "divider": false,
+      "showIcon": true,
+      "expandText": "展开",
+      "collapseText": "收起"
+    }
   },
   "config-provider": {
     "attributes": [
@@ -2353,7 +2782,19 @@
         "type": "string",
         "default": "`van-icon`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "tag",
+      "zIndex",
+      "themeVars",
+      "iconPrefix",
+      "cellSize"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "tag": "div",
+      "cellSize": "normal"
+    }
   },
   "contact-card": {
     "attributes": [
@@ -2387,7 +2828,21 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "tel",
+      "name",
+      "type",
+      "addText",
+      "editable"
+    ],
+    "booleanProps": [
+      "editable"
+    ],
+    "defaults": {
+      "type": "add",
+      "editable": true
+    }
   },
   "contact-edit": {
     "attributes": [
@@ -2433,7 +2888,28 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "isEdit",
+      "isSaving",
+      "isDeleting",
+      "showSetDefault",
+      "setDefaultLabel",
+      "contactInfo",
+      "telValidator"
+    ],
+    "booleanProps": [
+      "isEdit",
+      "isSaving",
+      "isDeleting",
+      "showSetDefault"
+    ],
+    "defaults": {
+      "isEdit": false,
+      "isSaving": false,
+      "isDeleting": false,
+      "showSetDefault": false
+    }
   },
   "contact-list": {
     "attributes": [
@@ -2461,7 +2937,15 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "list",
+      "addText",
+      "modelValue",
+      "defaultTagText"
+    ],
+    "booleanProps": [],
+    "defaults": {}
   },
   "content-panel": {
     "attributes": [
@@ -2489,7 +2973,22 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "confirmText",
+      "showFooter"
+    ],
+    "booleanProps": [
+      "show",
+      "showFooter"
+    ],
+    "defaults": {
+      "show": false,
+      "confirmText": "我已知晓",
+      "showFooter": true
+    }
   },
   "count-down": {
     "attributes": [
@@ -2517,16 +3016,26 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "time",
+      "format",
+      "autoStart",
+      "millisecond"
+    ],
+    "booleanProps": [
+      "autoStart",
+      "millisecond"
+    ],
+    "defaults": {
+      "time": 0,
+      "format": "HH:mm:ss",
+      "autoStart": true,
+      "millisecond": false
+    }
   },
   "coupon-list": {
     "attributes": [
-      {
-        "name": "title",
-        "description": "单元格标题",
-        "type": "string",
-        "default": "`优惠券`"
-      },
       {
         "name": "chosen-coupon",
         "description": "当前选中优惠券的索引",
@@ -2538,18 +3047,6 @@
         "description": "可用优惠券列表",
         "type": "Coupon[]",
         "default": "`[]`"
-      },
-      {
-        "name": "editable",
-        "description": "能否切换优惠券",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "border",
-        "description": "是否显示内边框",
-        "type": "boolean",
-        "default": "`true`"
       },
       {
         "name": "currency",
@@ -2647,7 +3144,46 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "code",
+      "coupons",
+      "currency",
+      "showCount",
+      "emptyImage",
+      "chosenCoupon",
+      "enabledTitle",
+      "disabledTitle",
+      "disabledCoupons",
+      "showExchangeBar",
+      "showCloseButton",
+      "closeButtonText",
+      "inputPlaceholder",
+      "exchangeMinLength",
+      "exchangeButtonText",
+      "displayedCouponIndex",
+      "exchangeButtonLoading",
+      "exchangeButtonDisabled"
+    ],
+    "booleanProps": [
+      "showCount",
+      "showExchangeBar",
+      "showCloseButton",
+      "exchangeButtonLoading",
+      "exchangeButtonDisabled"
+    ],
+    "defaults": {
+      "code": "",
+      "currency": "¥",
+      "showCount": true,
+      "chosenCoupon": -1,
+      "showExchangeBar": true,
+      "showCloseButton": true,
+      "exchangeMinLength": 1,
+      "displayedCouponIndex": -1,
+      "exchangeButtonLoading": false,
+      "exchangeButtonDisabled": false
+    }
   },
   "datetime-picker": {
     "attributes": [
@@ -2801,7 +3337,64 @@
         "type": "number | string",
         "default": "`59`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "loading",
+      "readonly",
+      "allowHtml",
+      "itemHeight",
+      "showToolbar",
+      "swipeDuration",
+      "visibleItemCount",
+      "cancelButtonText",
+      "confirmButtonText",
+      "rotateDirection",
+      "filter",
+      "columnsOrder",
+      "formatter",
+      "minHour",
+      "maxHour",
+      "minMinute",
+      "maxMinute",
+      "modelValue",
+      "type",
+      "minDate",
+      "maxDate",
+      "showTimeRange",
+      "startTimeFromCurrent",
+      "startTime",
+      "endTime",
+      "startTimeText",
+      "endTimeText"
+    ],
+    "booleanProps": [
+      "loading",
+      "readonly",
+      "allowHtml",
+      "showToolbar",
+      "showTimeRange",
+      "startTimeFromCurrent"
+    ],
+    "defaults": {
+      "loading": false,
+      "readonly": false,
+      "allowHtml": false,
+      "itemHeight": 44,
+      "showToolbar": true,
+      "swipeDuration": 1000,
+      "visibleItemCount": 6,
+      "rotateDirection": "",
+      "minHour": 0,
+      "maxHour": 23,
+      "minMinute": 0,
+      "maxMinute": 59,
+      "type": "datetime",
+      "showTimeRange": false,
+      "startTimeFromCurrent": true,
+      "startTimeText": "开始时间",
+      "endTimeText": "结束时间"
+    }
   },
   "dialog": {
     "attributes": [
@@ -3135,7 +3728,87 @@
         "type": "(action: string) => boolean | Promise\\",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "zIndex",
+      "overlay",
+      "duration",
+      "teleport",
+      "lockScroll",
+      "lazyRender",
+      "beforeClose",
+      "overlayStyle",
+      "overlayClass",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "title",
+      "theme",
+      "width",
+      "message",
+      "callback",
+      "allowHtml",
+      "className",
+      "transition",
+      "messageAlign",
+      "showInput",
+      "inputValue",
+      "inputAlign",
+      "inputPlaceholder",
+      "inputAutofocus",
+      "closeOnPopstate",
+      "showCancelButton",
+      "cancelButtonText",
+      "cancelButtonColor",
+      "cancelButtonDisabled",
+      "showThirdButton",
+      "thirdButtonText",
+      "thirdButtonColor",
+      "thirdButtonDisabled",
+      "confirmButtonText",
+      "confirmButtonColor",
+      "confirmButtonDisabled",
+      "showConfirmButton"
+    ],
+    "booleanProps": [
+      "show",
+      "overlay",
+      "lockScroll",
+      "lazyRender",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "allowHtml",
+      "showInput",
+      "inputAutofocus",
+      "closeOnPopstate",
+      "showCancelButton",
+      "cancelButtonDisabled",
+      "showThirdButton",
+      "thirdButtonDisabled",
+      "confirmButtonDisabled",
+      "showConfirmButton"
+    ],
+    "defaults": {
+      "show": false,
+      "overlay": true,
+      "lockScroll": true,
+      "lazyRender": true,
+      "transitionAppear": false,
+      "closeOnClickOverlay": false,
+      "allowHtml": false,
+      "transition": "van-dialog-bounce",
+      "showInput": false,
+      "inputValue": "",
+      "inputPlaceholder": "请输入",
+      "inputAutofocus": false,
+      "closeOnPopstate": true,
+      "showCancelButton": false,
+      "cancelButtonDisabled": false,
+      "showThirdButton": false,
+      "thirdButtonDisabled": false,
+      "confirmButtonDisabled": false,
+      "showConfirmButton": true
+    }
   },
   "divider": {
     "attributes": [
@@ -3157,7 +3830,21 @@
         "type": "string",
         "default": "`center`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "dashed",
+      "hairline",
+      "contentPosition"
+    ],
+    "booleanProps": [
+      "dashed",
+      "hairline"
+    ],
+    "defaults": {
+      "dashed": false,
+      "hairline": true,
+      "contentPosition": "center"
+    }
   },
   "dropdown-menu": {
     "attributes": [
@@ -3214,50 +3901,33 @@
         "description": "是否在点击外部元素后关闭菜单",
         "type": "boolean",
         "default": "`true`"
-      },
-      {
-        "name": "v-model",
-        "description": "当前选中项对应的 value",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "title",
-        "description": "菜单项标题",
-        "type": "string",
-        "default": "当前选中项文字"
-      },
-      {
-        "name": "options",
-        "description": "选项数组",
-        "type": "Option[]",
-        "default": "`[]`"
-      },
-      {
-        "name": "disabled",
-        "description": "是否禁用菜单",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "lazy-render",
-        "description": "是否在首次展开时才渲染菜单内容",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "title-class",
-        "description": "标题额外类名",
-        "type": "string | Array | object",
-        "default": "-"
-      },
-      {
-        "name": "teleport",
-        "description": "指定挂载的节点，等同于 Teleport 组件的 to 属性",
-        "type": "string | Element",
-        "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "overlay",
+      "zIndex",
+      "duration",
+      "offset",
+      "showBar",
+      "direction",
+      "activeColor",
+      "closeOnClickOutside",
+      "closeOnClickOverlay"
+    ],
+    "booleanProps": [
+      "overlay",
+      "showBar",
+      "closeOnClickOutside",
+      "closeOnClickOverlay"
+    ],
+    "defaults": {
+      "overlay": true,
+      "duration": 0.2,
+      "showBar": true,
+      "direction": "down",
+      "closeOnClickOutside": true,
+      "closeOnClickOverlay": true
+    }
   },
   "empty": {
     "attributes": [
@@ -3279,7 +3949,16 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "image",
+      "imageSize",
+      "description"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "image": "default"
+    }
   },
   "field": {
     "attributes": [
@@ -3553,7 +4232,182 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "icon",
+      "size",
+      "background",
+      "title",
+      "value",
+      "label",
+      "labelClickable",
+      "labelIcon",
+      "showLabelIcon",
+      "description",
+      "descriptionClickable",
+      "multiLineNotes",
+      "showMultiLineNotes",
+      "showTitleCollapseIcon",
+      "defaultMultiLineNotesCollapsed",
+      "threeLine",
+      "threeLineEllipsis",
+      "labelSize",
+      "avatar",
+      "showAvatar",
+      "rightAvatar",
+      "showRightAvatar",
+      "tags",
+      "showTags",
+      "titleTag",
+      "showTitleTag",
+      "wrapTags",
+      "showWrapTags",
+      "titleIcon",
+      "titleIconClickable",
+      "showTitleIcon",
+      "rightIcon",
+      "showIcon",
+      "showRightIcon",
+      "note",
+      "showNote",
+      "noteBold",
+      "noteClickable",
+      "noteTo",
+      "noteUrl",
+      "noteReplace",
+      "badge",
+      "showBadge",
+      "leftSelect",
+      "showLeftSelect",
+      "rightSelect",
+      "showRightSelect",
+      "selectType",
+      "blueMark",
+      "showBlueMark",
+      "titleBold",
+      "center",
+      "isLink",
+      "border",
+      "errorBorder",
+      "required",
+      "iconPrefix",
+      "valueClass",
+      "labelClass",
+      "titleClass",
+      "titleStyle",
+      "arrowDirection",
+      "clickable",
+      "id",
+      "name",
+      "leftIcon",
+      "autofocus",
+      "clearable",
+      "maxlength",
+      "formatter",
+      "clearIcon",
+      "modelValue",
+      "inputAlign",
+      "placeholder",
+      "autocomplete",
+      "errorMessage",
+      "enterkeyhint",
+      "clearTrigger",
+      "formatTrigger",
+      "error",
+      "disabled",
+      "readonly",
+      "rows",
+      "type",
+      "rules",
+      "autosize",
+      "labelWidth",
+      "labelAlign",
+      "labelPosition",
+      "unit",
+      "showUnit",
+      "showWordLimit",
+      "errorMessageAlign",
+      "colon"
+    ],
+    "booleanProps": [
+      "labelClickable",
+      "showLabelIcon",
+      "descriptionClickable",
+      "showMultiLineNotes",
+      "showTitleCollapseIcon",
+      "defaultMultiLineNotesCollapsed",
+      "threeLine",
+      "threeLineEllipsis",
+      "showAvatar",
+      "showRightAvatar",
+      "showTags",
+      "showTitleTag",
+      "showWrapTags",
+      "titleIconClickable",
+      "showTitleIcon",
+      "showIcon",
+      "showRightIcon",
+      "showNote",
+      "noteBold",
+      "noteClickable",
+      "noteReplace",
+      "showBadge",
+      "leftSelect",
+      "showLeftSelect",
+      "rightSelect",
+      "showRightSelect",
+      "blueMark",
+      "showBlueMark",
+      "titleBold",
+      "center",
+      "isLink",
+      "border",
+      "errorBorder",
+      "required",
+      "clickable",
+      "autofocus",
+      "clearable",
+      "error",
+      "disabled",
+      "readonly",
+      "showUnit",
+      "showWordLimit",
+      "colon"
+    ],
+    "defaults": {
+      "size": "normal",
+      "labelClickable": false,
+      "descriptionClickable": false,
+      "showTitleCollapseIcon": false,
+      "defaultMultiLineNotesCollapsed": false,
+      "threeLine": false,
+      "threeLineEllipsis": false,
+      "titleIconClickable": false,
+      "noteBold": false,
+      "noteClickable": false,
+      "noteReplace": false,
+      "selectType": "checkbox",
+      "blueMark": false,
+      "titleBold": false,
+      "center": false,
+      "isLink": false,
+      "border": true,
+      "errorBorder": false,
+      "required": false,
+      "clickable": null,
+      "autofocus": false,
+      "clearable": false,
+      "clearIcon": "clear",
+      "modelValue": "",
+      "clearTrigger": "focus",
+      "formatTrigger": "onChange",
+      "error": null,
+      "disabled": null,
+      "readonly": null,
+      "type": "text",
+      "showWordLimit": false,
+      "colon": null
+    }
   },
   "filter-tag": {
     "attributes": [
@@ -3605,7 +4459,29 @@
         "type": "number | string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "selected",
+      "disabled",
+      "size",
+      "icon",
+      "iconPrefix",
+      "iconPosition",
+      "dot",
+      "badge"
+    ],
+    "booleanProps": [
+      "selected",
+      "disabled",
+      "dot"
+    ],
+    "defaults": {
+      "selected": false,
+      "disabled": false,
+      "size": "normal",
+      "iconPosition": "left",
+      "dot": false
+    }
   },
   "floor-select": {
     "attributes": [
@@ -3633,7 +4509,19 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "modelValue",
+      "activeBuilding",
+      "buildings",
+      "more"
+    ],
+    "booleanProps": [
+      "more"
+    ],
+    "defaults": {
+      "more": false
+    }
   },
   "form": {
     "attributes": [
@@ -3715,7 +4603,43 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "colon",
+      "disabled",
+      "readonly",
+      "showError",
+      "labelWidth",
+      "labelAlign",
+      "inputAlign",
+      "scrollToError",
+      "validateFirst",
+      "submitOnEnter",
+      "showErrorMessage",
+      "errorMessageAlign",
+      "validateTrigger"
+    ],
+    "booleanProps": [
+      "colon",
+      "disabled",
+      "readonly",
+      "showError",
+      "scrollToError",
+      "validateFirst",
+      "submitOnEnter",
+      "showErrorMessage"
+    ],
+    "defaults": {
+      "colon": false,
+      "disabled": false,
+      "readonly": false,
+      "showError": false,
+      "scrollToError": false,
+      "validateFirst": false,
+      "submitOnEnter": true,
+      "showErrorMessage": true,
+      "validateTrigger": "onBlur"
+    }
   },
   "form-panel": {
     "attributes": [
@@ -3737,7 +4661,19 @@
         "type": "string",
         "default": "`确定`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "confirmText"
+    ],
+    "booleanProps": [
+      "show"
+    ],
+    "defaults": {
+      "show": false,
+      "confirmText": "确定"
+    }
   },
   "friendly-tip": {
     "attributes": [
@@ -3789,7 +4725,27 @@
         "type": "string",
         "default": "`van-icon`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "message",
+      "icon",
+      "placement",
+      "showArrow",
+      "iconPrefix",
+      "offset",
+      "teleport"
+    ],
+    "booleanProps": [
+      "show",
+      "showArrow"
+    ],
+    "defaults": {
+      "show": true,
+      "placement": "bottom",
+      "showArrow": true,
+      "teleport": "body"
+    }
   },
   "grid": {
     "attributes": [
@@ -3846,68 +4802,34 @@
         "description": "是否调换图标和文本的位置",
         "type": "boolean",
         "default": "`false`"
-      },
-      {
-        "name": "text",
-        "description": "文字",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "icon",
-        "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "icon-prefix",
-        "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
-        "type": "string",
-        "default": "`van-icon`"
-      },
-      {
-        "name": "icon-color",
-        "description": "图标颜色，等同于 Icon 组件的 color 属性",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "dot",
-        "description": "是否显示图标右上角小红点",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "badge",
-        "description": "图标右上角徽标的内容",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "badge-props",
-        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-        "type": "BadgeProps",
-        "default": "-"
-      },
-      {
-        "name": "url",
-        "description": "点击后跳转的链接地址",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "to",
-        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-        "type": "string | object",
-        "default": "-"
-      },
-      {
-        "name": "replace",
-        "description": "是否在跳转时替换当前页面历史",
-        "type": "boolean",
-        "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "square",
+      "center",
+      "border",
+      "gutter",
+      "reverse",
+      "iconSize",
+      "direction",
+      "clickable",
+      "columnNum"
+    ],
+    "booleanProps": [
+      "square",
+      "center",
+      "border",
+      "reverse",
+      "clickable"
+    ],
+    "defaults": {
+      "square": false,
+      "center": true,
+      "border": true,
+      "reverse": false,
+      "clickable": false,
+      "columnNum": 4
+    }
   },
   "icon": {
     "attributes": [
@@ -3959,7 +4881,24 @@
         "type": "string",
         "default": "`i`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "dot",
+      "tag",
+      "name",
+      "size",
+      "badge",
+      "color",
+      "badgeProps",
+      "classPrefix"
+    ],
+    "booleanProps": [
+      "dot"
+    ],
+    "defaults": {
+      "dot": false,
+      "tag": "i"
+    }
   },
   "image": {
     "attributes": [
@@ -4012,7 +4951,7 @@
         "default": "`false`"
       },
       {
-        "name": "block 3.6.3",
+        "name": "block",
         "description": "是否将根节点设置为块级元素，默认情况下为 inline-block 元素",
         "type": "boolean",
         "default": "`false`"
@@ -4059,7 +4998,41 @@
         "type": "string",
         "default": "`van-icon`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "src",
+      "alt",
+      "fit",
+      "position",
+      "round",
+      "block",
+      "width",
+      "height",
+      "radius",
+      "lazyLoad",
+      "iconSize",
+      "showError",
+      "errorIcon",
+      "iconPrefix",
+      "showLoading",
+      "loadingIcon"
+    ],
+    "booleanProps": [
+      "round",
+      "block",
+      "lazyLoad",
+      "showError",
+      "showLoading"
+    ],
+    "defaults": {
+      "round": false,
+      "block": false,
+      "lazyLoad": false,
+      "showError": true,
+      "errorIcon": "photo-fail",
+      "showLoading": true,
+      "loadingIcon": "photo"
+    }
   },
   "image-preview": {
     "attributes": [
@@ -4170,14 +5143,53 @@
         "description": "自定义遮罩层样式",
         "type": "object",
         "default": "-"
-      },
-      {
-        "name": "teleport",
-        "description": "指定挂载的节点，等同于 Teleport 组件的 to 属性",
-        "type": "string | Element",
-        "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "loop",
+      "images",
+      "minZoom",
+      "maxZoom",
+      "overlay",
+      "closeable",
+      "showIndex",
+      "className",
+      "closeIcon",
+      "transition",
+      "beforeClose",
+      "overlayClass",
+      "overlayStyle",
+      "swipeDuration",
+      "startPosition",
+      "showIndicators",
+      "closeOnPopstate",
+      "closeIconPosition"
+    ],
+    "booleanProps": [
+      "show",
+      "loop",
+      "overlay",
+      "closeable",
+      "showIndex",
+      "showIndicators",
+      "closeOnPopstate"
+    ],
+    "defaults": {
+      "show": false,
+      "loop": true,
+      "minZoom": 0.3333333333333333,
+      "maxZoom": 3,
+      "overlay": true,
+      "closeable": false,
+      "showIndex": true,
+      "closeIcon": "clear",
+      "swipeDuration": 300,
+      "startPosition": 0,
+      "showIndicators": false,
+      "closeOnPopstate": true,
+      "closeIconPosition": "top-right"
+    }
   },
   "index-bar": {
     "attributes": [
@@ -4216,14 +5228,23 @@
         "description": "指定索引栏挂载的节点",
         "type": "string | Element",
         "default": "-"
-      },
-      {
-        "name": "index",
-        "description": "索引字符",
-        "type": "number | string",
-        "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "sticky",
+      "zIndex",
+      "teleport",
+      "highlightColor",
+      "stickyOffsetTop",
+      "indexList"
+    ],
+    "booleanProps": [
+      "sticky"
+    ],
+    "defaults": {
+      "sticky": true,
+      "stickyOffsetTop": 0
+    }
   },
   "info-card": {
     "attributes": [
@@ -4305,7 +5326,43 @@
         "type": "string",
         "default": "`收起`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "showTitle",
+      "fields",
+      "extraFields",
+      "modelValue",
+      "collapsible",
+      "showCollapse",
+      "showCacheBadge",
+      "cacheText",
+      "collapsePosition",
+      "divider",
+      "expandText",
+      "collapseText"
+    ],
+    "booleanProps": [
+      "showTitle",
+      "modelValue",
+      "collapsible",
+      "showCollapse",
+      "showCacheBadge",
+      "divider"
+    ],
+    "defaults": {
+      "title": "",
+      "showTitle": true,
+      "modelValue": false,
+      "collapsible": false,
+      "showCollapse": true,
+      "showCacheBadge": false,
+      "cacheText": "",
+      "collapsePosition": "bottom",
+      "divider": false,
+      "expandText": "查看更多",
+      "collapseText": "收起"
+    }
   },
   "label": {
     "attributes": [
@@ -4417,7 +5474,50 @@
         "type": "LabelMedia[]",
         "default": "`[]`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "label",
+      "showLabel",
+      "showContent",
+      "showColon",
+      "content",
+      "contentList",
+      "type",
+      "size",
+      "contentAlign",
+      "leftIcon",
+      "showLeftIcon",
+      "sameColor",
+      "vertical",
+      "ellipsis",
+      "href",
+      "location",
+      "tags",
+      "media"
+    ],
+    "booleanProps": [
+      "showLabel",
+      "showContent",
+      "showColon",
+      "showLeftIcon",
+      "sameColor",
+      "vertical",
+      "ellipsis"
+    ],
+    "defaults": {
+      "label": "",
+      "showLabel": true,
+      "showContent": true,
+      "content": "",
+      "type": "default",
+      "size": "default",
+      "contentAlign": "follow",
+      "leftIcon": "underway-o",
+      "showLeftIcon": false,
+      "sameColor": false,
+      "vertical": false,
+      "ellipsis": false
+    }
   },
   "lazyload": {
     "attributes": [
@@ -4527,7 +5627,32 @@
         "type": "string",
         "default": "`down`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "error",
+      "offset",
+      "loading",
+      "finished",
+      "errorText",
+      "direction",
+      "loadingText",
+      "finishedText",
+      "immediateCheck"
+    ],
+    "booleanProps": [
+      "error",
+      "loading",
+      "finished",
+      "immediateCheck"
+    ],
+    "defaults": {
+      "error": false,
+      "offset": 300,
+      "loading": false,
+      "finished": false,
+      "direction": "down",
+      "immediateCheck": true
+    }
   },
   "loading": {
     "attributes": [
@@ -4567,7 +5692,22 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "size",
+      "type",
+      "color",
+      "vertical",
+      "textSize",
+      "textColor"
+    ],
+    "booleanProps": [
+      "vertical"
+    ],
+    "defaults": {
+      "type": "circular",
+      "vertical": false
+    }
   },
   "locale": {
     "attributes": []
@@ -4609,8 +5749,34 @@
         "description": "输入搜索的防抖时间，单位 ms",
         "type": "number | string",
         "default": "`300`"
+      },
+      {
+        "name": "show-scan",
+        "description": "展示扫码入口，点击触发 click-scan",
+        "type": "boolean",
+        "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "modelValue",
+      "title",
+      "items",
+      "tabTitles",
+      "search",
+      "searchDebounce",
+      "showScan"
+    ],
+    "booleanProps": [
+      "show",
+      "showScan"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "位置选择",
+      "searchDebounce": 300,
+      "showScan": true
+    }
   },
   "material-action-bar": {
     "attributes": [
@@ -4680,7 +5846,36 @@
         "type": "MaterialActionBarPicking",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "item",
+      "modelValue",
+      "max",
+      "keyword",
+      "selected",
+      "showDetail",
+      "stepperTheme",
+      "enableInputDialog",
+      "showWarning",
+      "warning",
+      "picking"
+    ],
+    "booleanProps": [
+      "selected",
+      "showDetail",
+      "enableInputDialog",
+      "showWarning"
+    ],
+    "defaults": {
+      "max": null,
+      "keyword": "",
+      "selected": false,
+      "showDetail": true,
+      "stepperTheme": "round-outline",
+      "enableInputDialog": true,
+      "showWarning": false,
+      "warning": ""
+    }
   },
   "material-add": {
     "attributes": [
@@ -4786,7 +5981,48 @@
         "type": "number | string",
         "default": "`300`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "modelValue",
+      "items",
+      "categories",
+      "title",
+      "confirmText",
+      "showCommonTab",
+      "showAllTab",
+      "showMaterialTab",
+      "showToolTab",
+      "commonTabText",
+      "allTabText",
+      "materialTabText",
+      "toolTabText",
+      "max",
+      "search",
+      "searchDebounce"
+    ],
+    "booleanProps": [
+      "show",
+      "showCommonTab",
+      "showAllTab",
+      "showMaterialTab",
+      "showToolTab"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "添加物料",
+      "confirmText": "确定",
+      "showCommonTab": true,
+      "showAllTab": true,
+      "showMaterialTab": true,
+      "showToolTab": true,
+      "commonTabText": "常用物料",
+      "allTabText": "全部物料",
+      "materialTabText": "物资",
+      "toolTabText": "工具",
+      "max": null,
+      "searchDebounce": 300
+    }
   },
   "material-detail": {
     "attributes": [
@@ -4820,7 +6056,20 @@
         "type": "string[]",
         "default": "`[]`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "item",
+      "categories",
+      "fields",
+      "images"
+    ],
+    "booleanProps": [
+      "show"
+    ],
+    "defaults": {
+      "show": false
+    }
   },
   "material-display-bar": {
     "attributes": [
@@ -4914,7 +6163,45 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "name",
+      "quantity",
+      "quantityLabel",
+      "unit",
+      "showArrow",
+      "rounded",
+      "stockInsufficient",
+      "stockInsufficientText",
+      "swipeDelete",
+      "deleteText",
+      "fields",
+      "divider",
+      "to",
+      "url",
+      "replace"
+    ],
+    "booleanProps": [
+      "showArrow",
+      "rounded",
+      "stockInsufficient",
+      "swipeDelete",
+      "divider",
+      "replace"
+    ],
+    "defaults": {
+      "name": "",
+      "quantityLabel": "",
+      "unit": "",
+      "showArrow": true,
+      "rounded": false,
+      "stockInsufficient": false,
+      "stockInsufficientText": "库存不足请左滑移除",
+      "swipeDelete": false,
+      "deleteText": "删除",
+      "divider": true,
+      "replace": false
+    }
   },
   "multi-person-select": {
     "attributes": [
@@ -4972,7 +6259,30 @@
         "type": "string",
         "default": "`清空已选`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "modelValue",
+      "title",
+      "searchPlaceholder",
+      "confirmText",
+      "expandText",
+      "collapseText",
+      "clearText",
+      "groups"
+    ],
+    "booleanProps": [
+      "show"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "选择人员",
+      "searchPlaceholder": "搜索所有人员",
+      "confirmText": "确定",
+      "expandText": "展开已选",
+      "collapseText": "收起已选",
+      "clearText": "清空已选"
+    }
   },
   "nav-bar": {
     "attributes": [
@@ -5060,7 +6370,42 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "fixed",
+      "zIndex",
+      "border",
+      "leftText",
+      "rightText",
+      "subtitle",
+      "leftArrow",
+      "rightPopoverActions",
+      "rightPopoverIcon",
+      "titleDropdown",
+      "titleDropdownActive",
+      "placeholder",
+      "safeAreaInsetTop"
+    ],
+    "booleanProps": [
+      "fixed",
+      "border",
+      "leftArrow",
+      "titleDropdown",
+      "titleDropdownActive",
+      "placeholder",
+      "safeAreaInsetTop"
+    ],
+    "defaults": {
+      "fixed": false,
+      "border": true,
+      "leftArrow": false,
+      "rightPopoverIcon": "plus",
+      "titleDropdown": false,
+      "titleDropdownActive": false,
+      "placeholder": false,
+      "safeAreaInsetTop": false
+    }
   },
   "notice-bar": {
     "attributes": [
@@ -5124,7 +6469,31 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "text",
+      "mode",
+      "color",
+      "delay",
+      "speed",
+      "leftIcon",
+      "wrapable",
+      "round",
+      "background",
+      "scrollable"
+    ],
+    "booleanProps": [
+      "wrapable",
+      "round",
+      "scrollable"
+    ],
+    "defaults": {
+      "delay": 1,
+      "speed": 60,
+      "wrapable": false,
+      "round": false,
+      "scrollable": null
+    }
   },
   "notify": {
     "attributes": [
@@ -5175,26 +6544,46 @@
         "description": "是否锁定背景滚动",
         "type": "boolean",
         "default": "`false`"
-      },
-      {
-        "name": "onClick",
-        "description": "点击时的回调函数",
-        "type": "(event: MouseEvent): void",
-        "default": "-"
-      },
-      {
-        "name": "onOpened",
-        "description": "完全展示后的回调函数",
-        "type": "() => void",
-        "default": "-"
-      },
-      {
-        "name": "onClose",
-        "description": "关闭时的回调函数",
-        "type": "() => void",
-        "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "zIndex",
+      "overlay",
+      "duration",
+      "teleport",
+      "lockScroll",
+      "lazyRender",
+      "beforeClose",
+      "overlayStyle",
+      "overlayClass",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "type",
+      "color",
+      "message",
+      "position",
+      "className",
+      "background"
+    ],
+    "booleanProps": [
+      "show",
+      "overlay",
+      "lockScroll",
+      "lazyRender",
+      "transitionAppear",
+      "closeOnClickOverlay"
+    ],
+    "defaults": {
+      "show": false,
+      "overlay": true,
+      "lockScroll": false,
+      "lazyRender": true,
+      "transitionAppear": false,
+      "closeOnClickOverlay": true,
+      "type": "danger",
+      "position": "top"
+    }
   },
   "number-keyboard": {
     "attributes": [
@@ -5300,7 +6689,50 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "theme",
+      "zIndex",
+      "teleport",
+      "maxlength",
+      "modelValue",
+      "transition",
+      "blurOnClose",
+      "showDeleteKey",
+      "randomKeyOrder",
+      "closeButtonText",
+      "deleteButtonText",
+      "closeButtonLoading",
+      "hideOnClickOutside",
+      "safeAreaInsetBottom",
+      "extraKey"
+    ],
+    "booleanProps": [
+      "show",
+      "transition",
+      "blurOnClose",
+      "showDeleteKey",
+      "randomKeyOrder",
+      "closeButtonLoading",
+      "hideOnClickOutside",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "show": false,
+      "theme": "default",
+      "maxlength": null,
+      "modelValue": "",
+      "transition": true,
+      "blurOnClose": true,
+      "showDeleteKey": true,
+      "randomKeyOrder": false,
+      "closeButtonLoading": false,
+      "hideOnClickOutside": true,
+      "safeAreaInsetBottom": true,
+      "extraKey": ""
+    }
   },
   "object-select": {
     "attributes": [
@@ -5347,12 +6779,41 @@
         "default": "`300`"
       },
       {
+        "name": "show-scan",
+        "description": "展示扫码入口，点击触发 click-scan",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
         "name": "confirm-text",
         "description": "底部确认按钮文本",
         "type": "string",
         "default": "`下一步`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "modelValue",
+      "title",
+      "confirmText",
+      "spaceItems",
+      "specialties",
+      "loadChildren",
+      "search",
+      "searchDebounce",
+      "showScan"
+    ],
+    "booleanProps": [
+      "show",
+      "showScan"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "选择对象",
+      "confirmText": "下一步",
+      "searchDebounce": 300,
+      "showScan": true
+    }
   },
   "overlay": {
     "attributes": [
@@ -5398,7 +6859,26 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "zIndex",
+      "duration",
+      "className",
+      "lockScroll",
+      "lazyRender",
+      "customStyle"
+    ],
+    "booleanProps": [
+      "show",
+      "lockScroll",
+      "lazyRender"
+    ],
+    "defaults": {
+      "show": false,
+      "lockScroll": true,
+      "lazyRender": true
+    }
   },
   "pagination": {
     "attributes": [
@@ -5456,7 +6936,30 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "mode",
+      "prevText",
+      "nextText",
+      "pageCount",
+      "modelValue",
+      "totalItems",
+      "showPageSize",
+      "itemsPerPage",
+      "forceEllipses"
+    ],
+    "booleanProps": [
+      "forceEllipses"
+    ],
+    "defaults": {
+      "mode": "multi",
+      "pageCount": 0,
+      "modelValue": 0,
+      "totalItems": 0,
+      "showPageSize": 5,
+      "itemsPerPage": 10,
+      "forceEllipses": false
+    }
   },
   "password-input": {
     "attributes": [
@@ -5502,7 +7005,26 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "info",
+      "mask",
+      "value",
+      "gutter",
+      "length",
+      "focused",
+      "errorInfo"
+    ],
+    "booleanProps": [
+      "mask",
+      "focused"
+    ],
+    "defaults": {
+      "mask": true,
+      "value": "",
+      "length": 6,
+      "focused": false
+    }
   },
   "picker": {
     "attributes": [
@@ -5584,7 +7106,43 @@
         "type": "number | string",
         "default": "`1000`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "loading",
+      "readonly",
+      "allowHtml",
+      "itemHeight",
+      "showToolbar",
+      "swipeDuration",
+      "visibleItemCount",
+      "cancelButtonText",
+      "confirmButtonText",
+      "rotateDirection",
+      "columns",
+      "valueKey",
+      "defaultIndex",
+      "toolbarPosition",
+      "columnsFieldNames"
+    ],
+    "booleanProps": [
+      "loading",
+      "readonly",
+      "allowHtml",
+      "showToolbar"
+    ],
+    "defaults": {
+      "loading": false,
+      "readonly": false,
+      "allowHtml": false,
+      "itemHeight": 44,
+      "showToolbar": true,
+      "swipeDuration": 1000,
+      "visibleItemCount": 6,
+      "rotateDirection": "",
+      "defaultIndex": 0,
+      "toolbarPosition": "top"
+    }
   },
   "popover": {
     "attributes": [
@@ -5684,7 +7242,45 @@
         "type": "string",
         "default": "`van-icon`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "theme",
+      "overlay",
+      "actions",
+      "trigger",
+      "duration",
+      "showArrow",
+      "placement",
+      "iconPrefix",
+      "overlayClass",
+      "overlayStyle",
+      "closeOnClickAction",
+      "closeOnClickOverlay",
+      "closeOnClickOutside",
+      "offset",
+      "teleport"
+    ],
+    "booleanProps": [
+      "show",
+      "overlay",
+      "showArrow",
+      "closeOnClickAction",
+      "closeOnClickOverlay",
+      "closeOnClickOutside"
+    ],
+    "defaults": {
+      "show": false,
+      "theme": "light",
+      "overlay": false,
+      "trigger": "click",
+      "showArrow": true,
+      "placement": "bottom",
+      "closeOnClickAction": true,
+      "closeOnClickOverlay": true,
+      "closeOnClickOutside": true,
+      "teleport": "body"
+    }
   },
   "popup": {
     "attributes": [
@@ -5814,7 +7410,60 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "zIndex",
+      "overlay",
+      "duration",
+      "teleport",
+      "lockScroll",
+      "lazyRender",
+      "beforeClose",
+      "overlayStyle",
+      "overlayClass",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "round",
+      "position",
+      "closeIcon",
+      "closeable",
+      "transition",
+      "iconPrefix",
+      "closeOnPopstate",
+      "closeIconPosition",
+      "safeAreaInsetTop",
+      "safeAreaInsetBottom"
+    ],
+    "booleanProps": [
+      "show",
+      "overlay",
+      "lockScroll",
+      "lazyRender",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "round",
+      "closeable",
+      "closeOnPopstate",
+      "safeAreaInsetTop",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "show": false,
+      "overlay": true,
+      "lockScroll": true,
+      "lazyRender": true,
+      "transitionAppear": false,
+      "closeOnClickOverlay": true,
+      "round": false,
+      "position": "center",
+      "closeIcon": "cross",
+      "closeable": false,
+      "closeOnPopstate": false,
+      "closeIconPosition": "top-right",
+      "safeAreaInsetTop": false,
+      "safeAreaInsetBottom": false
+    }
   },
   "progress": {
     "attributes": [
@@ -5884,7 +7533,30 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "size",
+      "color",
+      "inactive",
+      "pivotText",
+      "textColor",
+      "textSize",
+      "showPivot",
+      "pivotColor",
+      "trackColor",
+      "strokeWidth",
+      "percentage"
+    ],
+    "booleanProps": [
+      "inactive",
+      "showPivot"
+    ],
+    "defaults": {
+      "size": "default",
+      "inactive": false,
+      "showPivot": true,
+      "percentage": 0
+    }
   },
   "pull-refresh": {
     "attributes": [
@@ -5948,7 +7620,217 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "disabled",
+      "modelValue",
+      "headHeight",
+      "successText",
+      "pullingText",
+      "loosingText",
+      "loadingText",
+      "pullDistance",
+      "successDuration",
+      "animationDuration"
+    ],
+    "booleanProps": [
+      "disabled",
+      "modelValue"
+    ],
+    "defaults": {
+      "disabled": false,
+      "modelValue": false,
+      "headHeight": 50,
+      "successDuration": 500,
+      "animationDuration": 300
+    }
+  },
+  "qr-scanner": {
+    "attributes": [
+      {
+        "name": "v-model:show",
+        "description": "是否展示（仅组件）",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "title",
+        "description": "标题",
+        "type": "string",
+        "default": "`扫描设备二维码`"
+      },
+      {
+        "name": "tip",
+        "description": "取景提示",
+        "type": "string",
+        "default": "`将设备二维码置于取景框内，即可自动识别`"
+      },
+      {
+        "name": "processing-text",
+        "description": "识别/业务处理中的提示",
+        "type": "string",
+        "default": "`正在处理扫码结果...`"
+      },
+      {
+        "name": "startup-timeout",
+        "description": "H5 启动总超时，ms；0 关闭，仅本轮启动时读取",
+        "type": "number | string",
+        "default": "`15000`"
+      },
+      {
+        "name": "startup-texts",
+        "description": "局部覆盖 camera / preview / decoder 阶段提示",
+        "type": "QrScannerStartupTexts",
+        "default": "按 Locale 显示"
+      },
+      {
+        "name": "formats",
+        "description": "识别格式，可按需开启条形码",
+        "type": "QrScannerFormat[]",
+        "default": "`['QRCode']`"
+      },
+      {
+        "name": "facing-mode",
+        "description": "首选摄像头，environment / user",
+        "type": "string",
+        "default": "`environment`"
+      },
+      {
+        "name": "show-album",
+        "description": "展示相册识别入口",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "show-torch",
+        "description": "展示常驻手电筒入口；不可用时置灰并提示原因",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "show-switch-camera",
+        "description": "多摄像头时展示切换入口",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "close-after-scan",
+        "description": "成功后关闭，关闭此项可连续扫描",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "scan-interval",
+        "description": "识别帧之间的最小间隔，ms，最低 100",
+        "type": "number | string",
+        "default": "`150`"
+      },
+      {
+        "name": "duplicate-interval",
+        "description": "摄像头相同结果的重复抑制时间，ms",
+        "type": "number | string",
+        "default": "`2000`"
+      },
+      {
+        "name": "max-image-size",
+        "description": "相册图片大小上限，字节",
+        "type": "number | string",
+        "default": "`20971520`"
+      },
+      {
+        "name": "paused",
+        "description": "暂停扫描并释放摄像头",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "before-confirm",
+        "description": "异步业务校验",
+        "type": "QrScannerBeforeConfirm",
+        "default": "-"
+      },
+      {
+        "name": "native-scan",
+        "description": "宿主原生扫码适配器",
+        "type": "QrScannerNativeScan",
+        "default": "-"
+      },
+      {
+        "name": "wasm-url",
+        "description": "自托管 reader WASM URL，须与依赖版本一致",
+        "type": "string",
+        "default": "本地打包资源"
+      },
+      {
+        "name": "teleport",
+        "description": "挂载节点",
+        "type": "string | Element",
+        "default": "`body`"
+      },
+      {
+        "name": "z-index",
+        "description": "层级",
+        "type": "number | string",
+        "default": "自动递增"
+      },
+      {
+        "name": "close-on-popstate",
+        "description": "路由回退时关闭",
+        "type": "boolean",
+        "default": "`true`"
+      }
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "tip",
+      "processingText",
+      "startupTimeout",
+      "startupTexts",
+      "formats",
+      "facingMode",
+      "showAlbum",
+      "showTorch",
+      "showSwitchCamera",
+      "closeAfterScan",
+      "scanInterval",
+      "duplicateInterval",
+      "maxImageSize",
+      "paused",
+      "wasmUrl",
+      "beforeConfirm",
+      "nativeScan",
+      "teleport",
+      "zIndex",
+      "closeOnPopstate"
+    ],
+    "booleanProps": [
+      "show",
+      "showAlbum",
+      "showTorch",
+      "showSwitchCamera",
+      "closeAfterScan",
+      "paused",
+      "closeOnPopstate"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "扫描设备二维码",
+      "tip": "将设备二维码置于取景框内，即可自动识别",
+      "processingText": "正在处理扫码结果...",
+      "startupTimeout": 15000,
+      "facingMode": "environment",
+      "showAlbum": true,
+      "showTorch": true,
+      "showSwitchCamera": true,
+      "closeAfterScan": true,
+      "scanInterval": 150,
+      "duplicateInterval": 2000,
+      "maxImageSize": 20971520,
+      "paused": false,
+      "teleport": "body",
+      "closeOnPopstate": true
+    }
   },
   "quantity-input": {
     "attributes": [
@@ -5994,7 +7876,26 @@
         "type": "string",
         "default": "`清空已选`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "items",
+      "modelValue",
+      "confirmText",
+      "expandText",
+      "collapseText",
+      "clearText",
+      "expanded"
+    ],
+    "booleanProps": [
+      "expanded"
+    ],
+    "defaults": {
+      "confirmText": "确定",
+      "expandText": "展开已选",
+      "collapseText": "收起已选",
+      "clearText": "清空已选",
+      "expanded": false
+    }
   },
   "radio": {
     "attributes": [
@@ -6063,14 +7964,32 @@
         "description": "所有单选框的选中状态颜色",
         "type": "string",
         "default": "`#1989fa`"
-      },
-      {
-        "name": "direction",
-        "description": "排列方向，可选值为 horizontal",
-        "type": "string",
-        "default": "`vertical`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "name",
+      "size",
+      "shape",
+      "disabled",
+      "iconSize",
+      "labelFontSize",
+      "modelValue",
+      "checkedColor",
+      "labelPosition",
+      "labelDisabled",
+      "allowUncheck"
+    ],
+    "booleanProps": [
+      "disabled",
+      "labelDisabled",
+      "allowUncheck"
+    ],
+    "defaults": {
+      "shape": "round",
+      "disabled": false,
+      "labelDisabled": false,
+      "allowUncheck": false
+    }
   },
   "radio-panel": {
     "attributes": [
@@ -6164,7 +8083,44 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "options",
+      "modelValue",
+      "searchable",
+      "searchPlaceholder",
+      "filterable",
+      "filterActive",
+      "loading",
+      "finished",
+      "error",
+      "lazy",
+      "loadingText",
+      "finishedText",
+      "errorText"
+    ],
+    "booleanProps": [
+      "show",
+      "searchable",
+      "filterable",
+      "filterActive",
+      "loading",
+      "finished",
+      "error",
+      "lazy"
+    ],
+    "defaults": {
+      "show": false,
+      "searchable": false,
+      "filterable": false,
+      "filterActive": false,
+      "loading": false,
+      "finished": false,
+      "error": false,
+      "lazy": false
+    }
   },
   "rate": {
     "attributes": [
@@ -6251,44 +8207,40 @@
         "description": "是否可以通过滑动手势选择评分",
         "type": "boolean",
         "default": "`true`"
-      },
-      {
-        "name": "title",
-        "description": "单元格标题",
-        "type": "string",
-        "default": "`服务满意度`"
-      },
-      {
-        "name": "required",
-        "description": "是否显示必填标识",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "description",
-        "description": "跟随评分的描述文本",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "show-description",
-        "description": "是否显示描述文本",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "layout",
-        "description": "布局，可选值为 default、between",
-        "type": "string",
-        "default": "`default`"
-      },
-      {
-        "name": "border",
-        "description": "是否展示底部分割线",
-        "type": "boolean",
-        "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "size",
+      "icon",
+      "color",
+      "count",
+      "gutter",
+      "readonly",
+      "disabled",
+      "voidIcon",
+      "allowHalf",
+      "voidColor",
+      "touchable",
+      "iconPrefix",
+      "modelValue",
+      "disabledColor"
+    ],
+    "booleanProps": [
+      "readonly",
+      "disabled",
+      "allowHalf",
+      "touchable"
+    ],
+    "defaults": {
+      "icon": "star",
+      "count": 5,
+      "readonly": false,
+      "disabled": false,
+      "voidIcon": "star-o",
+      "allowHalf": false,
+      "touchable": true,
+      "modelValue": 0
+    }
   },
   "search": {
     "attributes": [
@@ -6442,7 +8394,59 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "id",
+      "name",
+      "leftIcon",
+      "rightIcon",
+      "autofocus",
+      "clearable",
+      "maxlength",
+      "formatter",
+      "clearIcon",
+      "modelValue",
+      "inputAlign",
+      "placeholder",
+      "autocomplete",
+      "errorMessage",
+      "enterkeyhint",
+      "clearTrigger",
+      "formatTrigger",
+      "error",
+      "disabled",
+      "readonly",
+      "label",
+      "shape",
+      "variant",
+      "actionText",
+      "background",
+      "showAction"
+    ],
+    "booleanProps": [
+      "autofocus",
+      "clearable",
+      "error",
+      "disabled",
+      "readonly",
+      "showAction"
+    ],
+    "defaults": {
+      "leftIcon": "search",
+      "autofocus": false,
+      "clearable": true,
+      "clearIcon": "clear",
+      "modelValue": "",
+      "inputAlign": "left",
+      "clearTrigger": "focus",
+      "formatTrigger": "onChange",
+      "error": null,
+      "disabled": null,
+      "readonly": null,
+      "shape": "round",
+      "variant": "default",
+      "showAction": false
+    }
   },
   "share-sheet": {
     "attributes": [
@@ -6548,7 +8552,50 @@
         "type": "(action: string) => boolean | Promise\\",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "zIndex",
+      "overlay",
+      "duration",
+      "teleport",
+      "lockScroll",
+      "lazyRender",
+      "beforeClose",
+      "overlayStyle",
+      "overlayClass",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "title",
+      "round",
+      "options",
+      "cancelText",
+      "description",
+      "closeOnPopstate",
+      "safeAreaInsetBottom"
+    ],
+    "booleanProps": [
+      "show",
+      "overlay",
+      "lockScroll",
+      "lazyRender",
+      "transitionAppear",
+      "closeOnClickOverlay",
+      "round",
+      "closeOnPopstate",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "show": false,
+      "overlay": true,
+      "lockScroll": true,
+      "lazyRender": true,
+      "transitionAppear": false,
+      "closeOnClickOverlay": true,
+      "round": true,
+      "closeOnPopstate": true,
+      "safeAreaInsetBottom": true
+    }
   },
   "sidebar": {
     "attributes": [
@@ -6557,56 +8604,15 @@
         "description": "当前导航项的索引",
         "type": "number | string",
         "default": "`0`"
-      },
-      {
-        "name": "title",
-        "description": "内容",
-        "type": "string",
-        "default": "`''`"
-      },
-      {
-        "name": "dot",
-        "description": "是否显示右上角小红点",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "badge",
-        "description": "图标右上角徽标的内容",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "badge-props",
-        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-        "type": "BadgeProps",
-        "default": "-"
-      },
-      {
-        "name": "disabled",
-        "description": "是否禁用该项",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "url",
-        "description": "点击后跳转的链接地址",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "to",
-        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-        "type": "string | object",
-        "default": "-"
-      },
-      {
-        "name": "replace",
-        "description": "是否在跳转时替换当前页面历史",
-        "type": "boolean",
-        "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "modelValue"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "modelValue": 0
+    }
   },
   "single-person-select": {
     "attributes": [
@@ -6640,7 +8646,22 @@
         "type": "SinglePersonGroup[]",
         "default": "内置示例数据"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "modelValue",
+      "title",
+      "searchPlaceholder",
+      "groups"
+    ],
+    "booleanProps": [
+      "show"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "选择人员",
+      "searchPlaceholder": "搜索人员"
+    }
   },
   "skeleton": {
     "attributes": [
@@ -6704,7 +8725,36 @@
         "type": "string",
         "default": "`round`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "row",
+      "title",
+      "round",
+      "avatar",
+      "loading",
+      "animate",
+      "avatarSize",
+      "titleWidth",
+      "avatarShape",
+      "rowWidth"
+    ],
+    "booleanProps": [
+      "title",
+      "round",
+      "avatar",
+      "loading",
+      "animate"
+    ],
+    "defaults": {
+      "row": 0,
+      "title": false,
+      "round": false,
+      "avatar": false,
+      "loading": true,
+      "animate": true,
+      "avatarShape": "round",
+      "rowWidth": "100%"
+    }
   },
   "slider": {
     "attributes": [
@@ -6780,7 +8830,40 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "min",
+      "max",
+      "step",
+      "range",
+      "reverse",
+      "disabled",
+      "readonly",
+      "vertical",
+      "barHeight",
+      "buttonSize",
+      "activeColor",
+      "inactiveColor",
+      "modelValue"
+    ],
+    "booleanProps": [
+      "range",
+      "reverse",
+      "disabled",
+      "readonly",
+      "vertical"
+    ],
+    "defaults": {
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "range": false,
+      "reverse": false,
+      "disabled": false,
+      "readonly": false,
+      "vertical": false,
+      "modelValue": 0
+    }
   },
   "space": {
     "attributes": [
@@ -6814,7 +8897,24 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "align",
+      "direction",
+      "size",
+      "wrap",
+      "fill"
+    ],
+    "booleanProps": [
+      "wrap",
+      "fill"
+    ],
+    "defaults": {
+      "direction": "horizontal",
+      "size": 8,
+      "wrap": false,
+      "fill": false
+    }
   },
   "stepper": {
     "attributes": [
@@ -6950,7 +9050,60 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "min",
+      "max",
+      "name",
+      "step",
+      "theme",
+      "integer",
+      "disabled",
+      "showPlus",
+      "showMinus",
+      "showInput",
+      "longPress",
+      "allowEmpty",
+      "modelValue",
+      "inputWidth",
+      "buttonSize",
+      "placeholder",
+      "disablePlus",
+      "disableMinus",
+      "disableInput",
+      "beforeChange",
+      "defaultValue",
+      "decimalLength"
+    ],
+    "booleanProps": [
+      "integer",
+      "disabled",
+      "showPlus",
+      "showMinus",
+      "showInput",
+      "longPress",
+      "allowEmpty",
+      "disablePlus",
+      "disableMinus",
+      "disableInput"
+    ],
+    "defaults": {
+      "min": 1,
+      "max": null,
+      "name": "",
+      "step": 1,
+      "integer": false,
+      "disabled": false,
+      "showPlus": true,
+      "showMinus": true,
+      "showInput": true,
+      "longPress": true,
+      "allowEmpty": false,
+      "disablePlus": false,
+      "disableMinus": false,
+      "disableInput": false,
+      "defaultValue": 1
+    }
   },
   "steps": {
     "attributes": [
@@ -7002,7 +9155,23 @@
         "type": "string",
         "default": "`van-icon`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "active",
+      "direction",
+      "activeIcon",
+      "iconPrefix",
+      "finishIcon",
+      "activeColor",
+      "inactiveIcon",
+      "inactiveColor"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "active": 0,
+      "direction": "horizontal",
+      "activeIcon": "checked"
+    }
   },
   "sticky": {
     "attributes": [
@@ -7036,7 +9205,20 @@
         "type": "Element",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "zIndex",
+      "position",
+      "container",
+      "offsetTop",
+      "offsetBottom"
+    ],
+    "booleanProps": [],
+    "defaults": {
+      "position": "top",
+      "offsetTop": 0,
+      "offsetBottom": 0
+    }
   },
   "style": {
     "attributes": []
@@ -7133,7 +9315,39 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "tip",
+      "label",
+      "price",
+      "tipIcon",
+      "loading",
+      "currency",
+      "disabled",
+      "textAlign",
+      "buttonText",
+      "buttonType",
+      "buttonColor",
+      "suffixLabel",
+      "placeholder",
+      "decimalLength",
+      "safeAreaInsetBottom"
+    ],
+    "booleanProps": [
+      "loading",
+      "disabled",
+      "placeholder",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "loading": false,
+      "currency": "¥",
+      "disabled": false,
+      "buttonType": "primary",
+      "placeholder": false,
+      "decimalLength": 2,
+      "safeAreaInsetBottom": true
+    }
   },
   "swipe": {
     "attributes": [
@@ -7209,7 +9423,40 @@
         "type": "string",
         "default": "`#1989fa`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "loop",
+      "width",
+      "height",
+      "vertical",
+      "autoplay",
+      "duration",
+      "touchable",
+      "lazyRender",
+      "initialSwipe",
+      "indicatorColor",
+      "showIndicators",
+      "stopPropagation"
+    ],
+    "booleanProps": [
+      "loop",
+      "vertical",
+      "touchable",
+      "lazyRender",
+      "showIndicators",
+      "stopPropagation"
+    ],
+    "defaults": {
+      "loop": true,
+      "vertical": false,
+      "autoplay": 0,
+      "duration": 500,
+      "touchable": true,
+      "lazyRender": false,
+      "initialSwipe": 0,
+      "showIndicators": true,
+      "stopPropagation": true
+    }
   },
   "swipe-cell": {
     "attributes": [
@@ -7249,7 +9496,24 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "name",
+      "disabled",
+      "leftWidth",
+      "rightWidth",
+      "beforeClose",
+      "stopPropagation"
+    ],
+    "booleanProps": [
+      "disabled",
+      "stopPropagation"
+    ],
+    "defaults": {
+      "name": "",
+      "disabled": false,
+      "stopPropagation": false
+    }
   },
   "switch": {
     "attributes": [
@@ -7301,154 +9565,30 @@
         "type": "any",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "size",
+      "loading",
+      "disabled",
+      "modelValue",
+      "activeColor",
+      "inactiveColor",
+      "activeValue",
+      "inactiveValue"
+    ],
+    "booleanProps": [
+      "loading",
+      "disabled"
+    ],
+    "defaults": {
+      "loading": false,
+      "disabled": false,
+      "activeValue": true,
+      "inactiveValue": false
+    }
   },
   "tab": {
     "attributes": [
-      {
-        "name": "v-model:active",
-        "description": "绑定当前选中标签的标识符",
-        "type": "number | string",
-        "default": "`0`"
-      },
-      {
-        "name": "type",
-        "description": "样式风格类型，可选值为 card（风格 1）、card-gray（风格 2）、filter（风格 3）",
-        "type": "string",
-        "default": "`line`"
-      },
-      {
-        "name": "color",
-        "description": "标签主题色",
-        "type": "string",
-        "default": "`var(--van-primary-color)`"
-      },
-      {
-        "name": "background",
-        "description": "标签栏背景色",
-        "type": "string",
-        "default": "`white`"
-      },
-      {
-        "name": "duration",
-        "description": "动画时间，单位秒，设置为 0 可以禁用动画",
-        "type": "number | string",
-        "default": "`0.3`"
-      },
-      {
-        "name": "line-width",
-        "description": "底部条宽度，默认单位 px",
-        "type": "number | string",
-        "default": "`40px`"
-      },
-      {
-        "name": "line-height",
-        "description": "底部条高度，默认单位 px",
-        "type": "number | string",
-        "default": "`3px`"
-      },
-      {
-        "name": "animated",
-        "description": "是否开启切换标签内容时的转场动画",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "border",
-        "description": "是否显示标签栏外边框，仅在 type=\"line\" 时有效",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "ellipsis",
-        "description": "是否省略过长的标题文字",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "sticky",
-        "description": "是否使用粘性布局",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "shrink",
-        "description": "是否开启左侧收缩布局",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "swipeable",
-        "description": "是否开启手势左右滑动切换",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "lazy-render",
-        "description": "是否开启延迟渲染（首次切换到标签时才触发内容渲染）",
-        "type": "boolean",
-        "default": "`true`"
-      },
-      {
-        "name": "scrollspy",
-        "description": "是否开启滚动导航",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "offset-top",
-        "description": "粘性布局下吸顶时与顶部的距离，支持 px vw vh rem 单位，默认 px",
-        "type": "number | string",
-        "default": "`0`"
-      },
-      {
-        "name": "swipe-threshold",
-        "description": "滚动阈值，标签数量超过阈值且总宽度超过标签栏宽度时开始横向滚动",
-        "type": "number | string",
-        "default": "`5`"
-      },
-      {
-        "name": "title-active-color",
-        "description": "标题选中态颜色",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "title-inactive-color",
-        "description": "标题默认态颜色",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "more",
-        "description": "是否显示右侧更多按钮",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "v-model:show-more",
-        "description": "是否展示更多动作面板",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "more-title",
-        "description": "更多动作面板标题",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "more-options",
-        "description": "自定义更多动作面板选项，默认为全部标签",
-        "type": "ActionSheetAction[]",
-        "default": "`[]`"
-      },
-      {
-        "name": "before-change",
-        "description": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
-        "type": "(name: number | string) => boolean | Promise\\",
-        "default": "-"
-      },
       {
         "name": "title",
         "description": "标题",
@@ -7521,7 +9661,33 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "dot",
+      "name",
+      "badge",
+      "icon",
+      "title",
+      "disabled",
+      "titleClass",
+      "titleStyle",
+      "showZeroBadge"
+    ],
+    "booleanProps": [
+      "replace",
+      "dot",
+      "disabled",
+      "showZeroBadge"
+    ],
+    "defaults": {
+      "replace": false,
+      "dot": false,
+      "disabled": false,
+      "showZeroBadge": true
+    }
   },
   "tabbar": {
     "attributes": [
@@ -7584,62 +9750,35 @@
         "description": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
         "type": "(name: number | string) => boolean | Promise\\",
         "default": "-"
-      },
-      {
-        "name": "name",
-        "description": "标签名称，作为匹配的标识符",
-        "type": "number | string",
-        "default": "当前标签的索引值"
-      },
-      {
-        "name": "icon",
-        "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "icon-prefix",
-        "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
-        "type": "string",
-        "default": "`van-icon`"
-      },
-      {
-        "name": "dot",
-        "description": "是否显示图标右上角小红点",
-        "type": "boolean",
-        "default": "`false`"
-      },
-      {
-        "name": "badge",
-        "description": "图标右上角徽标的内容",
-        "type": "number | string",
-        "default": "-"
-      },
-      {
-        "name": "badge-props",
-        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
-        "type": "BadgeProps",
-        "default": "-"
-      },
-      {
-        "name": "url",
-        "description": "点击后跳转的链接地址",
-        "type": "string",
-        "default": "-"
-      },
-      {
-        "name": "to",
-        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
-        "type": "string | object",
-        "default": "-"
-      },
-      {
-        "name": "replace",
-        "description": "是否在跳转时替换当前页面历史",
-        "type": "boolean",
-        "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "route",
+      "fixed",
+      "border",
+      "zIndex",
+      "placeholder",
+      "activeColor",
+      "beforeChange",
+      "inactiveColor",
+      "modelValue",
+      "safeAreaInsetBottom"
+    ],
+    "booleanProps": [
+      "route",
+      "fixed",
+      "border",
+      "placeholder",
+      "safeAreaInsetBottom"
+    ],
+    "defaults": {
+      "route": false,
+      "fixed": true,
+      "border": true,
+      "placeholder": false,
+      "modelValue": 0,
+      "safeAreaInsetBottom": null
+    }
   },
   "tag": {
     "attributes": [
@@ -7721,7 +9860,40 @@
         "type": "string",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "size",
+      "mark",
+      "show",
+      "type",
+      "color",
+      "plain",
+      "round",
+      "textColor",
+      "closeable",
+      "rightIcon",
+      "number",
+      "showNumber",
+      "numberColor"
+    ],
+    "booleanProps": [
+      "mark",
+      "show",
+      "plain",
+      "round",
+      "closeable",
+      "showNumber"
+    ],
+    "defaults": {
+      "size": "medium",
+      "mark": false,
+      "show": true,
+      "type": "gray",
+      "plain": false,
+      "round": false,
+      "closeable": false,
+      "showNumber": false
+    }
   },
   "title-bar": {
     "attributes": [
@@ -7821,7 +9993,53 @@
         "type": "boolean",
         "default": "`false`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "description",
+      "icon",
+      "showIcon",
+      "rightIcon",
+      "showRightIcon",
+      "showDescription",
+      "showArrow",
+      "showExpandIcon",
+      "actionText",
+      "showAction",
+      "size",
+      "bottomGap",
+      "expandable",
+      "modelValue",
+      "required"
+    ],
+    "booleanProps": [
+      "showIcon",
+      "showRightIcon",
+      "showDescription",
+      "showArrow",
+      "showExpandIcon",
+      "showAction",
+      "expandable",
+      "modelValue",
+      "required"
+    ],
+    "defaults": {
+      "title": "",
+      "description": "",
+      "showIcon": false,
+      "rightIcon": "cross",
+      "showRightIcon": false,
+      "showDescription": false,
+      "showArrow": false,
+      "showExpandIcon": true,
+      "actionText": "操作",
+      "showAction": false,
+      "size": "default",
+      "bottomGap": "4",
+      "expandable": false,
+      "modelValue": true,
+      "required": false
+    }
   },
   "toast": {
     "attributes": [
@@ -8003,7 +10221,33 @@
         "type": "(item: TreeSelectItem) => TreeSelectItem[] | Promise",
         "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "items",
+      "modelValue",
+      "expandedKeys",
+      "multiple",
+      "cascade",
+      "selectableParent",
+      "showParentSelect",
+      "showSelectLevels",
+      "showDivider",
+      "loadChildren"
+    ],
+    "booleanProps": [
+      "multiple",
+      "cascade",
+      "selectableParent",
+      "showParentSelect",
+      "showDivider"
+    ],
+    "defaults": {
+      "multiple": false,
+      "cascade": false,
+      "selectableParent": false,
+      "showParentSelect": false,
+      "showDivider": true
+    }
   },
   "tree-select-panel": {
     "attributes": [
@@ -8151,7 +10395,63 @@
         "type": "string",
         "default": "`确定`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "items",
+      "modelValue",
+      "expandedKeys",
+      "multiple",
+      "cascade",
+      "selectableParent",
+      "showParentSelect",
+      "showSelectLevels",
+      "searchable",
+      "searchPlaceholder",
+      "showSearchParentPath",
+      "lazy",
+      "loading",
+      "finished",
+      "error",
+      "loadingText",
+      "finishedText",
+      "errorText",
+      "selectedText",
+      "collapseSelectedText",
+      "clearSelectedText",
+      "confirmText"
+    ],
+    "booleanProps": [
+      "show",
+      "multiple",
+      "cascade",
+      "selectableParent",
+      "showParentSelect",
+      "searchable",
+      "showSearchParentPath",
+      "lazy",
+      "loading",
+      "finished",
+      "error"
+    ],
+    "defaults": {
+      "show": false,
+      "multiple": false,
+      "cascade": false,
+      "selectableParent": false,
+      "showParentSelect": false,
+      "searchable": true,
+      "showSearchParentPath": true,
+      "lazy": false,
+      "loading": false,
+      "finished": false,
+      "error": false,
+      "selectedText": "展开已选",
+      "collapseSelectedText": "收起已选",
+      "clearSelectedText": "清空已选",
+      "confirmText": "确定"
+    }
   },
   "uploader": {
     "attributes": [
@@ -8317,7 +10617,69 @@
         "type": "string",
         "default": "`photograph`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "name",
+      "accept",
+      "capture",
+      "multiple",
+      "sourcePicker",
+      "label",
+      "required",
+      "disabled",
+      "readonly",
+      "lazyLoad",
+      "maxCount",
+      "imageFit",
+      "resultType",
+      "uploadIcon",
+      "uploadText",
+      "deletable",
+      "afterRead",
+      "showUpload",
+      "uploadFirst",
+      "modelValue",
+      "beforeRead",
+      "beforeDelete",
+      "previewSize",
+      "previewImage",
+      "previewOptions",
+      "previewFullImage",
+      "maxSize"
+    ],
+    "booleanProps": [
+      "multiple",
+      "sourcePicker",
+      "required",
+      "disabled",
+      "readonly",
+      "lazyLoad",
+      "deletable",
+      "showUpload",
+      "uploadFirst",
+      "previewImage",
+      "previewFullImage"
+    ],
+    "defaults": {
+      "name": "",
+      "accept": "image/*",
+      "multiple": false,
+      "sourcePicker": false,
+      "required": false,
+      "disabled": false,
+      "readonly": false,
+      "lazyLoad": false,
+      "maxCount": null,
+      "imageFit": "cover",
+      "resultType": "dataUrl",
+      "uploadIcon": "photograph",
+      "deletable": true,
+      "showUpload": true,
+      "uploadFirst": false,
+      "previewImage": true,
+      "previewFullImage": true,
+      "maxSize": null
+    }
   },
   "video-preview": {
     "attributes": [
@@ -8386,50 +10748,49 @@
         "description": "可选倍速",
         "type": "number[]",
         "default": "`[0.5, 1, 1.5, 2]`"
-      },
-      {
-        "name": "teleport",
-        "description": "指定挂载位置",
-        "type": "string | Element",
-        "default": "`body`"
-      },
-      {
-        "name": "onClose",
-        "description": "关闭预览时触发",
-        "type": "Function",
-        "default": "-"
-      },
-      {
-        "name": "onPlay",
-        "description": "开始播放时触发",
-        "type": "Function",
-        "default": "-"
-      },
-      {
-        "name": "onPause",
-        "description": "暂停时触发",
-        "type": "Function",
-        "default": "-"
-      },
-      {
-        "name": "onEnded",
-        "description": "播放结束时触发",
-        "type": "Function",
-        "default": "-"
-      },
-      {
-        "name": "onTimeupdate",
-        "description": "播放进度更新时触发",
-        "type": "Function",
-        "default": "-"
-      },
-      {
-        "name": "onError",
-        "description": "播放出错时触发",
-        "type": "Function",
-        "default": "-"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "src",
+      "poster",
+      "autoplay",
+      "muted",
+      "loop",
+      "controls",
+      "playbackRates",
+      "fit",
+      "className",
+      "transition",
+      "overlayStyle",
+      "overlayClass",
+      "closeable",
+      "closeIcon",
+      "closeIconPosition",
+      "closeOnPopstate"
+    ],
+    "booleanProps": [
+      "show",
+      "autoplay",
+      "muted",
+      "loop",
+      "controls",
+      "closeable",
+      "closeOnPopstate"
+    ],
+    "defaults": {
+      "show": false,
+      "src": "",
+      "autoplay": false,
+      "muted": false,
+      "loop": false,
+      "controls": true,
+      "fit": "contain",
+      "closeable": true,
+      "closeIcon": "cross",
+      "closeIconPosition": "top-left",
+      "closeOnPopstate": true
+    }
   },
   "work-order-card": {
     "attributes": [
@@ -8505,7 +10866,38 @@
         "type": "boolean",
         "default": "`true`"
       }
-    ]
+    ],
+    "supportedProps": [
+      "title",
+      "expanded",
+      "defaultExpanded",
+      "expandable",
+      "tags",
+      "location",
+      "showLocation",
+      "primaryInfos",
+      "expandedInfos",
+      "actions",
+      "overdue",
+      "showOverdue",
+      "clickable"
+    ],
+    "booleanProps": [
+      "expanded",
+      "defaultExpanded",
+      "expandable",
+      "showLocation",
+      "showOverdue",
+      "clickable"
+    ],
+    "defaults": {
+      "title": "",
+      "defaultExpanded": false,
+      "expandable": true,
+      "showLocation": true,
+      "showOverdue": true,
+      "clickable": false
+    }
   },
   "work-order-filter": {
     "attributes": [
@@ -8635,6 +11027,1373 @@
         "type": "WorkOrderFilterSectionKey[]",
         "default": "内置顺序"
       }
-    ]
+    ],
+    "supportedProps": [
+      "show",
+      "title",
+      "modelValue",
+      "projects",
+      "workOrderTypes",
+      "sortOptions",
+      "timeOptions",
+      "reminderOptions",
+      "relationOptions",
+      "workTypes",
+      "resetText",
+      "confirmText",
+      "saveText",
+      "showProjects",
+      "showSort",
+      "showTimeRange",
+      "showReminder",
+      "showRelation",
+      "showWorkOrderTypes",
+      "showWorkTypes",
+      "sectionOrder"
+    ],
+    "booleanProps": [
+      "show",
+      "showProjects",
+      "showSort",
+      "showTimeRange",
+      "showReminder",
+      "showRelation",
+      "showWorkOrderTypes",
+      "showWorkTypes"
+    ],
+    "defaults": {
+      "show": false,
+      "title": "筛选",
+      "resetText": "重置",
+      "confirmText": "确定",
+      "saveText": "保存为我的默认筛选",
+      "showProjects": true,
+      "showSort": true,
+      "showTimeRange": true,
+      "showReminder": true,
+      "showRelation": true,
+      "showWorkOrderTypes": true,
+      "showWorkTypes": true
+    }
+  },
+  "blue-mark-header": {
+    "attributes": [
+      {
+        "name": "size",
+        "description": "小蓝标尺寸",
+        "type": "string",
+        "default": "`large`"
+      },
+      {
+        "name": "title",
+        "description": "标题文本",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "required",
+        "description": "是否展示必填星号",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "action-text",
+        "description": "右侧操作文本",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "expandable",
+        "description": "是否启用展开收起，点击整个标题栏可切换",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "show-expand-icon",
+        "description": "是否展示右侧展开收起箭头",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "v-model",
+        "description": "是否展开",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "expand-text",
+        "description": "收起状态的操作文案",
+        "type": "string",
+        "default": "`展开`"
+      },
+      {
+        "name": "collapse-text",
+        "description": "展开状态的操作文案",
+        "type": "string",
+        "default": "`收起`"
+      }
+    ],
+    "supportedProps": [
+      "title",
+      "size",
+      "required",
+      "actionText",
+      "expandable",
+      "showExpandIcon",
+      "modelValue",
+      "expandText",
+      "collapseText"
+    ],
+    "booleanProps": [
+      "required",
+      "expandable",
+      "showExpandIcon",
+      "modelValue"
+    ],
+    "defaults": {
+      "size": "large",
+      "required": false,
+      "expandable": false,
+      "showExpandIcon": false,
+      "modelValue": false
+    }
+  },
+  "tabs": {
+    "attributes": [
+      {
+        "name": "v-model:active",
+        "description": "绑定当前选中标签的标识符",
+        "type": "number | string",
+        "default": "`0`"
+      },
+      {
+        "name": "type",
+        "description": "样式风格类型，可选值为 card（风格 1）、card-gray（风格 2）、filter（风格 3）",
+        "type": "string",
+        "default": "`line`"
+      },
+      {
+        "name": "color",
+        "description": "标签主题色",
+        "type": "string",
+        "default": "`var(--van-primary-color)`"
+      },
+      {
+        "name": "background",
+        "description": "标签栏背景色",
+        "type": "string",
+        "default": "`white`"
+      },
+      {
+        "name": "duration",
+        "description": "动画时间，单位秒，设置为 0 可以禁用动画",
+        "type": "number | string",
+        "default": "`0.3`"
+      },
+      {
+        "name": "line-width",
+        "description": "底部条宽度，默认单位 px",
+        "type": "number | string",
+        "default": "`40px`"
+      },
+      {
+        "name": "line-height",
+        "description": "底部条高度，默认单位 px",
+        "type": "number | string",
+        "default": "`3px`"
+      },
+      {
+        "name": "animated",
+        "description": "是否开启切换标签内容时的转场动画",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "border",
+        "description": "是否显示标签栏外边框，仅在 type=\"line\" 时有效",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "ellipsis",
+        "description": "是否省略过长的标题文字",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "sticky",
+        "description": "是否使用粘性布局",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "shrink",
+        "description": "是否开启左侧收缩布局",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "swipeable",
+        "description": "是否开启手势左右滑动切换",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "lazy-render",
+        "description": "是否开启延迟渲染（首次切换到标签时才触发内容渲染）",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "scrollspy",
+        "description": "是否开启滚动导航",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "offset-top",
+        "description": "粘性布局下吸顶时与顶部的距离，支持 px vw vh rem 单位，默认 px",
+        "type": "number | string",
+        "default": "`0`"
+      },
+      {
+        "name": "swipe-threshold",
+        "description": "滚动阈值，标签数量超过阈值且总宽度超过标签栏宽度时开始横向滚动",
+        "type": "number | string",
+        "default": "`5`"
+      },
+      {
+        "name": "title-active-color",
+        "description": "标题选中态颜色",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "title-inactive-color",
+        "description": "标题默认态颜色",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "more",
+        "description": "是否显示右侧更多按钮",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "v-model:show-more",
+        "description": "是否展示更多动作面板",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "more-title",
+        "description": "更多动作面板标题",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "more-options",
+        "description": "自定义更多动作面板选项，默认为全部标签",
+        "type": "ActionSheetAction[]",
+        "default": "`[]`"
+      },
+      {
+        "name": "before-change",
+        "description": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
+        "type": "(name: number | string) => boolean | Promise\\",
+        "default": "-"
+      }
+    ],
+    "supportedProps": [
+      "type",
+      "color",
+      "border",
+      "sticky",
+      "shrink",
+      "active",
+      "duration",
+      "animated",
+      "ellipsis",
+      "swipeable",
+      "scrollspy",
+      "offsetTop",
+      "background",
+      "lazyRender",
+      "lineWidth",
+      "lineHeight",
+      "beforeChange",
+      "swipeThreshold",
+      "titleActiveColor",
+      "titleInactiveColor",
+      "more",
+      "showMore",
+      "moreTitle",
+      "moreOptions"
+    ],
+    "booleanProps": [
+      "border",
+      "sticky",
+      "shrink",
+      "animated",
+      "ellipsis",
+      "swipeable",
+      "scrollspy",
+      "lazyRender",
+      "more",
+      "showMore"
+    ],
+    "defaults": {
+      "type": "line",
+      "border": false,
+      "sticky": false,
+      "shrink": false,
+      "active": 0,
+      "duration": 0.3,
+      "animated": false,
+      "ellipsis": true,
+      "swipeable": false,
+      "scrollspy": false,
+      "offsetTop": 0,
+      "lazyRender": true,
+      "swipeThreshold": 5,
+      "more": false,
+      "showMore": false
+    }
+  },
+  "row": {
+    "attributes": [
+      {
+        "name": "gutter",
+        "description": "列元素之间的间距（单位为 px）",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "tag",
+        "description": "自定义元素标签",
+        "type": "string",
+        "default": "`div`"
+      },
+      {
+        "name": "justify",
+        "description": "主轴对齐方式，可选值为 end center   space-around space-between",
+        "type": "string",
+        "default": "`start`"
+      },
+      {
+        "name": "align",
+        "description": "交叉轴对齐方式，可选值为 center bottom",
+        "type": "string",
+        "default": "`top`"
+      },
+      {
+        "name": "wrap",
+        "description": "是否自动换行",
+        "type": "boolean",
+        "default": "`true`"
+      }
+    ],
+    "supportedProps": [
+      "tag",
+      "wrap",
+      "align",
+      "gutter",
+      "justify"
+    ],
+    "booleanProps": [
+      "wrap"
+    ],
+    "defaults": {
+      "tag": "div",
+      "wrap": true,
+      "gutter": 0
+    }
+  },
+  "cell-group": {
+    "attributes": [
+      {
+        "name": "title",
+        "description": "左侧标题",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "inset",
+        "description": "是否展示为圆角卡片风格",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "gray-card",
+        "description": "是否展示为灰色渐变卡片包裹的白底单元格样式",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "border",
+        "description": "是否显示内边框",
+        "type": "boolean",
+        "default": "`true`"
+      }
+    ],
+    "supportedProps": [
+      "title",
+      "inset",
+      "grayCard",
+      "border"
+    ],
+    "booleanProps": [
+      "inset",
+      "grayCard",
+      "border"
+    ],
+    "defaults": {
+      "inset": false,
+      "grayCard": false,
+      "border": true
+    }
+  },
+  "grid-item": {
+    "attributes": [
+      {
+        "name": "text",
+        "description": "文字",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "icon",
+        "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "icon-prefix",
+        "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
+        "type": "string",
+        "default": "`van-icon`"
+      },
+      {
+        "name": "icon-color",
+        "description": "图标颜色，等同于 Icon 组件的 color 属性",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "dot",
+        "description": "是否显示图标右上角小红点",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "badge",
+        "description": "图标右上角徽标的内容",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "badge-props",
+        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+        "type": "BadgeProps",
+        "default": "-"
+      },
+      {
+        "name": "url",
+        "description": "点击后跳转的链接地址",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "to",
+        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+        "type": "string | object",
+        "default": "-"
+      },
+      {
+        "name": "replace",
+        "description": "是否在跳转时替换当前页面历史",
+        "type": "boolean",
+        "default": "`false`"
+      }
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "dot",
+      "text",
+      "icon",
+      "badge",
+      "iconColor",
+      "iconPrefix",
+      "badgeProps"
+    ],
+    "booleanProps": [
+      "replace",
+      "dot"
+    ],
+    "defaults": {
+      "replace": false,
+      "dot": false
+    }
+  },
+  "swipe-item": {
+    "attributes": [],
+    "supportedProps": [],
+    "booleanProps": [],
+    "defaults": {}
+  },
+  "step": {
+    "attributes": [],
+    "supportedProps": [],
+    "booleanProps": [],
+    "defaults": {}
+  },
+  "sidebar-item": {
+    "attributes": [
+      {
+        "name": "title",
+        "description": "内容",
+        "type": "string",
+        "default": "`''`"
+      },
+      {
+        "name": "dot",
+        "description": "是否显示右上角小红点",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "badge",
+        "description": "图标右上角徽标的内容",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "badge-props",
+        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+        "type": "BadgeProps",
+        "default": "-"
+      },
+      {
+        "name": "disabled",
+        "description": "是否禁用该项",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "url",
+        "description": "点击后跳转的链接地址",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "to",
+        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+        "type": "string | object",
+        "default": "-"
+      },
+      {
+        "name": "replace",
+        "description": "是否在跳转时替换当前页面历史",
+        "type": "boolean",
+        "default": "`false`"
+      }
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "dot",
+      "title",
+      "badge",
+      "disabled",
+      "badgeProps"
+    ],
+    "booleanProps": [
+      "replace",
+      "dot",
+      "disabled"
+    ],
+    "defaults": {
+      "replace": false,
+      "dot": false,
+      "disabled": false
+    }
+  },
+  "collapse-item": {
+    "attributes": [
+      {
+        "name": "border",
+        "description": "是否显示内边框",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "name",
+        "description": "唯一标识符，默认为索引值",
+        "type": "number | string",
+        "default": "`index`"
+      },
+      {
+        "name": "icon",
+        "description": "标题栏左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "size",
+        "description": "标题栏大小，可选值为 large",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "title",
+        "description": "标题栏左侧内容",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "value",
+        "description": "标题栏右侧内容",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "label",
+        "description": "标题栏描述信息",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "is-link",
+        "description": "是否展示标题栏右侧箭头并开启点击反馈",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "disabled",
+        "description": "是否禁用面板",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "readonly",
+        "description": "是否为只读状态，只读状态下无法操作面板",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "lazy-render",
+        "description": "是否在首次展开时才渲染面板内容",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "title-class",
+        "description": "左侧标题额外类名",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "value-class",
+        "description": "右侧内容额外类名",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "label-class",
+        "description": "描述信息额外类名",
+        "type": "string",
+        "default": "-"
+      }
+    ],
+    "supportedProps": [
+      "icon",
+      "size",
+      "background",
+      "title",
+      "value",
+      "label",
+      "labelClickable",
+      "labelIcon",
+      "showLabelIcon",
+      "description",
+      "descriptionClickable",
+      "multiLineNotes",
+      "showMultiLineNotes",
+      "showTitleCollapseIcon",
+      "defaultMultiLineNotesCollapsed",
+      "threeLine",
+      "threeLineEllipsis",
+      "labelSize",
+      "avatar",
+      "showAvatar",
+      "rightAvatar",
+      "showRightAvatar",
+      "tags",
+      "showTags",
+      "titleTag",
+      "showTitleTag",
+      "wrapTags",
+      "showWrapTags",
+      "titleIcon",
+      "titleIconClickable",
+      "showTitleIcon",
+      "rightIcon",
+      "showIcon",
+      "showRightIcon",
+      "note",
+      "showNote",
+      "noteBold",
+      "noteClickable",
+      "noteTo",
+      "noteUrl",
+      "noteReplace",
+      "badge",
+      "showBadge",
+      "leftSelect",
+      "showLeftSelect",
+      "rightSelect",
+      "showRightSelect",
+      "selectType",
+      "blueMark",
+      "showBlueMark",
+      "titleBold",
+      "center",
+      "isLink",
+      "border",
+      "errorBorder",
+      "required",
+      "iconPrefix",
+      "valueClass",
+      "labelClass",
+      "titleClass",
+      "titleStyle",
+      "arrowDirection",
+      "clickable",
+      "name",
+      "disabled",
+      "readonly",
+      "lazyRender"
+    ],
+    "booleanProps": [
+      "labelClickable",
+      "showLabelIcon",
+      "descriptionClickable",
+      "showMultiLineNotes",
+      "showTitleCollapseIcon",
+      "defaultMultiLineNotesCollapsed",
+      "threeLine",
+      "threeLineEllipsis",
+      "showAvatar",
+      "showRightAvatar",
+      "showTags",
+      "showTitleTag",
+      "showWrapTags",
+      "titleIconClickable",
+      "showTitleIcon",
+      "showIcon",
+      "showRightIcon",
+      "showNote",
+      "noteBold",
+      "noteClickable",
+      "noteReplace",
+      "showBadge",
+      "leftSelect",
+      "showLeftSelect",
+      "rightSelect",
+      "showRightSelect",
+      "blueMark",
+      "showBlueMark",
+      "titleBold",
+      "center",
+      "isLink",
+      "border",
+      "errorBorder",
+      "required",
+      "clickable",
+      "disabled",
+      "readonly",
+      "lazyRender"
+    ],
+    "defaults": {
+      "labelClickable": false,
+      "descriptionClickable": false,
+      "showTitleCollapseIcon": false,
+      "defaultMultiLineNotesCollapsed": false,
+      "threeLine": false,
+      "threeLineEllipsis": false,
+      "titleIconClickable": false,
+      "noteBold": false,
+      "noteClickable": false,
+      "noteReplace": false,
+      "selectType": "checkbox",
+      "blueMark": false,
+      "titleBold": false,
+      "center": false,
+      "isLink": true,
+      "border": true,
+      "errorBorder": false,
+      "required": false,
+      "clickable": null,
+      "disabled": false,
+      "readonly": false,
+      "lazyRender": true
+    }
+  },
+  "index-anchor": {
+    "attributes": [
+      {
+        "name": "index",
+        "description": "索引字符",
+        "type": "number | string",
+        "default": "-"
+      }
+    ],
+    "supportedProps": [
+      "index"
+    ],
+    "booleanProps": [],
+    "defaults": {}
+  },
+  "action-bar-icon": {
+    "attributes": [
+      {
+        "name": "text",
+        "description": "按钮文字",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "icon",
+        "description": "左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "color",
+        "description": "按钮颜色，支持传入 linear-gradient 渐变色",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "icon-class",
+        "description": "图标额外类名",
+        "type": "string | Array | object",
+        "default": "-"
+      },
+      {
+        "name": "icon-prefix",
+        "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
+        "type": "string",
+        "default": "`van-icon`"
+      },
+      {
+        "name": "dot",
+        "description": "是否显示图标右上角小红点",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "badge",
+        "description": "图标右上角徽标的内容",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "badge-props",
+        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+        "type": "BadgeProps",
+        "default": "-"
+      },
+      {
+        "name": "url",
+        "description": "点击后跳转的链接地址",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "to",
+        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+        "type": "string | object",
+        "default": "-"
+      },
+      {
+        "name": "replace",
+        "description": "是否在跳转时替换当前页面历史",
+        "type": "boolean",
+        "default": "`false`"
+      }
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "dot",
+      "text",
+      "icon",
+      "color",
+      "badge",
+      "iconClass",
+      "badgeProps",
+      "iconPrefix"
+    ],
+    "booleanProps": [
+      "replace",
+      "dot"
+    ],
+    "defaults": {
+      "replace": false,
+      "dot": false
+    }
+  },
+  "action-bar-button": {
+    "attributes": [
+      {
+        "name": "text",
+        "description": "按钮文字",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "icon",
+        "description": "左侧图标名称或图片链接，等同于 Icon 组件的 name 属性",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "color",
+        "description": "按钮颜色，支持传入 linear-gradient 渐变色",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "url",
+        "description": "点击后跳转的链接地址",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "to",
+        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+        "type": "string | object",
+        "default": "-"
+      },
+      {
+        "name": "replace",
+        "description": "是否在跳转时替换当前页面历史",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "type",
+        "description": "按钮类型，可选值为 primary info warning danger",
+        "type": "string",
+        "default": "`default`"
+      },
+      {
+        "name": "disabled",
+        "description": "是否禁用按钮",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "loading",
+        "description": "是否显示为加载状态",
+        "type": "boolean",
+        "default": "`false`"
+      }
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "type",
+      "text",
+      "icon",
+      "color",
+      "loading",
+      "disabled"
+    ],
+    "booleanProps": [
+      "replace",
+      "loading",
+      "disabled"
+    ],
+    "defaults": {
+      "replace": false,
+      "loading": false,
+      "disabled": false
+    }
+  },
+  "dropdown-item": {
+    "attributes": [
+      {
+        "name": "v-model",
+        "description": "当前选中项对应的 value",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "title",
+        "description": "菜单项标题",
+        "type": "string",
+        "default": "当前选中项文字"
+      },
+      {
+        "name": "options",
+        "description": "选项数组",
+        "type": "Option[]",
+        "default": "`[]`"
+      },
+      {
+        "name": "disabled",
+        "description": "是否禁用菜单",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "lazy-render",
+        "description": "是否在首次展开时才渲染菜单内容",
+        "type": "boolean",
+        "default": "`true`"
+      },
+      {
+        "name": "title-class",
+        "description": "标题额外类名",
+        "type": "string | Array | object",
+        "default": "-"
+      },
+      {
+        "name": "teleport",
+        "description": "指定挂载的节点，等同于 Teleport 组件的 to 属性",
+        "type": "string | Element",
+        "default": "-"
+      }
+    ],
+    "supportedProps": [
+      "title",
+      "options",
+      "disabled",
+      "teleport",
+      "lazyRender",
+      "modelValue",
+      "titleClass"
+    ],
+    "booleanProps": [
+      "disabled",
+      "lazyRender"
+    ],
+    "defaults": {
+      "disabled": false,
+      "lazyRender": true
+    }
+  },
+  "tabbar-item": {
+    "attributes": [
+      {
+        "name": "name",
+        "description": "标签名称，作为匹配的标识符",
+        "type": "number | string",
+        "default": "当前标签的索引值"
+      },
+      {
+        "name": "icon",
+        "description": "图标名称或图片链接，等同于 Icon 组件的 name 属性",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "icon-prefix",
+        "description": "图标类名前缀，等同于 Icon 组件的 class-prefix 属性",
+        "type": "string",
+        "default": "`van-icon`"
+      },
+      {
+        "name": "dot",
+        "description": "是否显示图标右上角小红点",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "badge",
+        "description": "图标右上角徽标的内容",
+        "type": "number | string",
+        "default": "-"
+      },
+      {
+        "name": "badge-props",
+        "description": "自定义徽标的属性，传入的对象会被透传给 Badge 组件的 props",
+        "type": "BadgeProps",
+        "default": "-"
+      },
+      {
+        "name": "url",
+        "description": "点击后跳转的链接地址",
+        "type": "string",
+        "default": "-"
+      },
+      {
+        "name": "to",
+        "description": "点击后跳转的目标路由对象，等同于 vue-router 的 to 属性",
+        "type": "string | object",
+        "default": "-"
+      },
+      {
+        "name": "replace",
+        "description": "是否在跳转时替换当前页面历史",
+        "type": "boolean",
+        "default": "`false`"
+      }
+    ],
+    "supportedProps": [
+      "to",
+      "url",
+      "replace",
+      "dot",
+      "icon",
+      "name",
+      "badge",
+      "badgeProps",
+      "iconPrefix"
+    ],
+    "booleanProps": [
+      "replace",
+      "dot"
+    ],
+    "defaults": {
+      "replace": false,
+      "dot": false
+    }
+  },
+  "checkbox-group": {
+    "attributes": [
+      {
+        "name": "v-model",
+        "description": "所有选中项的标识符",
+        "type": "any[]",
+        "default": "-"
+      },
+      {
+        "name": "size",
+        "description": "所有复选框的尺寸：normal 为 16px 图标 / 14px 文本，large 为 20px 图标 / 16px 文本",
+        "type": "string",
+        "default": "`large`"
+      },
+      {
+        "name": "disabled",
+        "description": "是否禁用所有复选框",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "icon-size",
+        "description": "所有复选框的图标大小，默认单位为 px",
+        "type": "number | string",
+        "default": "`16px`"
+      },
+      {
+        "name": "label-font-size",
+        "description": "所有复选框的文本字号，默认单位为 px",
+        "type": "number | string",
+        "default": "`14px`"
+      },
+      {
+        "name": "checked-color",
+        "description": "所有复选框的选中状态颜色",
+        "type": "string",
+        "default": "`#1989fa`"
+      },
+      {
+        "name": "max",
+        "description": "最大可选数，0 为无限制",
+        "type": "number | string",
+        "default": "`0`"
+      },
+      {
+        "name": "direction",
+        "description": "排列方向，可选值为 horizontal",
+        "type": "string",
+        "default": "`vertical`"
+      }
+    ],
+    "supportedProps": [
+      "max",
+      "disabled",
+      "iconSize",
+      "labelFontSize",
+      "size",
+      "direction",
+      "modelValue",
+      "checkedColor"
+    ],
+    "booleanProps": [
+      "disabled"
+    ],
+    "defaults": {
+      "disabled": false
+    }
+  },
+  "radio-group": {
+    "attributes": [
+      {
+        "name": "v-model",
+        "description": "当前选中项的标识符",
+        "type": "any",
+        "default": "-"
+      },
+      {
+        "name": "allow-uncheck",
+        "description": "是否允许取消选中",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "size",
+        "description": "所有单选框的尺寸：normal 为 16px 图标 / 14px 文本，large 为 20px 图标 / 16px 文本",
+        "type": "string",
+        "default": "`large`"
+      },
+      {
+        "name": "disabled",
+        "description": "是否禁用所有单选框",
+        "type": "boolean",
+        "default": "`false`"
+      },
+      {
+        "name": "icon-size",
+        "description": "所有单选框的图标大小，默认单位为 px",
+        "type": "number | string",
+        "default": "`20px`"
+      },
+      {
+        "name": "label-font-size",
+        "description": "所有单选框的文本字号，默认单位为 px",
+        "type": "number | string",
+        "default": "`16px`"
+      },
+      {
+        "name": "checked-color",
+        "description": "所有单选框的选中状态颜色",
+        "type": "string",
+        "default": "`#1989fa`"
+      },
+      {
+        "name": "direction",
+        "description": "排列方向，可选值为 horizontal",
+        "type": "string",
+        "default": "`vertical`"
+      }
+    ],
+    "supportedProps": [
+      "disabled",
+      "iconSize",
+      "labelFontSize",
+      "size",
+      "direction",
+      "modelValue",
+      "checkedColor",
+      "allowUncheck"
+    ],
+    "booleanProps": [
+      "disabled",
+      "allowUncheck"
+    ],
+    "defaults": {
+      "disabled": false,
+      "allowUncheck": false
+    }
+  },
+  "coupon": {
+    "attributes": [],
+    "supportedProps": [
+      "chosen",
+      "coupon",
+      "disabled",
+      "currency"
+    ],
+    "booleanProps": [
+      "chosen",
+      "disabled"
+    ],
+    "defaults": {
+      "chosen": false,
+      "disabled": false,
+      "currency": "¥"
+    }
+  },
+  "coupon-cell": {
+    "attributes": [],
+    "supportedProps": [
+      "title",
+      "border",
+      "editable",
+      "coupons",
+      "currency",
+      "chosenCoupon"
+    ],
+    "booleanProps": [
+      "border",
+      "editable"
+    ],
+    "defaults": {
+      "border": true,
+      "editable": true,
+      "currency": "¥",
+      "chosenCoupon": -1
+    }
+  },
+  "rate-cell": {
+    "attributes": [],
+    "supportedProps": [
+      "size",
+      "icon",
+      "color",
+      "count",
+      "gutter",
+      "readonly",
+      "disabled",
+      "voidIcon",
+      "allowHalf",
+      "voidColor",
+      "touchable",
+      "iconPrefix",
+      "modelValue",
+      "disabledColor",
+      "title",
+      "required",
+      "description",
+      "showDescription",
+      "layout",
+      "border"
+    ],
+    "booleanProps": [
+      "readonly",
+      "disabled",
+      "allowHalf",
+      "touchable",
+      "required",
+      "showDescription",
+      "border"
+    ],
+    "defaults": {
+      "size": 22,
+      "icon": "star",
+      "count": 5,
+      "gutter": 6,
+      "readonly": false,
+      "disabled": false,
+      "voidIcon": "star-o",
+      "allowHalf": false,
+      "touchable": true,
+      "modelValue": 0,
+      "title": "服务满意度",
+      "required": false,
+      "showDescription": true,
+      "layout": "default",
+      "border": true
+    }
   }
 }

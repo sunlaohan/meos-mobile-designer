@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useNotifications } from '../utils/notifications';
+import { useI18n, humanize, propertyName } from '../utils/i18n';
+const { t, language } = useI18n();
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { Check, ChevronDown, Palette, RotateCcw, Ruler, Search, SlidersHorizontal, Type, X } from 'lucide-vue-next';
 import { resolveTokenValue, tokenDisplayValue, tokenForValue, tokenGroup, tokenKindLabels, tokenLabel, tokensForProperty } from '../utils/designTokens';
@@ -20,11 +23,13 @@ const mode = ref<'tokens' | 'custom' | null>(null);
 const query = ref('');
 const draft = ref('');
 const error = ref('');
+const { notify } = useNotifications();
+function invalid(message: string) { error.value = message; notify(message, 'error'); }
 const position = ref({ left: '0px', top: '0px', width: '320px', maxHeight: '440px' });
 const placement = ref<'above' | 'below'>('below');
 let returnFocus: HTMLElement | null = null;
 
-const kindLabel = computed(() => tokenKindLabels[props.schema.tokenKind!]);
+const kindLabel = computed(() => t(tokenKindLabels[props.schema.tokenKind!]));
 const isColor = computed(() => props.schema.tokenKind === 'color');
 const isFont = computed(() => ['font-size', 'line-height'].includes(props.schema.tokenKind!));
 const isDefault = computed(() => props.modelValue === undefined || props.modelValue === null || props.modelValue === '');
@@ -35,16 +40,16 @@ const allowsZeroSpacing = computed(() => props.schema.tokenKind === 'spacing'
   && (props.schema.max === undefined || props.schema.max >= 0));
 const isZeroSpacing = computed(() => allowsZeroSpacing.value && /^0(?:px)?$/.test(currentValue.value));
 const showZeroSpacing = computed(() => allowsZeroSpacing.value
-  && '无间距 零间距 固定值 0 0px'.includes(query.value.trim().toLowerCase()));
-const currentDisplayValue = computed(() => isDefault.value ? '默认'
+  && '无间距 零间距 固定值 no spacing zero fixed 0 0px'.includes(query.value.trim().toLowerCase()));
+const currentDisplayValue = computed(() => isDefault.value ? t('默认')
   : tokenDisplayValue(selectedToken.value?.value ?? props.modelValue, props.schema.tokenKind!));
-const currentDescription = computed(() => selectedToken.value ? `${tokenLabel(selectedToken.value)} · ${selectedToken.value.name}`
-  : isDefault.value ? '跟随组件默认样式' : isZeroSpacing.value ? '无间距 · 固定值' : '自定义值');
+const currentDescription = computed(() => selectedToken.value ? `${displayTokenLabel(selectedToken.value)} · ${selectedToken.value.name}`
+  : isDefault.value ? t('跟随组件默认样式') : isZeroSpacing.value ? t('无间距 · 固定值') : t('自定义值'));
 const tokenGroups = computed(() => {
   const search = query.value.trim().toLowerCase();
   const groups = new Map<string, DesignToken[]>();
   for (const token of tokensForProperty(props.componentType, props.schema)) {
-    if (search && !`${token.name} ${tokenLabel(token)} ${tokenDisplayValue(token.value, token.kind)}`.toLowerCase().includes(search)) continue;
+    if (search && !`${token.name} ${tokenLabel(token)} ${displayTokenLabel(token)} ${tokenDisplayValue(token.value, token.kind)}`.toLowerCase().includes(search)) continue;
     const group = tokenGroup(token);
     groups.set(group, [...(groups.get(group) || []), token]);
   }
@@ -60,6 +65,8 @@ const colorPickerValue = computed(() => {
 const placeholder = computed(() => isColor.value
   ? props.schema.allowGradient ? '#246FE5、rgba(...) 或 linear-gradient(...)' : '#246FE5 或 rgba(36, 111, 229, 0.5)'
   : '例如 16、16px、1rem 或 calc(...)');
+
+function displayTokenLabel(token: DesignToken) { return language.value === 'en' ? humanize(token.name) : tokenLabel(token); }
 
 function previewStyle(value: string) {
   return isColor.value && value ? { background: value } : {};
@@ -112,10 +119,10 @@ function choose(value: unknown) {
 
 function applyCustom() {
   const value = draft.value.trim();
-  if (!value) { error.value = '请输入自定义值，或点击恢复默认。'; return; }
+  if (!value) { invalid('请输入自定义值，或点击恢复默认。'); return; }
   if (props.schema.control === 'json' && /^[\[{]/.test(value)) {
     try { choose(JSON.parse(value)); }
-    catch { error.value = '请输入有效的 JSON 数组或对象。'; }
+    catch { invalid('请输入有效的 JSON 数组或对象。'); }
     return;
   }
   const numeric = /^-?(?:\d+\.?\d*|\.\d+)$/.test(value);
@@ -126,7 +133,7 @@ function applyCustom() {
       || (/^(?:margin|padding)/i.test(props.schema.key) ? props.schema.key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
         : /gap|gutter|spacing/i.test(props.schema.key) || props.schema.tokenKind === 'spacing' ? 'gap' : 'width'));
   if (!CSS.supports(cssProperty, cssValue)) {
-    error.value = isColor.value ? '请输入有效的颜色值。' : '请输入有效的尺寸，支持 px、rem、em、%、vw、vh。';
+    invalid(isColor.value ? '请输入有效的颜色值。' : '请输入有效的尺寸，支持 px、rem、em、%、vw、vh。');
     return;
   }
   // Preserve numeric props for bare numbers; CSS expressions and units remain strings.
@@ -134,7 +141,7 @@ function applyCustom() {
     const number = parseFloat(value);
     if ((props.schema.min !== undefined && number < props.schema.min)
       || (props.schema.max !== undefined && number > props.schema.max)) {
-      error.value = `数值需在 ${props.schema.min ?? '不限'} 至 ${props.schema.max ?? '不限'} 之间。`;
+      invalid(`数值需在 ${props.schema.min ?? t('不限')} 至 ${props.schema.max ?? t('不限')} 之间。`);
       return;
     }
     choose(numeric ? number : value);
@@ -201,7 +208,7 @@ onBeforeUnmount(removeListeners);
         type="button"
         class="token-select"
         :class="{ 'is-open': mode === 'tokens' }"
-        :aria-label="`选择${schema.label}规范变量`"
+        :aria-label="t('选择{0}规范变量', [propertyName(schema)])"
         aria-haspopup="dialog"
         :aria-expanded="mode === 'tokens'"
         :aria-controls="mode === 'tokens' ? `${id}-popup` : undefined"
@@ -218,8 +225,8 @@ onBeforeUnmount(removeListeners);
         class="token-custom-button"
         :class="{ active: mode === 'custom' || (!isDefault && !selectedToken && !isZeroSpacing) }"
         type="button"
-        :title="`自定义${kindLabel}`"
-        :aria-label="`自定义${schema.label}`"
+        :title="t('自定义{0}', [kindLabel])"
+        :aria-label="t('自定义{0}', [propertyName(schema)])"
         aria-haspopup="dialog"
         :aria-expanded="mode === 'custom'"
         :aria-controls="mode === 'custom' ? `${id}-popup` : undefined"
@@ -237,28 +244,28 @@ onBeforeUnmount(removeListeners);
         :class="[`token-popover--${mode}`, `token-popover--${placement}`]"
         :style="position"
         role="dialog"
-        :aria-label="mode === 'tokens' ? `选择${kindLabel}规范变量` : `自定义${kindLabel}`"
+        :aria-label="mode === 'tokens' ? t('选择{0}规范变量', [kindLabel]) : t('自定义{0}', [kindLabel])"
         @keydown="onKeydown"
       >
         <template v-if="mode === 'tokens'">
-          <div class="token-popover-heading"><span>选择{{ kindLabel }}变量</span><span class="token-source">PERSAGY VANT</span></div>
+          <div class="token-popover-heading"><span>{{ t('选择{0}变量', [kindLabel]) }}</span><span class="token-source">PERSAGY VANT</span></div>
           <div class="token-search">
             <Search :size="14" />
-            <input v-model="query" :aria-label="`搜索${kindLabel}变量`" placeholder="搜索名称、变量或数值" />
+            <input v-model="query" :aria-label="t('搜索{0}变量', [kindLabel])" :placeholder="t('搜索名称、变量或数值')" />
           </div>
-          <div class="token-options" role="listbox" :aria-label="`可用${kindLabel}变量`">
+          <div class="token-options" role="listbox" :aria-label="t('可用{0}变量', [kindLabel])">
             <button type="button" class="token-option token-default-option" role="option" :aria-selected="isDefault" @click="choose(undefined)">
               <RotateCcw :size="15" class="token-kind-icon" />
-              <span class="token-option-copy"><strong>默认</strong><small>跟随组件默认样式</small></span>
+              <span class="token-option-copy"><strong>{{ t("默认") }}</strong><small>{{ t("跟随组件默认样式") }}</small></span>
               <Check v-if="isDefault" :size="14" class="token-check" />
             </button>
             <button v-if="showZeroSpacing" type="button" class="token-option" role="option" :aria-selected="isZeroSpacing" @click="choose(0)">
               <Ruler :size="15" class="token-kind-icon" />
-              <span class="token-option-copy"><strong class="token-option-value">0px</strong><small>无间距 · 固定值</small></span>
+              <span class="token-option-copy"><strong class="token-option-value">0px</strong><small>{{ t("无间距 · 固定值") }}</small></span>
               <Check v-if="isZeroSpacing" :size="14" class="token-check" />
             </button>
-            <div v-for="[group, tokens] in tokenGroups" :key="group" role="group" :aria-label="group">
-              <div class="token-group-label">{{ group }}</div>
+            <div v-for="[group, tokens] in tokenGroups" :key="group" role="group" :aria-label="t(group)">
+              <div class="token-group-label">{{ t(group) }}</div>
               <button
                 v-for="token in tokens"
                 :key="token.name"
@@ -274,45 +281,44 @@ onBeforeUnmount(removeListeners);
                 <span v-else class="token-length-preview"><i :style="{ width: lengthPreview(token) }" /></span>
                 <span class="token-option-copy">
                   <strong class="token-option-value">{{ tokenDisplayValue(token.value, token.kind) }}</strong>
-                  <small>{{ tokenLabel(token) }} · {{ token.name }}</small>
+                  <small>{{ displayTokenLabel(token) }} · {{ token.name }}</small>
                 </span>
                 <Check v-if="selectedToken?.name === token.name" :size="14" class="token-check" />
               </button>
             </div>
-            <div v-if="!tokenGroups.length && !showZeroSpacing" class="token-no-results">没有匹配的规范变量</div>
+            <div v-if="!tokenGroups.length && !showZeroSpacing" class="token-no-results">{{ t("没有匹配的规范变量") }}</div>
           </div>
-          <div class="token-popover-note">{{ kindLabel }}需要其他数值时，可使用旁边的自定义入口。</div>
+          <div class="token-popover-note">{{ t("需要其他数值时，可使用旁边的自定义入口。") }}</div>
         </template>
 
         <form v-else class="token-custom-form" @submit.prevent="applyCustom">
           <header class="token-popover-heading">
-            <span><Palette v-if="isColor" :size="15" /><SlidersHorizontal v-else :size="15" />自定义{{ kindLabel }}</span>
-            <button type="button" class="token-close" aria-label="关闭自定义设置" @click="close()"><X :size="15" /></button>
+            <span><Palette v-if="isColor" :size="15" /><SlidersHorizontal v-else :size="15" />{{ t('自定义{0}', [kindLabel]) }}</span>
+            <button type="button" class="token-close" :aria-label="t('关闭自定义设置')" @click="close()"><X :size="15" /></button>
           </header>
-          <label :for="`${id}-custom`" class="token-custom-label">{{ schema.label }}</label>
+          <label :for="`${id}-custom`" class="token-custom-label">{{ propertyName(schema) }}</label>
           <div class="token-custom-input-row">
             <label v-if="isColor" class="token-color-picker" :style="previewStyle(draft)">
-              <input type="color" :value="colorPickerValue" aria-label="拾取自定义颜色" @input="draft = ($event.target as HTMLInputElement).value; error = ''" />
+              <input type="color" :value="colorPickerValue" :aria-label="t('拾取自定义颜色')" @input="draft = ($event.target as HTMLInputElement).value; error = ''" />
             </label>
             <input
               :id="`${id}-custom`"
               v-model="draft"
               type="text"
-              :placeholder="placeholder"
-              :aria-label="`自定义${kindLabel}值`"
+              :placeholder="t(placeholder)"
+              :aria-label="t('自定义{0}值', [kindLabel])"
               :aria-invalid="Boolean(error)"
-              :aria-describedby="error ? `${id}-error` : `${id}-hint`"
+              :aria-describedby="`${id}-hint`"
               spellcheck="false"
               autocomplete="off"
               @input="error = ''"
             />
           </div>
-          <p :id="`${id}-hint`" class="token-custom-hint">{{ isColor ? (schema.allowGradient ? '支持 HEX、RGB、RGBA 和渐变色。' : '支持 HEX、RGB、RGBA 和 CSS 颜色变量。') : '支持 px、rem、em、%、vw、vh；纯数字默认使用 px。' }}<template v-if="schema.control === 'json'"> 也可输入原有 JSON 数组或对象。</template></p>
-          <p v-if="error" :id="`${id}-error`" class="token-custom-error" role="alert">{{ error }}</p>
+          <p :id="`${id}-hint`" class="token-custom-hint">{{ isColor ? (schema.allowGradient ? t('支持 HEX、RGB、RGBA 和渐变色。') : t('支持 HEX、RGB、RGBA 和 CSS 颜色变量。')) : t('支持 px、rem、em、%、vw、vh；纯数字默认使用 px。') }}<template v-if="schema.control === 'json'"> {{ t("也可输入原有 JSON 数组或对象。") }}</template></p>
           <footer class="token-custom-footer">
-            <button type="button" class="token-reset" @click="choose(undefined)"><RotateCcw :size="12" />恢复默认</button>
-            <button type="button" class="token-cancel" @click="close()">取消</button>
-            <button type="submit" class="token-apply">应用</button>
+            <button type="button" class="token-reset" @click="choose(undefined)"><RotateCcw :size="12" />{{ t("恢复默认") }}</button>
+            <button type="button" class="token-cancel" @click="close()">{{ t("取消") }}</button>
+            <button type="submit" class="token-apply">{{ t("应用") }}</button>
           </footer>
         </form>
       </div>

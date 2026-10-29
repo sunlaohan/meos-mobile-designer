@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '../utils/i18n';
+const { t } = useI18n();
 import { computed } from 'vue';
 import { GripVertical, Layers3 } from 'lucide-vue-next';
 import ComponentRenderer from './ComponentRenderer.vue';
 import ContainerExtensionsRenderer from './ContainerExtensionsRenderer.vue';
 import { getDefinition } from '../data/componentCatalog';
-import { canHaveChildren, findNode, getContainerStyle, isContainer } from '../utils/nodeTree';
+import { canHaveChildren, findNode, getContainerStyle, isContainer, nativeCompositionTypes } from '../utils/nodeTree';
 import type { CanvasNode, ComponentType } from '../types';
 import { componentDragState } from '../utils/componentDragState';
+import { isCanvasPanel, isFixedCanvasNode } from '../utils/canvasPresentation';
 
 const props = withDefaults(defineProps<{
   node: CanvasNode;
@@ -28,10 +31,11 @@ const emit = defineEmits<{
 }>();
 const container = computed(() => isContainer(props.node));
 const selected = computed(() => !props.preview && props.selectedIds.includes(props.node.id));
-const label = computed(() => container.value ? props.node.props.name || '容器组' : getDefinition(props.node.type).englishName);
+const label = computed(() => container.value ? props.node.props.name || t('容器组') : getDefinition(props.node.type).englishName);
 const sourceLocation = computed(() => props.sourceNodes ? findNode(props.sourceNodes, props.node.id) : null);
 const originalIndex = computed(() => sourceLocation.value?.index ?? props.index);
 const originalChildCount = computed(() => sourceLocation.value?.node.children?.length ?? props.node.children?.length ?? 0);
+const followed = computed(() => sourceLocation.value?.siblings.slice(originalIndex.value + 1).some((node) => !isCanvasPanel(node) && !isFixedCanvasNode(node)) || false);
 
 function drop(event: DragEvent, index: number, parentId: string | null) {
   if (props.preview) return;
@@ -44,13 +48,17 @@ function drop(event: DragEvent, index: number, parentId: string | null) {
   }
 }
 
-function trigger(event: string, message: string) {
-  const action = props.node.actions?.[event];
+function trigger(event: string, message: string, source = props.node) {
+  const action = source.actions?.[event];
   if (action?.type === 'open-panel') {
     if (props.sourceNodes && !findNode(props.sourceNodes, action.targetId)) emit('action', '关联面板已删除，请重新配置交互');
     else emit('patch', action.targetId, { show: true });
   }
   else emit('action', message);
+}
+function triggerChild(id: string, name: string, message: string) {
+  const source = findNode(props.sourceNodes || [props.node], id)?.node;
+  if (source) trigger(name, message, source);
 }
 </script>
 
@@ -74,10 +82,10 @@ function trigger(event: string, message: string) {
       type="button"
       class="selection-label"
       :class="{ 'group-selection-label': container }"
-      :title="container ? '选择容器组' : '选择组件'"
+      :title="container ? t('选择容器组') : t('选择组件')"
       @click.stop="emit('select', node.id, $event.shiftKey)"
     ><Layers3 v-if="container" :size="12" />{{ label }}</button>
-    <button v-if="selected" class="drag-handle" title="拖动排序" tabindex="-1"><GripVertical :size="14" /></button>
+    <button v-if="selected" class="drag-handle" :title="t('拖动排序')" tabindex="-1"><GripVertical :size="14" /></button>
 
     <ContainerExtensionsRenderer :node="node" :nodes="sourceNodes" :interactive="preview" @action="emit('action', $event)">
     <div
@@ -106,18 +114,22 @@ function trigger(event: string, message: string) {
         @action="emit('action', $event)"
       />
       </TransitionGroup>
-      <div v-if="!originalChildCount && !preview && node.layoutRole !== 'spacer'" class="empty-container">拖入组件到此容器</div>
+      <div v-if="!originalChildCount && !preview && node.layoutRole !== 'spacer'" class="empty-container">{{ t("拖入组件到此容器") }}</div>
     </div>
     <ComponentRenderer
       v-else
       :node="node"
       :interactive="preview"
       :docked="docked"
+      :followed="followed"
       @patch="emit('patch', node.id, $event)"
+      @patch-child="(id, patch) => emit('patch', id, patch)"
       @action="emit('action', $event)"
       @trigger="trigger"
+      @trigger-child="triggerChild"
     >
-      <div v-if="canHaveChildren(node) && node.children?.length" class="component-slot-content" :class="{ 'component-slot-content--background': node.type === 'background' }" :data-canvas-children="node.id">
+      <template v-if="!nativeCompositionTypes.has(node.type) && canHaveChildren(node) && node.children?.length" #default>
+      <div class="component-slot-content" :class="{ 'component-slot-content--background': node.type === 'background' }" :data-canvas-children="node.id">
         <TransitionGroup name="canvas-reorder">
         <CanvasTreeNode
           v-for="(child, childIndex) in node.children"
@@ -137,6 +149,7 @@ function trigger(event: string, message: string) {
         />
         </TransitionGroup>
       </div>
+      </template>
     </ComponentRenderer>
     </ContainerExtensionsRenderer>
   </div>

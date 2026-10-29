@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import * as library from 'persagy-vant';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectDir = path.resolve(scriptDir, '..');
@@ -58,7 +59,7 @@ function readProps(readmePath) {
     for (let row = index + 2; row < lines.length && lines[row].trim().startsWith('|'); row += 1) {
       const cells = splitMarkdownRow(lines[row]);
       if (cells.length < 4) continue;
-      const name = plain(cells[0]).replace(/\s+v\d[\d.]*$/, '').trim();
+      const name = plain(cells[0]).replace(/\s+v?\d[\d.]*$/, '').trim();
       if (!name || name === '参数') continue;
       attributes.set(name, {
         name,
@@ -72,13 +73,41 @@ function readProps(readmePath) {
   return [...attributes.values()];
 }
 
+const camel = (name) => name.replace(/^v-model:/, '').replace(/^v-model$/, 'model-value').replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+const runtimeComponents = new Map(Object.values(library).flatMap((entry) => {
+  const component = entry?.Component || entry;
+  return component?.name && (component.props || component.setup || component.render) ? [[component.name.replace(/^van-/, ''), component]] : [];
+}));
+function runtimeMetadata(type, attributes) {
+  const component = runtimeComponents.get(type);
+  if (!component) return { attributes };
+  const defaults = {};
+  const props = component.props || {};
+  for (const [key, descriptor] of Object.entries(props)) {
+    const prop = typeof descriptor === 'object' && !Array.isArray(descriptor) && descriptor !== null ? descriptor : { type: descriptor };
+    if (Object.hasOwn(prop, 'default')) {
+      if (prop.default !== undefined && typeof prop.default !== 'function') defaults[key] = prop.default;
+    } else if (prop.type === Boolean) defaults[key] = false;
+  }
+  // A README can contain several components' Props tables (for example CellGroup + Cell).
+  const booleanProps = Object.entries(props).filter(([, descriptor]) => descriptor === Boolean || descriptor?.type === Boolean).map(([key]) => key);
+  return { attributes: attributes.filter((attribute) => Object.hasOwn(props, camel(attribute.name))), supportedProps: Object.keys(props), booleanProps, defaults };
+}
+
 const metadata = {};
 for (const entry of fs.readdirSync(componentRoot, { withFileTypes: true })) {
   if (!entry.isDirectory()) continue;
   const readmePath = path.join(componentRoot, entry.name, 'README.zh-CN.md');
   if (!fs.existsSync(readmePath)) continue;
-  metadata[entry.name] = { attributes: readProps(readmePath) };
+  metadata[entry.name] = runtimeMetadata(entry.name, readProps(readmePath));
 }
+metadata['blue-mark-header'] = runtimeMetadata('blue-mark-header', readProps(path.join(componentRoot, 'blue-mark/README.zh-CN.md')));
+const families = { tab: ['tabs'], col: ['row'], cell: ['cell-group'], grid: ['grid-item'], swipe: ['swipe-item'], steps: ['step'], sidebar: ['sidebar-item'], collapse: ['collapse-item'], 'index-bar': ['index-anchor'], 'action-bar': ['action-bar-icon', 'action-bar-button'], 'dropdown-menu': ['dropdown-item'], tabbar: ['tabbar-item'], checkbox: ['checkbox-group'], radio: ['radio-group'] };
+for (const [docsPath, types] of Object.entries(families)) {
+  const readme = path.join(componentRoot, docsPath, 'README.zh-CN.md');
+  if (fs.existsSync(readme)) for (const type of types) if (runtimeComponents.has(type)) metadata[type] = runtimeMetadata(type, readProps(readme));
+}
+for (const type of runtimeComponents.keys()) if (!metadata[type]) metadata[type] = runtimeMetadata(type, []);
 
 writeJson(outputFile, metadata);
 console.log(`Generated component metadata for ${Object.keys(metadata).length} component directories.`);

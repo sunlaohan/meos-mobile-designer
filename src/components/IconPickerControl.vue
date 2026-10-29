@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useNotifications } from '../utils/notifications';
+import { useI18n } from '../utils/i18n';
+const { t, language } = useI18n();
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { Icon as VanIcon } from 'persagy-vant';
 import { Check, ChevronDown, Image as ImageIcon, RotateCcw, Search, X } from 'lucide-vue-next';
@@ -14,11 +17,13 @@ const mode = ref<'library' | 'custom'>('library');
 const query = ref('');
 const draft = ref('');
 const error = ref('');
+const { notify } = useNotifications();
+function invalid(message: string) { error.value = message; notify(message, 'error'); }
 const position = ref({ left: '0px', top: '0px', width: '390px', maxHeight: '480px' });
 const currentValue = computed(() => typeof props.modelValue === 'string' ? props.modelValue : '');
 const isDefault = computed(() => props.modelValue === undefined || props.modelValue === null);
 const currentLabel = computed(() => isDefault.value ? '默认' : !currentValue.value ? '无图标' : isImageIcon(currentValue.value) ? '自定义图片' : currentValue.value);
-const pickerLabel = computed(() => `选择${props.label.includes('图标') ? props.label.replace(/名称$/, '') : `${props.label}图标`}`);
+const pickerLabel = computed(() => language.value === 'en' ? t('选择{0}', [t(props.label)]) : `选择${props.label.includes('图标') ? props.label.replace(/名称$/, '') : `${props.label}图标`}`);
 const results = computed(() => searchIcons(query.value));
 
 function updatePosition() {
@@ -61,7 +66,7 @@ function choose(value: string | undefined) {
 }
 function applyCustom() {
   const value = draft.value.trim();
-  if (!validCustomIcon(value)) { error.value = '请输入有效的图片链接或自定义图标名称。'; return; }
+  if (!validCustomIcon(value)) { invalid('请输入有效的图片链接或自定义图标名称。'); return; }
   choose(value);
 }
 function outside(event: PointerEvent) {
@@ -115,29 +120,28 @@ onBeforeUnmount(removeListeners);
 
 <template>
   <div ref="anchor" class="icon-picker-control">
-    <button :id="id" ref="trigger" type="button" class="icon-picker-trigger" :class="{ active: opened }" :aria-label="pickerLabel" aria-haspopup="dialog" :aria-expanded="opened" :aria-controls="opened ? `${id}-icons` : undefined" @click="open">
+    <button :id="id" ref="trigger" type="button" class="icon-picker-trigger" :class="{ active: opened }" :aria-label="t(pickerLabel)" aria-haspopup="dialog" :aria-expanded="opened" :aria-controls="opened ? `${id}-icons` : undefined" @click="open">
       <span class="icon-picker-current-preview" aria-hidden="true"><VanIcon v-if="isBuiltinIcon(currentValue)" :name="currentValue" :size="20" /><img v-else-if="isImageIcon(currentValue)" :src="currentValue" alt="" referrerpolicy="no-referrer" /><ImageIcon v-else :size="18" /></span>
-      <span class="icon-picker-current-name" :title="currentValue || currentLabel">{{ currentLabel }}</span><ChevronDown :size="14" />
+      <span class="icon-picker-current-name" :title="currentValue || t(currentLabel)">{{ t(currentLabel) }}</span><ChevronDown :size="14" />
     </button>
     <Teleport to="body">
-      <section v-if="opened" :id="`${id}-icons`" ref="popup" class="icon-picker-popover" :style="position" role="dialog" :aria-label="pickerLabel" @keydown.stop="onKeydown">
-        <header class="icon-picker-header"><strong>选择图标</strong><small>{{ iconNames.length }} 个内置图标</small><button type="button" aria-label="关闭图标选择" @click="close()"><X :size="16" /></button></header>
-        <div class="icon-picker-tabs" role="tablist" aria-label="图标来源"><button type="button" role="tab" :aria-selected="mode === 'library'" @click="mode = 'library'">图标库</button><button type="button" role="tab" :aria-selected="mode === 'custom'" @click="mode = 'custom'">图片 / 自定义</button></div>
+      <section v-if="opened" :id="`${id}-icons`" ref="popup" class="icon-picker-popover" :style="position" role="dialog" :aria-label="t(pickerLabel)" @keydown.stop="onKeydown">
+        <header class="icon-picker-header"><strong>{{ t("选择图标") }}</strong><small>{{ iconNames.length }} {{ t("个内置图标") }}</small><button type="button" :aria-label="t('关闭图标选择')" @click="close()"><X :size="16" /></button></header>
+        <div class="icon-picker-tabs" role="tablist" :aria-label="t('图标来源')"><button type="button" role="tab" :aria-selected="mode === 'library'" @click="mode = 'library'">{{ t("图标库") }}</button><button type="button" role="tab" :aria-selected="mode === 'custom'" @click="mode = 'custom'">{{ t("图片 / 自定义") }}</button></div>
         <template v-if="mode === 'library'">
-          <label class="icon-picker-search"><Search :size="16" /><input v-model="query" aria-label="搜索图标名称" placeholder="搜索名称或中文，如 arrow / 箭头" autocomplete="off" spellcheck="false" /><button v-if="query" type="button" aria-label="清空图标搜索" @click="query = ''"><X :size="14" /></button></label>
-          <div class="icon-picker-actions"><button type="button" :aria-pressed="isDefault" @click="choose(undefined)"><RotateCcw :size="14" />默认<Check v-if="isDefault" :size="13" /></button><button type="button" :aria-pressed="!isDefault && !currentValue" @click="choose('')">无图标<Check v-if="!isDefault && !currentValue" :size="13" /></button><small>{{ results.length }} 个结果</small></div>
-          <div class="icon-picker-grid" role="listbox" aria-label="可选图标">
+          <label class="icon-picker-search"><Search :size="16" /><input v-model="query" :aria-label="t('搜索图标名称')" :placeholder="t('搜索名称或中文，如 arrow / 箭头')" autocomplete="off" spellcheck="false" /><button v-if="query" type="button" :aria-label="t('清空图标搜索')" @click="query = ''"><X :size="14" /></button></label>
+          <div class="icon-picker-actions"><button type="button" :aria-pressed="isDefault" @click="choose(undefined)"><RotateCcw :size="14" />{{ t("默认") }}<Check v-if="isDefault" :size="13" /></button><button type="button" :aria-pressed="!isDefault && !currentValue" @click="choose('')">{{ t("无图标") }}<Check v-if="!isDefault && !currentValue" :size="13" /></button><small>{{ results.length }} {{ t("个结果") }}</small></div>
+          <div class="icon-picker-grid" role="listbox" :aria-label="t('可选图标')">
             <button v-for="name in results" :key="name" type="button" class="icon-picker-option" role="option" :data-icon-name="name" :aria-label="name" :aria-selected="currentValue === name" :title="name" @click="choose(name)"><VanIcon :name="name" :size="25" aria-hidden="true" /><span>{{ name }}</span><Check v-if="currentValue === name" :size="13" class="icon-picker-check" /></button>
-            <p v-if="!results.length" class="icon-picker-empty">没有找到匹配图标，试试其他名称或中文关键词。</p>
+            <p v-if="!results.length" class="icon-picker-empty">{{ t("没有找到匹配图标，试试其他名称或中文关键词。") }}</p>
           </div>
-          <footer class="icon-picker-note">点击图标立即应用；支持方向键选择和 Enter 确认。</footer>
+          <footer class="icon-picker-note">{{ t("点击图标立即应用；支持方向键选择和 Enter 确认。") }}</footer>
         </template>
         <form v-else class="icon-picker-custom" @submit.prevent="applyCustom">
-          <label :for="`${id}-custom-icon`">图片链接或自定义图标名称</label>
-          <input :id="`${id}-custom-icon`" v-model="draft" aria-label="图片链接或自定义图标名称" placeholder="https://…、/assets/icon.svg 或自定义名称" :aria-invalid="!!error" :aria-describedby="error ? `${id}-icon-error` : undefined" @input="error = ''" />
-          <p>用于已有图片或自定义图标库；普通图标可直接在「图标库」中选择。</p>
-          <p v-if="error" :id="`${id}-icon-error`" role="alert" class="icon-picker-error">{{ error }}</p>
-          <div><button type="button" @click="close()">取消</button><button type="submit">应用</button></div>
+          <label :for="`${id}-custom-icon`">{{ t("图片链接或自定义图标名称") }}</label>
+          <input :id="`${id}-custom-icon`" v-model="draft" :aria-label="t('图片链接或自定义图标名称')" :placeholder="t('https://…、/assets/icon.svg 或自定义名称')" :aria-invalid="!!error" @input="error = ''" />
+          <p>{{ t("用于已有图片或自定义图标库；普通图标可直接在「图标库」中选择。") }}</p>
+          <div><button type="button" @click="close()">{{ t("取消") }}</button><button type="submit">{{ t("应用") }}</button></div>
         </form>
       </section>
     </Teleport>

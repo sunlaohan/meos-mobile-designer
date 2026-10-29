@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n, componentName } from '../utils/i18n';
+const { t } = useI18n();
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { ChevronDown, ChevronRight, Layers3 } from 'lucide-vue-next';
 import LayerDragOverlay from './LayerDragOverlay.vue';
@@ -44,7 +46,7 @@ let frame = 0;
 let suppressClick = false;
 let hover = { id: '', since: 0 };
 
-function name(node: CanvasNode) { return isContainer(node) ? String(node.props.name || '容器组') : getDefinition(node.type).name; }
+function name(node: CanvasNode) { return isContainer(node) ? String(node.props.name || t('容器组')) : componentName(getDefinition(node.type)); }
 function description(node: CanvasNode) { return String(node.props.name || node.props.title || node.props.label || name(node)); }
 function toggle(id: string) {
   const next = new Set(collapsed.value);
@@ -221,12 +223,12 @@ function drop(event: DragEvent, row: FlatLayer) {
         @dragstart.prevent @dragover.prevent.stop="dragOver($event, row)" @dragleave="!drag.sourceId && (drag.target = null)" @drop.prevent.stop="drop($event, row)"
       >
         <span v-for="level in row.depth" :key="level" class="layer-indent-guide" :style="{ left: `${16 + (level - 1) * LAYER_INDENT}px` }" aria-hidden="true" />
-        <button v-if="row.acceptsChildren" class="layer-expander" :title="collapsed.has(row.node.id) ? '展开子图层' : '折叠子图层'" @pointerdown.stop @click.stop="toggle(row.node.id)">
+        <button v-if="row.acceptsChildren" class="layer-expander" :title="collapsed.has(row.node.id) ? t('展开子图层') : t('折叠子图层')" @pointerdown.stop @click.stop="toggle(row.node.id)">
           <ChevronRight v-if="collapsed.has(row.node.id)" :size="14" /><ChevronDown v-else :size="14" />
         </button>
         <span v-else class="layer-index">{{ String(row.index + 1).padStart(2, '0') }}</span>
         <Layers3 v-if="isContainer(row.node)" :size="16" class="layer-group-icon" />
-        <span class="layer-copy"><strong>{{ name(row.node) }}</strong><small>{{ isContainer(row.node) ? `${row.node.children?.length || 0} 个子图层` : `${getDefinition(row.node.type).englishName}${isCanvasPanel(row.node) ? ' · 弹层预览' : ''}` }}</small><small v-if="Object.values(normalizedExtensions(row.node)).some(config => config?.enabled)" class="layer-extension-label">{{ containerExtensionDefinitions.filter(item => normalizedExtensions(row.node)[item.kind]?.enabled).map(item => item.name).join(' · ') }}</small></span>
+        <span class="layer-copy"><strong>{{ name(row.node) }}</strong><small>{{ isContainer(row.node) ? t('{0} 个子图层', [row.node.children?.length || 0]) : `${getDefinition(row.node.type).englishName}${isCanvasPanel(row.node) ? t(' · 弹层预览') : ''}` }}</small><small v-if="Object.values(normalizedExtensions(row.node)).some(config => config?.enabled)" class="layer-extension-label">{{ containerExtensionDefinitions.filter(item => normalizedExtensions(row.node)[item.kind]?.enabled).map(item => t(item.name)).join(' · ') }}</small></span>
       </div>
     </div>
     </TransitionGroup>

@@ -1,14 +1,15 @@
 import type { CanvasNode } from '../types';
-import { panelSlotTypes } from '../../shared/association-controls.mjs';
+import { panelSlotTypes, nativeSlotTypes, nativeCompositionTypes as nativeTypes } from '../../shared/association-controls.mjs';
 
 export const CONTAINER_TYPE = 'container-group';
+export const nativeCompositionTypes = new Set(nativeTypes);
 
 export function isContainer(node: CanvasNode) {
   return node.type === CONTAINER_TYPE;
 }
 
 export function canHaveChildren(node: CanvasNode) {
-  return isContainer(node) || ['background', 'form', 'info-card', 'list', 'pull-refresh', ...panelSlotTypes].includes(node.type);
+  return isContainer(node) || ['background', 'form', 'info-card', 'list', 'pull-refresh', ...nativeSlotTypes, ...panelSlotTypes].includes(node.type);
 }
 
 export function cloneNodes(nodes: CanvasNode[]): CanvasNode[] {
