@@ -2689,7 +2689,7 @@
   },
   {
     "name": "--van-action-sheet-max-height",
-    "value": "calc(100% - 96px)",
+    "value": "80vh",
     "kind": "dimension",
     "scope": "action-sheet"
   },

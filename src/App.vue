@@ -28,10 +28,12 @@ import GenerationLoading from './components/GenerationLoading.vue';
 import PhoneCanvas from './components/PhoneCanvas.vue';
 import PropertyPanel from './components/PropertyPanel.vue';
 import DraftRecoveryDialog from './components/DraftRecoveryDialog.vue';
+import ArtboardSwitcher from './components/ArtboardSwitcher.vue';
+import { artboardDocument, copyArtboard, designArtboards } from './utils/artboards';
 import { createDesignAutosave, type AutosaveState } from './utils/designAutosave';
 import type { DesignDraft } from './utils/designDrafts';
 import { createNode, getDefinition, makeId } from './data/componentCatalog';
-import type { CanvasNode, ComponentType, ContainerExtensions, PageBuildReport, PageBuildRequest, SavedDesign } from './types';
+import type { CanvasArtboard, CanvasNode, ComponentType, ContainerExtensions, PageBuildReport, PageBuildRequest, SavedDesign } from './types';
 import { extensionTreeError, updateContainerExtensions } from './utils/containerExtensions';
 import { downloadText, toJson, toMarkdown, toVueSfc } from './utils/exportDesign';
 import { generatePageFromPrompt } from './utils/pageGenerator';
@@ -56,7 +58,10 @@ const selectedIds = ref<string[]>([]);
 const associatedEdits = ref<AssociatedPanelEdit[]>([]);
 const associatedEdit = computed(() => associatedEdits.value[associatedEdits.value.length - 1]);
 const fileTitle = ref('移动端巡检页面');
-const nodes = ref<CanvasNode[]>([]);
+const artboards = ref<CanvasArtboard[]>([]);
+const activeArtboardId = ref('');
+const activeArtboard = computed(() => artboards.value.find(board => board.id === activeArtboardId.value) || artboards.value[0]);
+const nodes = computed({ get: () => activeArtboard.value?.nodes || [], set: (value: CanvasNode[]) => { activeArtboard.value.nodes = value; } });
 const autosaveState = ref<AutosaveState>();
 const copying = ref(false);
 const saving = computed(() => !!autosaveState.value?.saving || copying.value);
@@ -66,37 +71,33 @@ const generationError = ref('');
 let generationController: AbortController | undefined;
 const exportOpen = ref(false);
 const clearDialogOpen = ref(false);
+const deleteArtboardId = ref('');
+const deleteArtboardOpen = ref(false);
 const ConfirmDialog = Dialog.Component;
 const { notify } = useNotifications();
 const preparingPreview = ref(false);
-const buildReport = ref<PageBuildReport | undefined>();
+const buildReport = computed({ get: () => activeArtboard.value?.report, set: (value: PageBuildReport | undefined) => { activeArtboard.value.report = value; } });
 const isPreview = ref(urlParams.get('preview') === '1' || location.hash === '#preview');
 
 const saved = props.cloudDesign;
-let queryDesign: Pick<SavedDesign, 'title' | 'nodes' | 'report'> | null = null;
+let queryDesign: SavedDesign | null = null;
 try {
-  queryDesign = previewPayload ? (JSON.parse(previewPayload) as Pick<SavedDesign, 'title' | 'nodes'>) : null;
+  queryDesign = previewPayload ? JSON.parse(previewPayload) as SavedDesign : null;
 } catch {
   queryDesign = null;
 }
 
-if (Array.isArray(queryDesign?.nodes)) {
-  fileTitle.value = queryDesign.title;
-  nodes.value = cloneNodes(queryDesign.nodes);
-  buildReport.value = queryDesign.report;
-} else if (Array.isArray(saved?.nodes)) {
-  fileTitle.value = saved.title;
-  nodes.value = cloneNodes(saved.nodes);
-  buildReport.value = saved.report;
-} else {
-  const initial = generatePageFromPrompt('巡检任务列表');
-  fileTitle.value = initial.title;
-  nodes.value = initial.nodes;
-  buildReport.value = initial.report;
-}
+const initial = Array.isArray(queryDesign?.nodes) ? queryDesign! : Array.isArray(saved?.nodes) ? saved : generatePageFromPrompt('巡检任务列表');
+fileTitle.value = initial.title;
+artboards.value = designArtboards(initial);
+const requestedBoard = urlParams.get('artboard') || ('activeArtboardId' in initial ? initial.activeArtboardId : '');
+activeArtboardId.value = artboards.value.find(board => board.id === requestedBoard)?.id || artboards.value[0].id;
+watch(fileTitle, (title, previous) => {
+  if (title.trim() && artboards.value.length === 1 && activeArtboard.value.title === previous) activeArtboard.value.title = title;
+});
 
 function currentDocument(): SavedDesign {
-  return { version: 1, title: fileTitle.value, nodes: cloneNodes(nodes.value), report: buildReport.value, updatedAt: new Date().toISOString() };
+  return artboardDocument(fileTitle.value, artboards.value, activeArtboardId.value);
 }
 // URL fixtures and interactive previews must never write into a real document.
 const persistenceEnabled = !isPreview.value && !queryDesign;
@@ -135,7 +136,7 @@ const saveNotice = computed(() => {
   if (state.status === 'offline') return '当前离线，修改已保存在本机。保持此页面打开，联网后会自动同步。';
   return ['error', 'conflict'].includes(state.status) ? state.error : '';
 });
-watch(() => JSON.stringify({ title: fileTitle.value, nodes: nodes.value, report: buildReport.value }), () => {
+watch(() => JSON.stringify({ title: fileTitle.value, artboards: artboards.value }), () => {
   if (!isPreview.value) autosave.update(currentDocument());
 });
 watch(isPreview, value => autosave.setEnabled(persistenceEnabled && !value));
@@ -145,14 +146,14 @@ function keepCurrentDraft() { draftsOpen.value = false; autosave.keepCurrent(); 
 function restoreDraft(id: string) {
   const draft = autosave.restore(id);
   if (!draft) return;
-  commit(draft.nodes, [], draft.report, draft.title);
+  commitDocument(draft, []);
   draftsOpen.value = false;
   showToast('已恢复本机草稿');
 }
 function downloadDraft(draft?: DesignDraft) {
   const document = draft?.document || currentDocument();
   const title = document.title.replace(/[\\/:*?"<>|]/g, '-') || 'design';
-  downloadText(`${title}-draft.json`, toJson(document.title, document.nodes, document.report), 'application/json;charset=utf-8');
+  downloadText(`${title}-draft.json`, toJson(document.title, document.nodes, document.report, document.artboards, document.activeArtboardId), 'application/json;charset=utf-8');
 }
 async function saveConflictCopy() {
   if (saving.value || generating.value || !navigator.onLine) return;
@@ -166,7 +167,8 @@ async function saveConflictCopy() {
   finally { copying.value = false; }
 }
 
-const history = ref([{ title: fileTitle.value, nodes: cloneNodes(nodes.value), selectedIds: [] as string[], report: buildReport.value }]);
+const snapshot = () => ({ document: currentDocument(), selectedIds: [...selectedIds.value] });
+const history = ref([snapshot()]);
 const historyIndex = ref(0);
 const canUndo = computed(() => historyIndex.value > 0);
 const canRedo = computed(() => historyIndex.value < history.value.length - 1);
@@ -230,16 +232,55 @@ function clearCanvas() {
 }
 
 function commit(next: CanvasNode[], nextSelection: string[] = selectedIds.value, report?: PageBuildReport, title = fileTitle.value) {
-  history.value[historyIndex.value].selectedIds = [...selectedIds.value];
-  history.value[historyIndex.value].title = fileTitle.value;
-  fileTitle.value = title;
-  nodes.value = cloneNodes(next);
-  buildReport.value = report;
-  selectedIds.value = selectionRoots(nodes.value, nextSelection).map((node) => node.id);
+  const boards = artboards.value.map(board => board.id === activeArtboardId.value ? { ...board, nodes: next, report } : board);
+  commitDocument(artboardDocument(title, boards, activeArtboardId.value), nextSelection);
+}
+
+function applyDocument(document: SavedDesign, selection: string[] = []) {
+  const previousId = activeArtboardId.value;
+  fileTitle.value = document.title;
+  artboards.value = designArtboards(document);
+  activeArtboardId.value = artboards.value.find(board => board.id === document.activeArtboardId)?.id || artboards.value[0].id;
+  if (previousId !== activeArtboardId.value) associatedEdits.value = [];
+  selectedIds.value = selectionRoots(nodes.value, selection).map(node => node.id);
+}
+
+function commitDocument(document: SavedDesign, selection: string[] = []) {
+  history.value[historyIndex.value] = snapshot();
+  applyDocument(document, selection);
   if (historyIndex.value < history.value.length - 1) history.value.splice(historyIndex.value + 1);
-  history.value.push({ title, nodes: cloneNodes(next), selectedIds: [...selectedIds.value], report });
+  history.value.push(snapshot());
   if (history.value.length > 60) history.value.shift();
   historyIndex.value = history.value.length - 1;
+}
+
+function switchArtboard(id: string) {
+  if (generating.value || !artboards.value.some(board => board.id === id)) return;
+  associatedEdits.value = []; selectedIds.value = []; activeArtboardId.value = id;
+}
+function newArtboardTitle() {
+  let number = artboards.value.length + 1;
+  while (artboards.value.some(board => board.title === t('页面 {0}', [number]))) number++;
+  return t('页面 {0}', [number]);
+}
+function addArtboard(copy = false) {
+  if (generating.value) return;
+  const id = makeId();
+  const board = copy ? copyArtboard(activeArtboard.value, id, t('{0} 副本', [activeArtboard.value.title]).slice(0, 100)) : { id, title: newArtboardTitle(), nodes: [] };
+  commitDocument(artboardDocument(fileTitle.value, [...artboards.value, board], id));
+}
+function renameArtboard(title: string) {
+  if (generating.value || title === activeArtboard.value.title) return;
+  commitDocument(artboardDocument(fileTitle.value, artboards.value.map(board => board.id === activeArtboardId.value ? { ...board, title } : board), activeArtboardId.value), selectedIds.value);
+}
+function deleteArtboard() {
+  if (generating.value || artboards.value.length < 2) return;
+  const index = artboards.value.findIndex(board => board.id === deleteArtboardId.value);
+  if (index < 0) return;
+  const boards = artboards.value.filter(board => board.id !== deleteArtboardId.value);
+  commitDocument(artboardDocument(fileTitle.value, boards, boards[Math.min(index, boards.length - 1)].id));
+  deleteArtboardId.value = '';
+  showToast('画板已删除，可通过撤销恢复');
 }
 
 function addNode(type: ComponentType, index = nodes.value.length, parentId: string | null = null) {
@@ -362,22 +403,18 @@ function ungroup() {
 
 function undo() {
   if (!canUndo.value) return;
-  history.value[historyIndex.value].title = fileTitle.value;
+  history.value[historyIndex.value] = snapshot();
   historyIndex.value -= 1;
-  fileTitle.value = history.value[historyIndex.value].title;
-  nodes.value = cloneNodes(history.value[historyIndex.value].nodes);
-  buildReport.value = history.value[historyIndex.value].report;
-  selectedIds.value = [...history.value[historyIndex.value].selectedIds];
+  const entry = history.value[historyIndex.value];
+  applyDocument(entry.document, entry.selectedIds);
 }
 
 function redo() {
   if (!canRedo.value) return;
-  history.value[historyIndex.value].title = fileTitle.value;
+  history.value[historyIndex.value] = snapshot();
   historyIndex.value += 1;
-  fileTitle.value = history.value[historyIndex.value].title;
-  nodes.value = cloneNodes(history.value[historyIndex.value].nodes);
-  buildReport.value = history.value[historyIndex.value].report;
-  selectedIds.value = [...history.value[historyIndex.value].selectedIds];
+  const entry = history.value[historyIndex.value];
+  applyDocument(entry.document, entry.selectedIds);
 }
 
 async function saveDesign(notify = true): Promise<boolean> {
@@ -394,7 +431,7 @@ async function openPreview() {
   if (preview) preview.opener = null;
   try {
     if (await saveDesign(false)) {
-      const target = `${location.origin}/?page=${props.pageId}&preview=1`;
+      const target = `${location.origin}/?page=${props.pageId}&preview=1&artboard=${encodeURIComponent(activeArtboardId.value)}`;
       if (preview) preview.location.replace(target);
       else showToast('预览窗口被拦截，请允许浏览器弹出窗口后重试', 'error');
     } else preview?.close();
@@ -428,13 +465,18 @@ async function generate(request: PageBuildRequest) {
   generationError.value = '';
   const controller = new AbortController();
   generationController = controller;
-  const startingCanvas = JSON.stringify(nodes.value);
-  const startingTitle = fileTitle.value;
+  const startingCanvas = JSON.stringify({ title: fileTitle.value, artboards: artboards.value, activeArtboardId: activeArtboardId.value });
   try {
     const generated = await generatePageWithAi(request, controller.signal);
     if (controller.signal.aborted) return;
-    if (JSON.stringify(nodes.value) !== startingCanvas || fileTitle.value !== startingTitle) throw new Error('生成期间画板已修改，本次结果未覆盖画板。请重新生成。');
-    commit(generated.nodes, generated.nodes[0] ? [generated.nodes[0].id] : [], generated.report, generated.title);
+    if (JSON.stringify({ title: fileTitle.value, artboards: artboards.value, activeArtboardId: activeArtboardId.value }) !== startingCanvas) throw new Error('生成期间画板已修改，本次结果未覆盖画板。请重新生成。');
+    const generatedBoards = generated.artboards?.length ? designArtboards(generated) : [{ id: makeId(), title: generated.title, nodes: generated.nodes, report: generated.report }];
+    // Replace the current artboard; retain every other page in the design.
+    const index = artboards.value.findIndex(board => board.id === activeArtboardId.value);
+    const boards = [...artboards.value];
+    generatedBoards[0].id = activeArtboardId.value;
+    boards.splice(index, 1, ...generatedBoards);
+    commitDocument(artboardDocument(artboards.value.length === 1 ? generated.title : fileTitle.value, boards, generatedBoards[0].id), generated.nodes[0] ? [generated.nodes[0].id] : []);
     if (generated.summary) notify(generated.summary, 'info');
     showToast(`已生成「${generated.title}」`);
   } catch (error) {
@@ -449,15 +491,15 @@ function setZoom(next: number) {
 
 function exportFile(kind: 'vue' | 'json' | 'md') {
   const safeName = fileTitle.value.replace(/[\\/:*?"<>|]/g, '-') || 'mobile-page';
-  if (kind === 'vue') downloadText(`${safeName}.vue`, toVueSfc(fileTitle.value, nodes.value), 'text/plain;charset=utf-8');
-  if (kind === 'json') downloadText(`${safeName}.json`, toJson(fileTitle.value, nodes.value, buildReport.value), 'application/json;charset=utf-8');
-  if (kind === 'md') downloadText(t('{0}-组件说明.md', [safeName]), toMarkdown(fileTitle.value, nodes.value, buildReport.value), 'text/markdown;charset=utf-8');
+  if (kind === 'vue') downloadText(`${safeName}.vue`, toVueSfc(fileTitle.value, nodes.value, artboards.value, activeArtboardId.value), 'text/plain;charset=utf-8');
+  if (kind === 'json') downloadText(`${safeName}.json`, toJson(fileTitle.value, nodes.value, buildReport.value, artboards.value, activeArtboardId.value), 'application/json;charset=utf-8');
+  if (kind === 'md') downloadText(t('{0}-组件说明.md', [safeName]), toMarkdown(fileTitle.value, nodes.value, buildReport.value, artboards.value), 'text/markdown;charset=utf-8');
   exportOpen.value = false;
   showToast('导出文件已生成');
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (clearDialogOpen.value) return;
+  if (clearDialogOpen.value || deleteArtboardOpen.value) return;
   const target = event.target as HTMLElement;
   const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable;
   const command = event.metaKey || event.ctrlKey;
@@ -531,7 +573,8 @@ onBeforeUnmount(() => {
       <div class="surface-controls"><ThemeToggle /><LanguageToggle /></div><button @click="exitPreview">{{ t("返回编辑器") }}</button>
     </div>
     <div class="preview-canvas">
-      <PhoneCanvas :nodes="nodes" preview :zoom="100" @patch="patchNode" @action="showToast" />
+      <ArtboardSwitcher v-if="artboards.length > 1" :artboards="artboards" :active-id="activeArtboardId" preview @switch="switchArtboard" />
+      <PhoneCanvas :key="activeArtboardId" :nodes="nodes" preview :zoom="100" @patch="patchNode" @action="showToast" />
     </div>
   </main>
 
@@ -592,9 +635,12 @@ onBeforeUnmount(() => {
         <div class="horizontal-ruler" aria-hidden="true">
           <span v-for="number in [-200, -100, 0, 100, 200, 300, 400, 500]" :key="number">{{ number }}</span>
         </div>
-        <div v-show="!generating" class="canvas-name"><span />{{ fileTitle }}</div>
+        <div v-show="!generating" class="canvas-name">
+          <ArtboardSwitcher :artboards="artboards" :active-id="activeArtboardId" :disabled="generating" @switch="switchArtboard" @add="addArtboard()" @copy="addArtboard(true)" @rename="renameArtboard" @remove="deleteArtboardId = activeArtboardId; deleteArtboardOpen = true" />
+        </div>
         <div v-show="!generating" class="canvas-scroll" @click.self="selectNode(null)">
           <PhoneCanvas
+            :key="activeArtboardId"
             ref="editorCanvas"
             :nodes="nodes"
             :selected-ids="selectedIds"
@@ -659,6 +705,21 @@ onBeforeUnmount(() => {
     </div>
 
     <DraftRecoveryDialog v-if="draftsOpen" :drafts="autosaveState?.drafts || []" :cloud-revision="autosaveState?.savedAt || ''" :error="autosaveState?.localError" @keep="keepCurrentDraft" @restore="restoreDraft" @download="downloadDraft" />
+
+    <ConfirmDialog
+      v-model:show="deleteArtboardOpen"
+      class="editor-confirm-dialog"
+      style="color: var(--text)"
+      :title="t('删除画板')"
+      :message="t('确认删除「{0}」？删除后可通过撤销恢复。', [artboards.find(board => board.id === deleteArtboardId)?.title || ''])"
+      show-cancel-button
+      :confirm-button-text="t('删除画板')"
+      :cancel-button-text="t('取消')"
+      confirm-button-color="var(--danger)"
+      :close-on-click-overlay="false"
+      @confirm="deleteArtboard"
+      @keydown.stop
+    />
 
     <ConfirmDialog
       v-model:show="clearDialogOpen"

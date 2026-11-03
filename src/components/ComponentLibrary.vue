@@ -4,7 +4,7 @@ import { useNotifications } from '../utils/notifications';
 import { useI18n, componentName } from '../utils/i18n';
 const { t, language } = useI18n();
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
-import { BookOpen, ChevronDown, ChevronRight, ExternalLink, FileCode2, ImagePlus, Layers3, Search, Send, Sparkles, X } from 'lucide-vue-next';
+import { BookOpen, ChevronDown, ChevronRight, ExternalLink, FileText, ImagePlus, Layers3, Search, Send, Sparkles, X } from 'lucide-vue-next';
 import { ImagePreview } from 'persagy-vant';
 import AiModelSelector from './AiModelSelector.vue';
 import ComponentRenderer from './ComponentRenderer.vue';
@@ -13,7 +13,7 @@ import LayerTree from './LayerTree.vue';
 import { componentCatalog, createNode } from '../data/componentCatalog';
 import { componentCategories as categories, componentNavigationItems } from '../data/componentNavigation';
 import type { BuildAttachment, CanvasNode, ComponentType, PageBuildReport, PageBuildRequest } from '../types';
-import { ATTACHMENT_LIMITS, CODE_ACCEPT, IMAGE_ACCEPT, validateAttachments } from '../../shared/attachments.mjs';
+import { ATTACHMENT_LIMITS, DOCUMENT_ACCEPT, IMAGE_ACCEPT, validateAttachments } from '../../shared/attachments.mjs';
 import { formatAttachmentSize, readBuildAttachment } from '../utils/buildAttachments';
 import { skillRulebook } from '../data/skillRules';
 import { getDefinition } from '../data/componentCatalog';
@@ -58,7 +58,7 @@ const readingKind = ref('');
 const readingAttachments = ref(false);
 const draggingAttachment = ref(false);
 const imageInput = ref<HTMLInputElement>();
-const codeInput = ref<HTMLInputElement>();
+const documentInput = ref<HTMLInputElement>();
 const ImageViewer = ImagePreview.Component;
 const previewOpen = ref(false);
 const previewImages = ref<string[]>([]);
@@ -205,9 +205,9 @@ function previewAttachment(attachment: BuildAttachment) {
         />
         <div class="attachment-toolbar">
           <input ref="imageInput" type="file" class="attachment-input" :accept="IMAGE_ACCEPT" multiple :aria-label="t('选择图片附件')" :disabled="generating || readingAttachments" @change="chooseFiles" />
-          <input ref="codeInput" type="file" class="attachment-input" :accept="CODE_ACCEPT" multiple :aria-label="t('选择代码附件')" :disabled="generating || readingAttachments" @change="chooseFiles" />
+          <input ref="documentInput" type="file" class="attachment-input" :accept="DOCUMENT_ACCEPT" multiple :aria-label="t('选择文档附件')" :disabled="generating || readingAttachments" @change="chooseFiles" />
           <AsyncButton :aria-label="t('上传图片')" :title="t('PNG、JPG、WebP；单张不超过 5MB，也可直接粘贴或拖入')" :disabled="generating || readingAttachments" @click="imageInput?.click()" :loading="readingAttachments && readingKind === 'image'"><ImagePlus :size="14" />{{ t("图片") }}</AsyncButton>
-          <AsyncButton :aria-label="t('上传代码附件')" :title="t('Vue、JS、TS、CSS、JSON 等 UTF-8 文本；单份不超过 100KB')" :disabled="generating || readingAttachments" @click="codeInput?.click()" :loading="readingAttachments && readingKind === 'code'"><FileCode2 :size="14" />{{ t("代码") }}</AsyncButton>
+          <AsyncButton :aria-label="t('上传文档')" :title="t('Markdown、Vue、JS、TS、CSS、JSON 等 UTF-8 文档；单份不超过 100KB')" :disabled="generating || readingAttachments" @click="documentInput?.click()" :loading="readingAttachments && readingKind === 'code'"><FileText :size="14" />{{ t("文档") }}</AsyncButton>
           <span>{{ readingAttachments ? t('读取中…') : attachments.length ? t('{0}/6 个附件', [attachments.length]) : t('可粘贴或拖入') }}</span>
         </div>
         <div v-if="attachments.length" class="composer-attachments" :aria-label="t('已添加附件')">
@@ -217,7 +217,7 @@ function previewAttachment(attachment: BuildAttachment) {
               <span class="attachment-info"><strong :title="attachment.name">{{ attachment.name }}</strong><small>{{ t("图片 ·") }} {{ formatAttachmentSize(attachment.size) }}</small></span>
             </template>
             <details v-else class="attachment-code">
-              <summary :aria-label="t('预览代码 {0}', [attachment.name])"><FileCode2 :size="17" /><span class="attachment-info"><strong :title="attachment.name">{{ attachment.name }}</strong><small>{{ t("代码 ·") }} {{ formatAttachmentSize(attachment.size) }} {{ t("· 点击预览") }}</small></span></summary>
+              <summary :aria-label="t('预览文档 {0}', [attachment.name])"><FileText :size="17" /><span class="attachment-info"><strong :title="attachment.name">{{ attachment.name }}</strong><small>{{ /\.(md|markdown)$/i.test(attachment.name) ? 'Markdown ·' : t("代码文档 ·") }} {{ formatAttachmentSize(attachment.size) }} {{ t("· 点击预览") }}</small></span></summary>
               <pre>{{ attachment.content }}</pre>
             </details>
             <button type="button" class="attachment-remove" :aria-label="t('移除附件 {0}', [attachment.name])" :disabled="generating" @click="removeAttachment(attachment.id)"><X :size="13" /></button>

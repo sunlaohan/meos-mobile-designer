@@ -1,7 +1,7 @@
 {
   "skill": {
     "name": "use-persagy-vant",
-    "version": "0.0.54",
+    "version": "0.0.55",
     "fingerprint": "66366834",
     "sourceFiles": [
       "SKILL.md",
@@ -7341,6 +7341,16 @@
           "group": "状态",
           "help": "content-adaptive · boolean",
           "description": "内容较少时让面板高度随内容自适应",
+          "allowGradient": false
+        },
+        {
+          "key": "maxHeight",
+          "label": "整个面板最大高度",
+          "control": "text",
+          "group": "属性",
+          "help": "max-height · number | string",
+          "description": "整个面板最大高度；自适应关闭时同时作为面板高度，数字单位为 px",
+          "tokenKind": "dimension",
           "allowGradient": false
         },
         {

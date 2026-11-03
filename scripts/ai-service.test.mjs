@@ -267,3 +267,31 @@ test('取消生成会向上游传递中止信号，失败后不产生页面结�
   await assert.rejects(cancellable.generate({ prompt: '设备详情' }, controller.signal), /已取消/);
   assert.equal(calls.length, 1);
 });
+
+test('Markdown 多页面需求逐画板生成并验证交互，结果保留全部页面且不回传文档内容', async () => {
+  const content = '# 设备管理\n## 列表页\n点击分类选择\n## 详情页\n设备详情字段';
+  const attachment = { id: 'md', name: '需求.md', kind: 'code', mimeType: 'text/plain', size: Buffer.byteLength(content), content };
+  const detailPlan = { recipeId: 'detail', title: '设备详情', elements: [{ id: 'nav', component: 'nav-bar', element: '导航' }] };
+  const { service, calls } = fakeService([modelList, completion({ title: '设备管理', artboards: [interactionPlan, detailPlan] }), completion(interactivePage()), completion(page(node('nav', 'nav-bar')))]);
+  const result = await service.generate({ prompt: '按照文档生成所有页面', attachments: [attachment] });
+  assert.equal(result.title, '设备管理'); assert.equal(result.artboards.length, 2);
+  assert.equal(result.artboards[1].title, '设备详情');
+  assert.equal(result.artboards[0].report.interactions.length, 2);
+  assert.equal(result.artboards[0].nodes[1].actions.click.targetId, result.artboards[0].nodes[2].id);
+  assert.notEqual(result.artboards[0].nodes[0].id, result.artboards[1].nodes[0].id);
+  assert.equal(calls.length, 4);
+  for (const call of calls.slice(1)) assert.ok(JSON.parse(call.options.body).messages[1].content.includes('详情页'));
+  assert.match(JSON.parse(calls[1].options.body).messages[0].content, /artboards/);
+  assert.ok(!JSON.stringify(result).includes(content));
+  assert.deepEqual(result.artboards[1].report.attachments, [{ name: attachment.name, kind: 'code', size: attachment.size }]);
+});
+
+test('多画板规划为空或超限时拒绝，任一页面校验失败不返回部分设计', async () => {
+  for (const artboards of [[], Array(13).fill({})]) {
+    const { service, calls } = fakeService([modelList, completion({ title: '设计', artboards })]);
+    await assert.rejects(service.generate({ prompt: '多页面' }), /多画板规划/); assert.equal(calls.length, 2);
+  }
+  const plan = { recipeId: 'detail', title: '设备详情', elements: [{ component: 'nav-bar', element: '导航' }] };
+  const { service } = fakeService([modelList, completion({ title: '设计', artboards: [plan, plan] }), completion(page(node('nav', 'nav-bar'))), completion(page(node('bad', 'invented-component')))]);
+  await assert.rejects(service.generate({ prompt: '列表和详情' }), /不支持的组件/);
+});

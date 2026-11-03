@@ -174,7 +174,8 @@
     "reset": {
       "show": null,
       "closeOnClickAction": null,
-      "contentAdaptive": null
+      "contentAdaptive": null,
+      "maxHeight": null
     },
     "items": [
       {
@@ -247,7 +248,8 @@
         "id": "docs-4",
         "name": "内容高度自适应",
         "props": {
-          "contentAdaptive": true
+          "contentAdaptive": true,
+          "maxHeight": "80vh"
         },
         "seeds": {
           "title": "选择操作"

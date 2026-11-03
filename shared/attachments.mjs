@@ -1,8 +1,9 @@
 export const ATTACHMENT_LIMITS = Object.freeze({ count: 6, images: 4, imageBytes: 5 * 1024 * 1024, codeBytes: 100 * 1024, totalCodeBytes: 200 * 1024, totalBytes: 12 * 1024 * 1024, requestBytes: 18 * 1024 * 1024 });
 export const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
-export const CODE_EXTENSIONS = ['vue', 'js', 'ts', 'jsx', 'tsx', 'mjs', 'cjs', 'json', 'html', 'htm', 'css', 'scss', 'sass', 'less', 'md', 'txt', 'py', 'java', 'go', 'rs', 'sql', 'yaml', 'yml', 'xml', 'svg', 'svelte', 'astro', 'swift', 'kt', 'kts', 'c', 'h', 'cpp', 'hpp', 'cs', 'sh'];
+export const CODE_EXTENSIONS = ['vue', 'js', 'ts', 'jsx', 'tsx', 'mjs', 'cjs', 'json', 'html', 'htm', 'css', 'scss', 'sass', 'less', 'md', 'markdown', 'txt', 'py', 'java', 'go', 'rs', 'sql', 'yaml', 'yml', 'xml', 'svg', 'svelte', 'astro', 'swift', 'kt', 'kts', 'c', 'h', 'cpp', 'hpp', 'cs', 'sh'];
 export const IMAGE_ACCEPT = IMAGE_TYPES.join(',');
 export const CODE_ACCEPT = CODE_EXTENSIONS.map((extension) => `.${extension}`).join(',');
+export const DOCUMENT_ACCEPT = CODE_ACCEPT;
 
 export function attachmentKind(name, mime = '') {
   const extension = String(name).split('.').pop()?.toLowerCase();
@@ -35,12 +36,12 @@ export function validateAttachments(input) {
       const valid = item.mimeType === 'image/png' ? header.startsWith('\x89PNG\r\n\x1a\n') : item.mimeType === 'image/jpeg' ? header.startsWith('\xff\xd8\xff') : header.startsWith('RIFF') && header.slice(8, 12) === 'WEBP';
       if (!valid) throw new Error('图片内容与格式不匹配，请重新选择图片。');
     } else if (item.kind === 'code') {
-      if (attachmentKind(item.name) !== 'code' || item.mimeType !== 'text/plain') throw new Error('请选择 Vue、JS、TS、CSS、JSON 等代码或文本文件。');
-      if (!item.content.trim() || /\0|[\x01-\x08\x0b\x0c\x0e-\x1f]/.test(item.content)) throw new Error('代码附件为空或包含二进制内容，请选择 UTF-8 文本文件。');
+      if (attachmentKind(item.name) !== 'code' || item.mimeType !== 'text/plain') throw new Error('请选择 Markdown、Vue、JS、TS、CSS、JSON 等文档。');
+      if (!item.content.trim() || /\0|[\x01-\x08\x0b\x0c\x0e-\x1f]/.test(item.content)) throw new Error('文档附件为空或包含二进制内容，请选择 UTF-8 文本文件。');
       size = new TextEncoder().encode(item.content).byteLength;
-      if (size > ATTACHMENT_LIMITS.codeBytes) throw new Error('单份代码附件不能超过 100KB。');
+      if (size > ATTACHMENT_LIMITS.codeBytes) throw new Error('单份文档附件不能超过 100KB。');
       codeTotal += size;
-      if (codeTotal > ATTACHMENT_LIMITS.totalCodeBytes) throw new Error('代码附件合计不能超过 200KB。');
+      if (codeTotal > ATTACHMENT_LIMITS.totalCodeBytes) throw new Error('文档附件合计不能超过 200KB。');
     } else throw new Error('不支持的附件类型。');
     if (item.size !== size) throw new Error('附件大小校验失败，请重新添加。');
     total += size;

@@ -1,5 +1,5 @@
 import { getDefinition } from '../data/componentCatalog';
-import type { CanvasNode, PageBuildReport } from '../types';
+import type { CanvasArtboard, CanvasNode, PageBuildReport } from '../types';
 import { getComponentDocsUrl } from './componentDocs';
 import { flattenNodes, getBackgroundProps, getBackgroundStyle, getContainerStyle, isContainer } from './nodeTree';
 import { isCanvasPanel } from './canvasPresentation';
@@ -104,7 +104,18 @@ function nodeToVue(node: CanvasNode, depth = 2, anchoredIds = new Set<string>(),
   return `${indent}<${component}${model}${props}${source}${events}${closeEvent} />`;
 }
 
-export function toVueSfc(title: string, nodes: CanvasNode[]) {
+export function toVueSfc(title: string, nodes: CanvasNode[], artboards?: CanvasArtboard[], activeId?: string) {
+  // Scope model and interaction IDs per page, including imported documents that
+  // happen to use the same node IDs on different artboards.
+  const pages = artboards && artboards.length > 1 ? artboards.map((board, index) => {
+    const scoped: CanvasNode[] = JSON.parse(JSON.stringify(board.nodes));
+    for (const node of flattenNodes(scoped)) {
+      node.id = `page${index}-${node.id}`;
+      for (const action of Object.values(node.actions || {})) action.targetId = `page${index}-${action.targetId}`;
+    }
+    return { ...board, nodes: scoped };
+  }) : undefined;
+  if (pages) nodes = pages.flatMap(board => board.nodes);
   const configured = flattenNodes(nodes).filter((node) => Object.values(effectiveExtensions(node, nodes)).some((config) => config?.enabled));
   const hasExtensions = configured.length > 0;
   const hasLazyload = configured.some((node) => effectiveExtensions(node, nodes).lazyload?.enabled);
@@ -135,14 +146,17 @@ export function toVueSfc(title: string, nodes: CanvasNode[]) {
     ])
     .join(',\n');
 
-  return `<template>\n  <main class="${title.replaceAll(' ', '-').toLowerCase()}">\n${nodes.map((node) => nodeToVue(node, 2, anchoredIds, nodes)).join('\n')}\n  </main>\n</template>\n\n<script setup${hasExtensions ? '' : ' lang="ts"'}>\nimport { reactive${hasExtensions ? ', defineComponent, h, ref, computed, watch, onMounted, onBeforeUnmount, nextTick, resolveComponent, getCurrentInstance' : notifySetup ? ', watch' : ''} } from 'vue';\n${imports ? `import { ${imports} } from 'persagy-vant';\n` : ''}${hasLazyload ? "import Lazyload from 'persagy-vant/es/lazyload/index.mjs';\n" : ''}${toastImport}import 'persagy-vant/lib/index.css';\n${componentSetup ? `\n${componentSetup}\n` : ''}\nconst state = reactive({\n${stateEntries}\n});\n${anchorSetup}${extensionSetup}${notifySetup ? `\n${notifySetup}\n` : ''}</script>\n\n<style scoped>\nmain { min-height: 100vh; background: var(--van-gray-1); }\n.designer-container { box-sizing: border-box; }\n${hasExtensions ? '.container-extension-placeholder { display: grid; place-items: center; background: #f3f6fa; color: #7b8798; font-size: 14px; }\n' : ''}${anchoredIds.size ? '.association-anchor { position: fixed; left: 50%; top: 30%; width: 1px; height: 1px; pointer-events: none; }\n.association-reference { display: block; width: 100%; height: 100%; }\n' : ''}</style>\n`;
+  const escapeText = (text: string) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+  const template = pages ? `    <nav class="page-navigation" aria-label="页面切换"><select v-model="activeArtboard" aria-label="切换页面">\n${pages.map((board, index) => `      <option :value="${index}">${escapeText(board.title)}</option>`).join('\n')}\n    </select></nav>\n${pages.map((board, index) => `    <section v-if="activeArtboard === ${index}">\n${board.nodes.map(node => nodeToVue(node, 3, anchoredIds, board.nodes)).join('\n')}\n    </section>`).join('\n')}` : nodes.map(node => nodeToVue(node, 2, anchoredIds, nodes)).join('\n');
+  return `<template>\n  <main class="${escapeText(title.replaceAll(' ', '-').toLowerCase())}">\n${template}\n  </main>\n</template>\n\n<script setup${hasExtensions ? '' : ' lang="ts"'}>\nimport { reactive${hasExtensions ? ', defineComponent, h, ref, computed, watch, onMounted, onBeforeUnmount, nextTick, resolveComponent, getCurrentInstance' : `${pages ? ', ref' : ''}${notifySetup ? ', watch' : ''}`} } from 'vue';\n${imports ? `import { ${imports} } from 'persagy-vant';\n` : ''}${hasLazyload ? "import Lazyload from 'persagy-vant/es/lazyload/index.mjs';\n" : ''}${toastImport}import 'persagy-vant/lib/index.css';\n${componentSetup ? `\n${componentSetup}\n` : ''}${pages ? `\nconst activeArtboard = ref(${Math.max(0, pages.findIndex(board => board.id === activeId))});\n` : ''}\nconst state = reactive({\n${stateEntries}\n});\n${anchorSetup}${extensionSetup}${notifySetup ? `\n${notifySetup}\n` : ''}</script>\n\n<style scoped>\nmain { min-height: 100vh; background: var(--van-gray-1); }\n.designer-container { box-sizing: border-box; }\n${pages ? '.page-navigation { padding: 12px; background: white; }\n.page-navigation select { max-width: 100%; padding: 8px 12px; font: inherit; }\n' : ''}${hasExtensions ? '.container-extension-placeholder { display: grid; place-items: center; background: #f3f6fa; color: #7b8798; font-size: 14px; }\n' : ''}${anchoredIds.size ? '.association-anchor { position: fixed; left: 50%; top: 30%; width: 1px; height: 1px; pointer-events: none; }\n.association-reference { display: block; width: 100%; height: 100%; }\n' : ''}</style>\n`;
 }
 
-export function toJson(title: string, nodes: CanvasNode[], report?: PageBuildReport) {
-  return JSON.stringify({ schema: 'compose/v1', title, components: nodes, ...(report ? { report } : {}) }, null, 2);
+export function toJson(title: string, nodes: CanvasNode[], report?: PageBuildReport, artboards?: CanvasArtboard[], activeArtboardId?: string) {
+  return JSON.stringify({ schema: 'compose/v1', title, components: nodes, ...(report ? { report } : {}), ...(artboards?.length ? { artboards, activeArtboardId } : {}) }, null, 2);
 }
 
-export function toMarkdown(title: string, nodes: CanvasNode[], report?: PageBuildReport) {
+export function toMarkdown(title: string, nodes: CanvasNode[], report?: PageBuildReport, artboards?: CanvasArtboard[]): string {
+  if (artboards && artboards.length > 1) return `# ${title}\n\n共 ${artboards.length} 个画板。\n\n${artboards.map(board => toMarkdown(board.title, board.nodes, board.report).replace(/^#/gm, '##')).join('\n\n')}`;
   const rows: string[] = [];
   function visit(items: CanvasNode[], prefix = '', parent = '页面') {
     items.forEach((node, index) => {

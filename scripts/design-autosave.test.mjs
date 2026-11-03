@@ -182,3 +182,22 @@ test('编辑器接入生命周期保护、账号隔离及云端版本条件', as
   assert.match(client, /eq\('updated_at', page.updated_at\)/); assert.match(client, /designContentKey\(\{ \.\.\.latest.document, title: latest.title \}\)/);
   assert.match(account, /createPage\(title, \{ \.\.\.document, title \}, controller.signal\)/);
 });
+
+test('多画板全部进入云端和本机草稿，非活动画板修改不会被忽略', async () => {
+  const initial = { ...doc('多页设计'), activeArtboardId: 'a', artboards: [{ id: 'a', title: '列表', nodes: doc('列表').nodes }, { id: 'b', title: '详情', nodes: doc('详情').nodes }] };
+  const h = setup({ initial });
+  const changed = JSON.parse(JSON.stringify(initial));
+  changed.artboards[1].nodes[0].props.title = '详情新增字段';
+  h.manager.update(changed);
+  assert.equal(h.drafts()[0].document.artboards[1].nodes[0].props.title, '详情新增字段');
+  await h.clock.advance(2000);
+  assert.deepEqual(h.calls[0].document.artboards, changed.artboards);
+  assert.equal(h.state().status, 'saved');
+  h.manager.update({ ...changed, activeArtboardId: 'b', nodes: changed.artboards[1].nodes });
+  await h.clock.advance(2000); assert.equal(h.calls.length, 1, '页面切换不触发额外写入');
+  h.online(false); changed.artboards[0].nodes[0].props.title = '离线字段'; h.manager.update(changed);
+  const backup = h.drafts()[0]; h.manager.dispose();
+  const reopened = setup({ initial, disk: h.disk, online: false, writer: 'reopened' });
+  const restored = reopened.manager.restore(backup.writerId);
+  assert.deepEqual(restored.artboards, changed.artboards); reopened.manager.dispose();
+});

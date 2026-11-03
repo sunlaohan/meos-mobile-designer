@@ -66,6 +66,12 @@
         "default": "`false`"
       },
       {
+        "name": "max-height",
+        "description": "整个面板最大高度；自适应关闭时同时作为面板高度，数字单位为 px",
+        "type": "number | string",
+        "default": "CSS 变量 `--van-action-sheet-max-height`，默认 `80vh`"
+      },
+      {
         "name": "closeable",
         "description": "是否显示导航栏基础用法中的关闭图标",
         "type": "boolean",
@@ -170,6 +176,7 @@
       "cancelText",
       "description",
       "contentAdaptive",
+      "maxHeight",
       "closeOnPopstate",
       "closeOnClickAction",
       "safeAreaInsetBottom"

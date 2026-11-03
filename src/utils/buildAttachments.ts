@@ -4,8 +4,8 @@ import type { BuildAttachment } from '../types';
 export async function readBuildAttachment(file: File): Promise<BuildAttachment> {
   const name = file.name.split(/[\\/]/).pop() || '粘贴图片.png';
   const kind = attachmentKind(name, file.type);
-  if (!kind) throw new Error(`不支持「${name}」，请选择图片、代码或文本文件。`);
-  if (file.size > (kind === 'image' ? ATTACHMENT_LIMITS.imageBytes : ATTACHMENT_LIMITS.codeBytes)) throw new Error(`${name} 超过大小限制：图片 5MB，代码 100KB。`);
+  if (!kind) throw new Error(`不支持「${name}」，请选择图片、Markdown 或代码文档。`);
+  if (file.size > (kind === 'image' ? ATTACHMENT_LIMITS.imageBytes : ATTACHMENT_LIMITS.codeBytes)) throw new Error(`${name} 超过大小限制：图片 5MB，文档 100KB。`);
   let content: string;
   if (kind === 'image') {
     const data = await file.arrayBuffer();

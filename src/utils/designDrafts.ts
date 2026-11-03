@@ -18,12 +18,18 @@ export interface DesignDraft {
 }
 
 // JSONB may reorder object keys. Compare content, never timestamps or key order.
-export function designContentKey(document: Pick<SavedDesign, 'title' | 'nodes' | 'report'>): string {
+export function designContentKey(document: Pick<SavedDesign, 'title' | 'nodes' | 'report' | 'artboards'>): string {
   const canonical = (value: any): any => Array.isArray(value) ? value.map(canonical)
     : value && typeof value === 'object'
       ? Object.fromEntries(Object.keys(value).sort().filter(key => value[key] !== undefined).map(key => [key, canonical(value[key])]))
       : value;
-  return JSON.stringify(canonical({ title: document.title.trim(), nodes: document.nodes, report: document.report }));
+  // Switching the current page is navigation; edits to any artboard are content.
+  // Keep the legacy shape for single-page documents and their existing drafts.
+  const boards = document.artboards;
+  const content = boards?.length === 1 && boards[0].id === 'main' && boards[0].title === document.title
+    ? { nodes: boards[0].nodes, report: boards[0].report }
+    : boards?.length ? { artboards: boards } : { nodes: document.nodes, report: document.report };
+  return JSON.stringify(canonical({ title: document.title.trim(), ...content }));
 }
 export function cloneDesign(document: SavedDesign): SavedDesign { return JSON.parse(JSON.stringify(document)); }
 

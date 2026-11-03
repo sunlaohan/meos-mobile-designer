@@ -111,6 +111,14 @@ export interface GeneratedPage {
   summary: string;
   nodes: CanvasNode[];
   report?: PageBuildReport;
+  artboards?: CanvasArtboard[];
+}
+
+export interface CanvasArtboard {
+  id: string;
+  title: string;
+  nodes: CanvasNode[];
+  report?: PageBuildReport;
 }
 
 export interface SavedDesign {
@@ -119,4 +127,6 @@ export interface SavedDesign {
   updatedAt: string;
   nodes: CanvasNode[];
   report?: PageBuildReport;
+  artboards?: CanvasArtboard[];
+  activeArtboardId?: string;
 }

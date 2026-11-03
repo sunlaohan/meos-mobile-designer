@@ -4,6 +4,7 @@ export const IMAGE_TYPES: string[];
 export const CODE_EXTENSIONS: string[];
 export const IMAGE_ACCEPT: string;
 export const CODE_ACCEPT: string;
+export const DOCUMENT_ACCEPT: string;
 export function attachmentKind(name: string, mime?: string): 'image' | 'code' | undefined;
 export function imageMime(name: string, mime?: string): string | undefined;
 export function validateAttachments(input: unknown): BuildAttachment[];
