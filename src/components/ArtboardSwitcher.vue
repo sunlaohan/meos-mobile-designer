@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue';
+import EditorSelect from './EditorSelect.vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { ChevronLeft, ChevronRight, Copy, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import type { CanvasArtboard } from '../types';
 import { useI18n } from '../utils/i18n';
@@ -26,17 +27,22 @@ function finishRename() {
   if (value) emit('rename', value);
 }
 function action(kind: 'copy' | 'remove') { if (menu.value) menu.value.open = false; if (kind === 'copy') emit('copy'); else emit('remove'); }
+function outsideMenu(event: PointerEvent) { if (menu.value?.open && !menu.value.contains(event.target as Node)) menu.value.open = false; }
+function keydown(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || !menu.value?.open) return;
+  event.preventDefault(); menu.value.open = false; menu.value.querySelector('summary')?.focus();
+}
+onMounted(() => document.addEventListener('pointerdown', outsideMenu, true));
+onBeforeUnmount(() => document.removeEventListener('pointerdown', outsideMenu, true));
 </script>
 
 <template>
-  <div class="artboard-controls" :class="{ 'artboard-controls--multiple': artboards.length > 1 }" @keydown.stop @click.stop>
+  <div class="artboard-controls" :class="{ 'artboard-controls--multiple': artboards.length > 1 }" @keydown.stop="keydown" @click.stop>
     <i class="artboard-dot" aria-hidden="true" />
     <input v-if="renaming" ref="input" v-model="title" class="artboard-rename" maxlength="100" :aria-label="t('画板名称')" @blur="finishRename" @keydown.enter.prevent="finishRename" @keydown.esc.prevent="renaming = false" />
     <template v-else-if="artboards.length > 1">
       <button :aria-label="t('上一个画板')" :disabled="disabled || currentIndex() === 0" @click="adjacent(-1)"><ChevronLeft :size="14" /></button>
-      <select :value="activeId" :aria-label="t('切换画板')" :disabled="disabled" @change="emit('switch', ($event.target as HTMLSelectElement).value)">
-        <option v-for="(board, index) in artboards" :key="board.id" :value="board.id">{{ index + 1 }}. {{ board.title }}</option>
-      </select>
+      <EditorSelect class="artboard-page-select" size="compact" :model-value="activeId" :options="artboards.map((board, index) => ({ label: `${index + 1}. ${board.title}`, value: board.id }))" :aria-label="t('切换画板')" :disabled="disabled" @update:model-value="emit('switch', String($event))" />
       <span class="artboard-position">{{ currentIndex() + 1 }}/{{ artboards.length }}</span>
       <button :aria-label="t('下一个画板')" :disabled="disabled || currentIndex() === artboards.length - 1" @click="adjacent(1)"><ChevronRight :size="14" /></button>
     </template>

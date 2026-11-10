@@ -121,7 +121,7 @@
 .code-create p { font-size: 11px; margin: 0; }
 .code-create label { width: 80px; }
 .code-create label.code-note { width: 220px; }
-.admin-page select { width: 135px; height: 40px; }
+.admin-status-select { width: 150px; flex: none; --editor-select-height: 40px; }
 .code-table-wrap { overflow: auto; border: 1px solid var(--ui-border, #384354); border-radius: 9px; }
 .code-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; white-space: nowrap; }
 .code-table th {background: var(--ui-surface-raised, #262e3a); color: var(--ui-text-2, #8c9db5); padding: 15px; font-weight: 450; }

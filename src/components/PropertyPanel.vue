@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import EditorSelect from './EditorSelect.vue';
 import { useI18n, componentName, propertyName, uiDescription } from '../utils/i18n';
 const { t } = useI18n();
 import { computed, ref, watch } from 'vue';
@@ -192,9 +193,7 @@ function updateJson(schema: PropertySchema) {
           <h3>{{ t("背景主题") }}</h3>
           <label class="property-row">
             <span class="property-label">{{ t("内置背景主题") }}</span>
-            <select :value="node.props.theme || 'default'" :aria-label="t('内置背景主题')" @change="emit('patch', { theme: ($event.target as HTMLSelectElement).value })">
-              <option v-for="[value, label] in backgroundThemes" :key="value" :value="value">{{ t(label) }}</option>
-            </select>
+            <EditorSelect :model-value="node.props.theme || 'default'" :options="backgroundThemes.map(([value, label]) => ({ label: t(label), value }))" :aria-label="t('内置背景主题')" @update:model-value="emit('patch', { theme: $event })" />
           </label>
           <p class="panel-description">{{ t("背景颜色恢复默认后，使用内置主题。") }}</p>
         </section>
@@ -276,15 +275,15 @@ function updateJson(schema: PropertySchema) {
               :step="schema.step || 1"
               @input="update(schema, Number(($event.target as HTMLInputElement).value))"
             />
-            <select
+            <EditorSelect
               v-else-if="schema.control === 'select'"
               :id="fieldId(schema)"
               :aria-labelledby="`${fieldId(schema)}-label`"
-              :value="valueOf(schema)"
-              @change="update(schema, ($event.target as HTMLSelectElement).value)"
-            >
-              <option v-for="option in schema.options" :key="String(option.value)" :value="option.value">{{ t(option.label) }}</option>
-            </select>
+              :model-value="valueOf(schema)"
+              :placeholder="t('默认')"
+              :options="(schema.options || []).map(option => ({ ...option, label: t(option.label) }))"
+              @update:model-value="update(schema, $event)"
+            />
             <button
               v-else-if="schema.control === 'boolean'"
               :id="fieldId(schema)"

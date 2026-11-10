@@ -31,5 +31,9 @@ export function copyArtboard(board: CanvasArtboard, id: string, title: string): 
   // duplicateNodes remaps every nested ID and panel binding together.
   const duplicated = duplicateNodes(board.nodes, board.nodes.map(node => node.id), () => crypto.randomUUID());
   const copiedIds = new Set(duplicated.selectedIds);
-  return { id, title, nodes: duplicated.nodes.filter(node => copiedIds.has(node.id)) };
+  const nodes = duplicated.nodes.filter(node => copiedIds.has(node.id));
+  const source = board.source ? JSON.parse(JSON.stringify(board.source)) : undefined;
+  // Preserve original inputs, but a copied/remapped tree is not the old ID baseline.
+  if (source) delete source.initialNodes;
+  return { id, title, nodes, ...(source ? { source } : {}) };
 }

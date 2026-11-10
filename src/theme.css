@@ -1,4 +1,5 @@
 :root { color-scheme: dark; }
+html[data-theme="light"] .editor-select-menu { box-shadow: 0 12px 32px #172b4d1f, 0 2px 8px #172b4d0d; }
 html[data-theme="light"] {
   color-scheme: light;
   --bg: #f7f9fc;

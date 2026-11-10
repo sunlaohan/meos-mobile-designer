@@ -27,7 +27,7 @@ export function designContentKey(document: Pick<SavedDesign, 'title' | 'nodes' |
   // Keep the legacy shape for single-page documents and their existing drafts.
   const boards = document.artboards;
   const content = boards?.length === 1 && boards[0].id === 'main' && boards[0].title === document.title
-    ? { nodes: boards[0].nodes, report: boards[0].report }
+    ? { nodes: boards[0].nodes, report: boards[0].report, ...(boards[0].source ? { source: boards[0].source } : {}) }
     : boards?.length ? { artboards: boards } : { nodes: document.nodes, report: document.report };
   return JSON.stringify(canonical({ title: document.title.trim(), ...content }));
 }

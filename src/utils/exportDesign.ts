@@ -37,6 +37,8 @@ const componentNames: Record<string, string> = {
 
 const selectionTypes = new Set(['tree-select', 'quantity-input']);
 const namedModels = ['active', 'currentRate', 'showMore'];
+const escapeHtml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+const codeJson = (value: unknown) => JSON.stringify(value)?.replaceAll('<', '\\u003c').replaceAll('\u2028', '\\u2028').replaceAll('\u2029', '\\u2029');
 
 function pascalCase(value: string) {
   return value
@@ -51,11 +53,11 @@ function kebabCase(input: string) {
 
 function serializeProp(key: string, value: unknown) {
   const name = kebabCase(key);
-  if (value === undefined || value === '') return '';
+  if (value === undefined) return '';
   if (value === true) return ` ${name}`;
   if (value === false) return ` :${name}="false"`;
-  if (typeof value === 'string') return ` ${name}="${value.replaceAll('"', '&quot;')}"`;
-  return ` :${name}='${JSON.stringify(value)}'`;
+  if (typeof value === 'string') return ` ${name}="${escapeHtml(value)}"`;
+  return ` :${name}='${escapeHtml(codeJson(value))}'`;
 }
 
 function serializeStyle(style: Record<string, string>) {
@@ -68,6 +70,9 @@ function describeLayout(style: Record<string, string>) {
 
 function nodeToVue(node: CanvasNode, depth = 2, anchoredIds = new Set<string>(), allNodes: CanvasNode[] = [], unwrapped = false): string {
   const indent = '  '.repeat(depth);
+  // Match ComponentRenderer's layout contribution, not only native component props.
+  const wrap = (value: string) => ['button', 'tag', 'switch', 'stepper', 'progress', 'loading'].includes(node.type)
+    ? `${indent}<div class="designer-padded" style="padding:12px 16px;min-width:0;width:100%;box-sizing:border-box">\n${value}\n${indent}</div>` : value;
   const extensions = Object.fromEntries(Object.entries(effectiveExtensions(node, allNodes)).filter(([, config]) => config.enabled));
   if (!unwrapped && Object.keys(extensions).length) {
     const value = JSON.stringify(extensions).replaceAll('&', '&amp;').replaceAll("'", '&#39;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -100,8 +105,8 @@ function nodeToVue(node: CanvasNode, depth = 2, anchoredIds = new Set<string>(),
 
   if (anchoredPanelTypes.includes(node.type)) return `${indent}<div class="association-anchor" :style="anchors['${node.id}']">\n${indent}  <${component}${model}${props}${events}>\n${indent}    <template #reference><span class="association-reference" /></template>\n${indent}  </${component}>\n${indent}</div>`;
   if (node.children?.length) return `${indent}<${component}${model}${props}${source}${events}${closeEvent}>\n${node.children.map((child) => nodeToVue(child, depth + 1, anchoredIds, allNodes)).join('\n')}\n${indent}</${component}>`;
-  if (node.content) return `${indent}<${component}${model}${props}${source}${events}${closeEvent}>${node.content}</${component}>`;
-  return `${indent}<${component}${model}${props}${source}${events}${closeEvent} />`;
+  if (node.content !== undefined) return wrap(`${indent}<${component}${model}${props}${source}${events}${closeEvent}>${escapeHtml(node.content).replaceAll('{', '&#123;').replaceAll('}', '&#125;')}</${component}>`);
+  return wrap(`${indent}<${component}${model}${props}${source}${events}${closeEvent} />`);
 }
 
 export function toVueSfc(title: string, nodes: CanvasNode[], artboards?: CanvasArtboard[], activeId?: string) {
@@ -138,11 +143,11 @@ export function toVueSfc(title: string, nodes: CanvasNode[], artboards?: CanvasA
   const stateEntries = components
     .flatMap((node) => [
       ...(Object.prototype.hasOwnProperty.call(node.props, 'modelValue') || node.type === 'work-order-card' || selectionTypes.has(node.type)
-        ? [`  '${node.id}': ${JSON.stringify(node.props.modelValue ?? (selectionTypes.has(node.type) ? [] : node.props.expanded ?? false))}`] : []),
-      ...(isCanvasPanel(node) || Object.prototype.hasOwnProperty.call(node.props, 'show') ? [`  '${node.id}:show': ${JSON.stringify(node.props.show ?? false)}`] : []),
-      ...(node.type === 'tree-select' ? [`  '${node.id}:expandedKeys': ${JSON.stringify(node.props.expandedKeys ?? [])}`] : []),
-      ...(node.type === 'quantity-input' ? [`  '${node.id}:expanded': ${JSON.stringify(node.props.expanded ?? false)}`] : []),
-      ...namedModels.filter((key) => Object.prototype.hasOwnProperty.call(node.props, key)).map((key) => `  '${node.id}:${key}': ${JSON.stringify(node.props[key])}`),
+        ? [`  '${node.id}': ${codeJson(node.props.modelValue ?? (selectionTypes.has(node.type) ? [] : node.props.expanded ?? false))}`] : []),
+      ...(isCanvasPanel(node) || Object.prototype.hasOwnProperty.call(node.props, 'show') ? [`  '${node.id}:show': ${codeJson(node.props.show ?? false)}`] : []),
+      ...(node.type === 'tree-select' ? [`  '${node.id}:expandedKeys': ${codeJson(node.props.expandedKeys ?? [])}`] : []),
+      ...(node.type === 'quantity-input' ? [`  '${node.id}:expanded': ${codeJson(node.props.expanded ?? false)}`] : []),
+      ...namedModels.filter((key) => Object.prototype.hasOwnProperty.call(node.props, key)).map((key) => `  '${node.id}:${key}': ${codeJson(node.props[key])}`),
     ])
     .join(',\n');
 

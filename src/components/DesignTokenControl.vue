@@ -218,7 +218,7 @@ onBeforeUnmount(removeListeners);
         <Type v-else-if="isFont" :size="15" class="token-kind-icon" />
         <Ruler v-else :size="15" class="token-kind-icon" />
         <span class="token-current-value" :title="currentDisplayValue">{{ currentDisplayValue }}</span>
-        <ChevronDown :size="13" class="token-chevron" />
+        <ChevronDown :size="16" class="select-chevron" aria-hidden="true" />
       </button>
       <button
         ref="customTrigger"

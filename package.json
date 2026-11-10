@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "2.95.3",
+    "fflate": "^0.8.3",
+    "html-to-image": "^1.11.13",
     "lucide-vue-next": "^0.468.0",
     "persagy-vant": "link:/Users/sunlei/Component/persagy-vant/packages/persagy-mobile",
     "vue": "3.2.38"

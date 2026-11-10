@@ -15,7 +15,7 @@ const { t } = useI18n();
 function reload() { location.reload(); }
 onMounted(async () => {
   try { const { mountProduct } = await import('../product-entry'); emit('ready', mountProduct); }
-  catch { failed.value = true; notify('页面资源加载失败，请刷新重试。', 'error'); }
+  catch (error) { console.error('[Compose] 页面资源加载失败', error); failed.value = true; notify('页面资源加载失败，请刷新重试。', 'error'); }
 });
 </script>
 

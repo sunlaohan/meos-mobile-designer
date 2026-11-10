@@ -68,6 +68,8 @@ export type PageBuildState = 'ready' | 'loading' | 'empty' | 'error' | 'disabled
 
 export interface PageBuildRequest {
   prompt: string;
+  inputMode?: 'requirements' | 'image';
+  imageAction?: 'recreate' | 'beautify';
   model?: string;
   attachments?: BuildAttachment[];
 }
@@ -84,7 +86,7 @@ export interface BuildAttachment {
 export interface PageBuildReport {
   interactions?: { sourceId: string; source: string; event: string; targetId: string; target: string }[];
   attachments?: Pick<BuildAttachment, 'name' | 'kind' | 'size'>[];
-  generation?: { mode: 'ai'; requestedModel: string; actualModel: string; usage?: Record<string, unknown> };
+  generation?: { mode: 'ai'; inputMode?: 'requirements' | 'image'; imageAction?: 'recreate' | 'beautify'; requestedModel: string; actualModel: string; usage?: Record<string, unknown> };
   skill: string;
   version: string;
   fingerprint: string;
@@ -102,6 +104,7 @@ export interface PageBuildReport {
 export interface AiModel {
   id: string;
   family: string;
+  vendor?: string;
   label?: string;
   supportsImages?: boolean;
 }
@@ -119,6 +122,16 @@ export interface CanvasArtboard {
   title: string;
   nodes: CanvasNode[];
   report?: PageBuildReport;
+  source?: DesignSource;
+}
+
+// Original inputs are document data, not account/session state. Old documents
+// need no migration; absent sources are reported honestly during handoff.
+export interface DesignSource {
+  inputMode: 'requirements' | 'image';
+  prompt: string;
+  attachments: BuildAttachment[];
+  initialNodes?: CanvasNode[];
 }
 
 export interface SavedDesign {

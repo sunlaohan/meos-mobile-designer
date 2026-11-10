@@ -4,7 +4,7 @@ import { useNotifications } from '../utils/notifications';
 import { useI18n, componentName } from '../utils/i18n';
 const { t, language } = useI18n();
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
-import { BookOpen, ChevronDown, ChevronRight, ExternalLink, FileText, ImagePlus, Layers3, Search, Send, Sparkles, X } from 'lucide-vue-next';
+import { BookOpen, ChevronDown, ChevronRight, ExternalLink, FileText, ImagePlus, Layers3, Search, Send, Sparkles, WandSparkles, X } from 'lucide-vue-next';
 import { ImagePreview } from 'persagy-vant';
 import AiModelSelector from './AiModelSelector.vue';
 import ComponentRenderer from './ComponentRenderer.vue';
@@ -19,6 +19,7 @@ import { skillRulebook } from '../data/skillRules';
 import { getDefinition } from '../data/componentCatalog';
 import { getComponentDocsUrl } from '../utils/componentDocs';
 import { createCanvasDrag } from '../utils/canvasDrag';
+import { createGenerationComposer } from '../utils/generationComposer';
 
 const props = withDefaults(
   defineProps<{
@@ -44,15 +45,14 @@ const emit = defineEmits<{
 const mode = ref<'components' | 'layers'>('components');
 const query = ref('');
 const defaultPrompt = '做一个巡检任务列表，包含搜索、任务状态和底部新建入口';
-const prompt = ref(t(defaultPrompt));
+const { inputMode, drafts, prompt, attachments, hasInput, request: generationRequest } = createGenerationComposer(t(defaultPrompt));
 watch(language, (value, previous) => {
   const previousDefault = previous === 'zh' ? defaultPrompt : 'Create an inspection task list with search, task status, and a bottom action to create a task';
-  if (prompt.value === previousDefault) prompt.value = t(defaultPrompt);
+  if (drafts.requirements.prompt === previousDefault) drafts.requirements.prompt = t(defaultPrompt);
 });
 const selectedModel = ref('');
 const modelReady = ref(false);
 const supportsImages = ref(false);
-const attachments = ref<BuildAttachment[]>([]);
 const { notify } = useNotifications();
 const readingKind = ref('');
 const readingAttachments = ref(false);
@@ -63,10 +63,11 @@ const ImageViewer = ImagePreview.Component;
 const previewOpen = ref(false);
 const previewImages = ref<string[]>([]);
 const previewStart = ref(0);
-const imageCompatibilityError = computed(() => attachments.value.some((item) => item.kind === 'image') && modelReady.value && !supportsImages.value ? '当前模型暂未接入图片附件，请选择 Gemini、Qwen、GPT、Claude 或 Kimi，或移除图片。' : '');
+const imageCompatibilityError = computed(() => (inputMode.value === 'image' || attachments.value.some((item) => item.kind === 'image')) && modelReady.value && !supportsImages.value ? '当前模型暂未接入图片附件，请选择 Gemini、Qwen、GPT、Claude 或 Kimi，或移除图片。' : '');
 watch(imageCompatibilityError, message => { if (message) notify(message, 'error'); });
 watch(() => props.buildReport?.warnings, warnings => { for (const message of warnings || []) notify(message, 'warning'); }, { immediate: true });
-const canSubmit = computed(() => (prompt.value.trim() || attachments.value.length) && modelReady.value && !props.generating && !readingAttachments.value && !imageCompatibilityError.value);
+const canSubmit = computed(() => hasInput.value && modelReady.value && !props.generating && !readingAttachments.value && !imageCompatibilityError.value);
+const submitLabel = computed(() => inputMode.value === 'requirements' ? '生成页面' : '一键美化页面');
 const openCategories = ref(new Set(categories));
 const previewNodes = new Map(componentCatalog.map((item) => [item.type, createNode(item.type)]));
 
@@ -106,9 +107,16 @@ function addFromCard(event: MouseEvent, type: string) {
 }
 
 function submitPrompt() {
-  const value = prompt.value.trim();
   if (!canSubmit.value) return;
-  emit('generate', { prompt: value, model: selectedModel.value, attachments: attachments.value });
+  emit('generate', generationRequest(selectedModel.value));
+}
+
+function modeKeydown(event: KeyboardEvent) {
+  if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  event.preventDefault(); event.stopPropagation();
+  if (props.generating || readingAttachments.value) return;
+  inputMode.value = event.key === 'Home' ? 'requirements' : event.key === 'End' ? 'image' : inputMode.value === 'requirements' ? 'image' : 'requirements';
+  (event.currentTarget as HTMLElement).querySelector<HTMLButtonElement>(`[data-mode="${inputMode.value}"]`)?.focus();
 }
 
 async function addAttachments(files: File[]) {
@@ -123,6 +131,7 @@ async function addAttachments(files: File[]) {
       if (attachments.value.length >= ATTACHMENT_LIMITS.count) { errors.push('最多添加 6 个附件。'); break; }
       try {
         const attachment = await readBuildAttachment(file);
+        if (inputMode.value === 'image' && attachment.kind !== 'image') { errors.push('图片模式仅支持图片，请切换到需求生成添加文档。'); continue; }
         if (attachments.value.some((item) => item.name === attachment.name && item.content === attachment.content)) { errors.push(`${attachment.name} 已添加。`); continue; }
         attachments.value = validateAttachments([...attachments.value, attachment]);
       } catch (error) { errors.push(error instanceof Error ? error.message : `无法读取 ${file.name}。`); }
@@ -193,24 +202,36 @@ function previewAttachment(attachment: BuildAttachment) {
     <template v-if="mode === 'components'">
       <section class="ai-composer" :class="{ 'ai-composer--dragging': draggingAttachment }" @paste="pasteAttachments" @dragover="dragAttachments" @dragleave="leaveAttachments" @drop.prevent.stop="dropAttachments">
         <div class="ai-title"><Sparkles :size="15" /> {{ t("AI 生成页面") }}<span class="skill-mode-badge">{{ t("模型 + Skill") }}</span></div>
+        <div class="ai-input-modes" role="tablist" :aria-label="t('页面生成模式')" @keydown="modeKeydown">
+          <button id="ai-requirements-tab" type="button" role="tab" data-mode="requirements" :aria-selected="inputMode === 'requirements'" :tabindex="inputMode === 'requirements' ? 0 : -1" aria-controls="ai-input-panel" :disabled="generating || readingAttachments" @click="inputMode = 'requirements'"><FileText :size="14" />{{ t('需求生成') }}</button>
+          <button id="ai-image-tab" type="button" role="tab" data-mode="image" :aria-selected="inputMode === 'image'" :tabindex="inputMode === 'image' ? 0 : -1" aria-controls="ai-input-panel" :disabled="generating || readingAttachments" @click="inputMode = 'image'"><ImagePlus :size="14" />{{ t('图片美化') }}</button>
+        </div>
+        <div id="ai-input-panel" role="tabpanel" :aria-labelledby="inputMode === 'requirements' ? 'ai-requirements-tab' : 'ai-image-tab'">
         <AiModelSelector :disabled="generating" @update:model="selectedModel = $event" @update:ready="modelReady = $event" @change="supportsImages = !!$event.supportsImages" />
+        <button v-if="inputMode === 'image' && !attachments.length" type="button" class="image-upload-zone" :aria-label="t('上传页面截图')" :disabled="generating || readingAttachments" @click="imageInput?.click()">
+          <span class="image-upload-icon"><ImagePlus :size="22" /></span>
+          <strong>{{ readingAttachments ? t('读取中…') : t('上传页面截图') }}</strong>
+          <span>{{ t('也可粘贴或拖入图片') }}</span>
+          <small>{{ t('PNG、JPG、WebP · 最多 4 张 · 每张 5MB') }}</small>
+        </button>
         <textarea
           v-model="prompt"
+          :class="{ 'image-prompt': inputMode === 'image' }"
           maxlength="4000"
           :disabled="generating"
-          :aria-label="t('描述要生成的移动页面')"
-          :placeholder="t('描述页面需求，也可以粘贴图片或添加代码附件')"
+          :aria-label="inputMode === 'image' ? t('图片补充说明（可选）') : t('描述要生成的移动页面')"
+          :placeholder="inputMode === 'image' ? t('补充说明（可选），例如保留文案、优化信息层级') : t('描述页面需求，或上传 PRD、Markdown、代码文档')"
           @keydown.meta.enter="submitPrompt"
           @keydown.ctrl.enter="submitPrompt"
         />
         <div class="attachment-toolbar">
           <input ref="imageInput" type="file" class="attachment-input" :accept="IMAGE_ACCEPT" multiple :aria-label="t('选择图片附件')" :disabled="generating || readingAttachments" @change="chooseFiles" />
           <input ref="documentInput" type="file" class="attachment-input" :accept="DOCUMENT_ACCEPT" multiple :aria-label="t('选择文档附件')" :disabled="generating || readingAttachments" @change="chooseFiles" />
-          <AsyncButton :aria-label="t('上传图片')" :title="t('PNG、JPG、WebP；单张不超过 5MB，也可直接粘贴或拖入')" :disabled="generating || readingAttachments" @click="imageInput?.click()" :loading="readingAttachments && readingKind === 'image'"><ImagePlus :size="14" />{{ t("图片") }}</AsyncButton>
-          <AsyncButton :aria-label="t('上传文档')" :title="t('Markdown、Vue、JS、TS、CSS、JSON 等 UTF-8 文档；单份不超过 100KB')" :disabled="generating || readingAttachments" @click="documentInput?.click()" :loading="readingAttachments && readingKind === 'code'"><FileText :size="14" />{{ t("文档") }}</AsyncButton>
-          <span>{{ readingAttachments ? t('读取中…') : attachments.length ? t('{0}/6 个附件', [attachments.length]) : t('可粘贴或拖入') }}</span>
+          <AsyncButton v-if="inputMode === 'requirements' || attachments.length" :aria-label="t('上传图片')" :title="t('PNG、JPG、WebP；单张不超过 5MB，也可直接粘贴或拖入')" :disabled="generating || readingAttachments" @click="imageInput?.click()" :loading="readingAttachments && readingKind === 'image'"><ImagePlus :size="14" />{{ inputMode === 'image' ? t('添加图片') : t('图片') }}</AsyncButton>
+          <AsyncButton v-if="inputMode === 'requirements'" :aria-label="t('上传文档')" :title="t('Markdown、Vue、JS、TS、CSS、JSON 等 UTF-8 文档；单份不超过 100KB')" :disabled="generating || readingAttachments" @click="documentInput?.click()" :loading="readingAttachments && readingKind === 'code'"><FileText :size="14" />{{ t("文档") }}</AsyncButton>
+          <span v-if="inputMode === 'requirements' || attachments.length">{{ readingAttachments ? t('读取中…') : inputMode === 'image' ? t('{0}/4 张图片', [attachments.length]) : attachments.length ? t('{0}/6 个附件', [attachments.length]) : t('可粘贴或拖入') }}</span>
         </div>
-        <div v-if="attachments.length" class="composer-attachments" :aria-label="t('已添加附件')">
+        <div v-if="attachments.length" class="composer-attachments" :class="{ 'composer-attachments--images': inputMode === 'image', 'has-many': attachments.length > 1 }" :aria-label="t('已添加附件')">
           <div v-for="attachment in attachments" :key="attachment.id" class="composer-attachment" :data-attachment-kind="attachment.kind">
             <template v-if="attachment.kind === 'image'">
               <button type="button" class="attachment-image" :aria-label="t('预览图片 {0}', [attachment.name])" @click="previewAttachment(attachment)"><img :src="attachment.content" :alt="attachment.name" /></button>
@@ -223,12 +244,16 @@ function previewAttachment(attachment: BuildAttachment) {
             <button type="button" class="attachment-remove" :aria-label="t('移除附件 {0}', [attachment.name])" :disabled="generating" @click="removeAttachment(attachment.id)"><X :size="13" /></button>
           </div>
         </div>
+        <p v-if="imageCompatibilityError" class="composer-input-error" role="alert">{{ t(imageCompatibilityError) }}</p>
+        </div>
         <div class="composer-footer">
-          <span :title="`use-persagy-vant ${skillRulebook.version} · ${skillRulebook.fingerprint}`">{{ generating ? t('正在构建页面…') : t('use-persagy-vant · 组件规范') }}</span>
+          <span v-if="generating" role="status">{{ t('正在构建页面…') }}</span>
           <button v-if="generating" class="cancel-generation" :title="t('取消生成')" :aria-label="t('取消生成')" @click="emit('cancel-generate')"><X :size="14" /></button>
-          <button class="send-button" :disabled="!canSubmit" :title="t('使用所选模型和附件生成页面')" :aria-label="t('生成页面')" @click="submitPrompt">
+          <button class="send-button" :class="{ 'send-button--image': inputMode === 'image' }" :disabled="!canSubmit" :title="t('使用所选模型和附件生成页面')" :aria-label="t(submitLabel)" @click="submitPrompt">
             <span v-if="generating" class="spinner" />
+            <WandSparkles v-else-if="inputMode === 'image'" :size="14" />
             <Send v-else :size="14" />
+            <span v-if="inputMode === 'image'">{{ generating ? t('正在构建页面…') : t(submitLabel) }}</span>
           </button>
         </div>
       </section>

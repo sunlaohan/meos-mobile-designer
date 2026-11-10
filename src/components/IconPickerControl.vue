@@ -122,7 +122,7 @@ onBeforeUnmount(removeListeners);
   <div ref="anchor" class="icon-picker-control">
     <button :id="id" ref="trigger" type="button" class="icon-picker-trigger" :class="{ active: opened }" :aria-label="t(pickerLabel)" aria-haspopup="dialog" :aria-expanded="opened" :aria-controls="opened ? `${id}-icons` : undefined" @click="open">
       <span class="icon-picker-current-preview" aria-hidden="true"><VanIcon v-if="isBuiltinIcon(currentValue)" :name="currentValue" :size="20" /><img v-else-if="isImageIcon(currentValue)" :src="currentValue" alt="" referrerpolicy="no-referrer" /><ImageIcon v-else :size="18" /></span>
-      <span class="icon-picker-current-name" :title="currentValue || t(currentLabel)">{{ t(currentLabel) }}</span><ChevronDown :size="14" />
+      <span class="icon-picker-current-name" :title="currentValue || t(currentLabel)">{{ t(currentLabel) }}</span><ChevronDown :size="16" class="select-chevron" aria-hidden="true" />
     </button>
     <Teleport to="body">
       <section v-if="opened" :id="`${id}-icons`" ref="popup" class="icon-picker-popover" :style="position" role="dialog" :aria-label="t(pickerLabel)" @keydown.stop="onKeydown">

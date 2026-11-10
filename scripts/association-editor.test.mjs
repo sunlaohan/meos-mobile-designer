@@ -28,7 +28,7 @@ test('关联编辑器使用统一的可点击拖拽区域，移除旧关联选�
     assert.match(html, /data-panel-trigger="trigger"/);
     assert.match(html, /点击选择或拖入关联控件/);
     assert.doesNotMatch(html, /aria-label="关联组件"|新建并关联|打开面板 · 关联组件/);
-    assert.equal((html.match(/<select/g) || []).length, 1);
+    assert.equal((html.match(/role="combobox"/g) || []).length, 1);
     const bound = { ...source, actions: { click: { type: 'open-panel', targetId: panel.id } } };
     const current = await renderToString(createSSRApp(Editor, { node: bound, nodes: [bound, panel] }));
     assert.match(current, /aria-label="更换关联控件"/);
@@ -40,7 +40,7 @@ test('关联编辑器使用统一的可点击拖拽区域，移除旧关联选�
     assert.doesNotMatch(current, /保留画板中的控件/);
     assert.match(current, /aria-label="编辑关联组件"/);
     assert.doesNotMatch(current, /配置控件|interaction-target-actions/);
-    assert.equal((current.match(/<button/g) || []).length, 3);
+    assert.equal((current.match(/<button/g) || []).length, 4);
     assert.match(current, /点击更换，或拖入控件替换/);
     const unavailable = await renderToString(createSSRApp(Editor, { node: bound, nodes: [bound] }));
     assert.match(unavailable, /title="清除失效关联"/);

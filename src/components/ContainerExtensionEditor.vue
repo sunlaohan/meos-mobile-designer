@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import EditorSelect from './EditorSelect.vue';
 import { useI18n, propertyName } from '../utils/i18n';
 const { t } = useI18n();
 import { computed, ref, watch } from 'vue';
@@ -56,7 +57,7 @@ function expand(kind: ContainerExtensionKind) {
         <div v-for="field in item.fields" :key="field.key" class="property-row" :class="`control-${field.control}`">
           <component :is="field.control === 'select' ? 'div' : 'label'" class="property-label" :for="field.control === 'select' ? undefined : `extension-${node.id}-${item.kind}-${field.key}`" :id="`extension-label-${node.id}-${item.kind}-${field.key}`">{{ propertyName(field) }}<small v-if="field.help">{{ t(field.help) }}</small></component>
           <input v-if="field.control === 'text' || field.control === 'number'" :id="`extension-${node.id}-${item.kind}-${field.key}`" :type="field.control === 'number' ? 'number' : 'text'" :min="field.min" :max="field.max" :value="configs[item.kind]!.props[field.key]" @input="patch(item.kind, { [field.key]: field.control === 'number' ? Number(($event.target as HTMLInputElement).value) : ($event.target as HTMLInputElement).value })" />
-          <select v-else-if="field.control === 'select'" :id="`extension-${node.id}-${item.kind}-${field.key}`" :aria-labelledby="`extension-label-${node.id}-${item.kind}-${field.key}`" :value="configs[item.kind]!.props[field.key]" @change="patch(item.kind, { [field.key]: ($event.target as HTMLSelectElement).value })"><option v-for="option in field.options" :key="String(option.value)" :value="option.value">{{ t(option.label) }}</option></select>
+          <EditorSelect v-else-if="field.control === 'select'" :id="`extension-${node.id}-${item.kind}-${field.key}`" :aria-labelledby="`extension-label-${node.id}-${item.kind}-${field.key}`" :model-value="configs[item.kind]!.props[field.key]" :options="(field.options || []).map(option => ({ ...option, label: t(option.label) }))" @update:model-value="patch(item.kind, { [field.key]: $event })" />
           <button v-else-if="field.control === 'boolean'" :id="`extension-${node.id}-${item.kind}-${field.key}`" type="button" role="switch" :aria-label="propertyName(field)" :aria-checked="!!configs[item.kind]!.props[field.key]" class="property-switch" :class="{ checked: !!configs[item.kind]!.props[field.key] }" @click="patch(item.kind, { [field.key]: !configs[item.kind]!.props[field.key] })"><span /></button>
         </div>
         <p v-if="item.kind === 'sticky' && node.type === 'background'" class="panel-description">{{ t("整页背景通常不需要吸附，建议用于筛选栏等小分组。") }}</p>

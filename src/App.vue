@@ -5,14 +5,11 @@ import { useI18n, componentName, formatDate } from './utils/i18n';
 const { t } = useI18n();
 import LanguageToggle from './components/LanguageToggle.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   ArrowLeft,
   ChevronDown,
-  Code2,
   Download,
-  FileJson,
-  FileText,
   MonitorSmartphone,
   Play,
   Redo2,
@@ -36,6 +33,7 @@ import { createNode, getDefinition, makeId } from './data/componentCatalog';
 import type { CanvasArtboard, CanvasNode, ComponentType, ContainerExtensions, PageBuildReport, PageBuildRequest, SavedDesign } from './types';
 import { extensionTreeError, updateContainerExtensions } from './utils/containerExtensions';
 import { downloadText, toJson, toMarkdown, toVueSfc } from './utils/exportDesign';
+import { sourceFromRequest } from './utils/deliverySource';
 import { generatePageFromPrompt } from './utils/pageGenerator';
 import { generatePageWithAi } from './utils/aiClient';
 import { bindPanel, removeAssociatedPanel } from './utils/panelInteractions';
@@ -70,6 +68,7 @@ const generating = ref(false);
 const generationError = ref('');
 let generationController: AbortController | undefined;
 const exportOpen = ref(false);
+const DeliveryDialog = defineAsyncComponent(() => import('./components/DeliveryDialog.vue'));
 const clearDialogOpen = ref(false);
 const deleteArtboardId = ref('');
 const deleteArtboardOpen = ref(false);
@@ -475,6 +474,9 @@ async function generate(request: PageBuildRequest) {
     const index = artboards.value.findIndex(board => board.id === activeArtboardId.value);
     const boards = [...artboards.value];
     generatedBoards[0].id = activeArtboardId.value;
+    // Keep the actual user input, not only the AI's attachment-name summary.
+    // Each generated page gets its own baseline; none is a source-code baseline.
+    for (const board of generatedBoards) board.source = sourceFromRequest(request, board.nodes);
     boards.splice(index, 1, ...generatedBoards);
     commitDocument(artboardDocument(artboards.value.length === 1 ? generated.title : fileTitle.value, boards, generatedBoards[0].id), generated.nodes[0] ? [generated.nodes[0].id] : []);
     if (generated.summary) notify(generated.summary, 'info');
@@ -498,10 +500,14 @@ function exportFile(kind: 'vue' | 'json' | 'md') {
   showToast('导出文件已生成');
 }
 
+function updateDeliverySource(id: string, source: import('./types').DesignSource) {
+  commitDocument(artboardDocument(fileTitle.value, artboards.value.map(board => board.id === id ? { ...board, source } : board), activeArtboardId.value), selectedIds.value);
+}
+
 function onKeydown(event: KeyboardEvent) {
-  if (clearDialogOpen.value || deleteArtboardOpen.value) return;
+  if (clearDialogOpen.value || deleteArtboardOpen.value || exportOpen.value) return;
   const target = event.target as HTMLElement;
-  const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable;
+  const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable || !!target.closest('[role="combobox"], [role="listbox"]');
   const command = event.metaKey || event.ctrlKey;
 
   if (command && event.key.toLowerCase() === 's') {
@@ -692,18 +698,14 @@ onBeforeUnmount(() => {
           @exit-associated-edit="exitAssociatedEdit"
         />
         <div class="export-footer">
-          <div v-if="exportOpen" class="export-menu">
-            <button @click="exportFile('vue')"><Code2 :size="16" /><span><strong>{{ t("Vue 单文件组件") }}</strong><small>{{ t("可直接进入业务工程") }}</small></span></button>
-            <button @click="exportFile('json')"><FileJson :size="16" /><span><strong>{{ t("设计 JSON") }}</strong><small>{{ t("继续编辑或接入云端") }}</small></span></button>
-            <button @click="exportFile('md')"><FileText :size="16" /><span><strong>{{ t("组件说明文档") }}</strong><small>{{ t("包含复用清单与规范") }}</small></span></button>
-          </div>
-          <button class="export-button" @click="exportOpen = !exportOpen">
-            <Download :size="16" /> {{ t("导出") }} <ChevronDown :size="14" />
+          <button class="export-button" :disabled="generating" @click="exportOpen = true">
+            <Download :size="16" /> {{ t("交付开发") }} <ChevronDown :size="14" />
           </button>
         </div>
       </div>
     </div>
 
+    <DeliveryDialog v-if="exportOpen" :title="fileTitle" :artboards="artboards" :active-id="activeArtboardId" @close="exportOpen = false" @source="updateDeliverySource" @advanced="exportFile" />
     <DraftRecoveryDialog v-if="draftsOpen" :drafts="autosaveState?.drafts || []" :cloud-revision="autosaveState?.savedAt || ''" :error="autosaveState?.localError" @keep="keepCurrentDraft" @restore="restoreDraft" @download="downloadDraft" />
 
     <ConfirmDialog

@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import EditorSelect from './EditorSelect.vue';
 import { useNotifications } from '../utils/notifications';
 import { useI18n } from '../utils/i18n';
 const { t } = useI18n();
-import { onMounted, ref } from 'vue';
-import { ChevronDown, RefreshCw } from 'lucide-vue-next';
+import { computed, onMounted, ref } from 'vue';
+import { RefreshCw } from 'lucide-vue-next';
 import { fetchAiModels } from '../utils/aiClient';
 import type { AiModel } from '../types';
 
@@ -15,6 +16,7 @@ const emit = defineEmits<{
 }>();
 const storageKey = 'meri-mobile-designer:ai-model';
 const models = ref<AiModel[]>([]);
+const options = computed(() => models.value.map(model => ({ label: model.id, description: model.vendor || model.label?.split(' · ')[0] || model.family, value: model.id })));
 const selected = ref('');
 const loading = ref(false);
 const { notify } = useNotifications();
@@ -46,13 +48,6 @@ onMounted(() => load());
 <template>
   <div class="ai-model-settings">
     <div class="ai-model-label"><label for="ai-model-select">{{ t("生成模型") }}</label><span>{{ loading ? t('加载中…') : t('{0} 家精选', [models.length]) }}</span><button type="button" :title="t('刷新模型列表')" :aria-label="t('刷新模型列表')" :disabled="disabled || loading" :aria-busy="loading" @click="load(true)"><RefreshCw :size="12" :class="{ spinning: loading }" /></button></div>
-    <div class="ai-model-control">
-      <select id="ai-model-select" v-model="selected" :aria-label="t('生成模型')" :disabled="disabled || loading || !models.length" @change="select">
-        <option v-if="!models.length" value="">{{ loading ? t('正在获取模型…') : t('暂无可用模型') }}</option>
-        <option v-for="model in models" :key="model.id" :value="model.id">{{ model.label || model.id }}</option>
-      </select>
-      <ChevronDown class="ai-model-chevron" :size="14" aria-hidden="true" />
-    </div>
-    <small v-if="models.length" class="ai-model-hint">{{ t("每家保留一款，默认 Gemini") }}</small>
+    <EditorSelect id="ai-model-select" size="compact" :model-value="selected" :options="options" :aria-label="t('生成模型')" :placeholder="loading ? t('正在获取模型…') : t('暂无可用模型')" :disabled="disabled || loading || !models.length" @update:model-value="selected = String($event); select()" />
   </div>
 </template>

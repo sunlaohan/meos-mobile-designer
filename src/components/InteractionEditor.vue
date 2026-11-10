@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import EditorSelect from './EditorSelect.vue';
 import { useI18n, componentName } from '../utils/i18n';
 const { t } = useI18n();
 import { computed, ref, watch } from 'vue';
@@ -65,7 +66,7 @@ function drop(event: DragEvent) {
   <section v-if="events.length" class="property-group interaction-editor">
     <h3><Link2 :size="15" />{{ t("交互") }}</h3>
     <label class="property-row"><span class="property-label">{{ t("触发时机") }}</span>
-      <select v-model="eventName" :aria-label="t('触发时机')"><option v-for="event in events" :key="event.value" :value="event.value">{{ t(event.label) }}</option></select>
+      <EditorSelect :model-value="eventName" :options="events.map(event => ({ ...event, label: t(event.label) }))" :aria-label="t('触发时机')" @update:model-value="eventName = String($event)" />
     </label>
     <div class="interaction-drop-zone" :data-panel-trigger="node.id" :data-trigger-event="eventName" :data-associated-id="target?.id || ''" :class="{ active: dragging || componentDragState.associationId === node.id || layerDragState.association?.sourceId === node.id, 'has-association': !!target, 'has-binding': !!binding }" @click="zoneClick" @dragover.stop="dragOver" @dragleave="dragLeave" @drop.prevent.stop="drop">
       <button type="button" class="interaction-association-trigger" :aria-label="binding ? t('更换关联控件') : t('选择关联控件')" aria-haspopup="dialog" :aria-expanded="pickerOpen" @click="pickerOpen = true">

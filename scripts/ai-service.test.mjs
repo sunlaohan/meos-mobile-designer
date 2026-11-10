@@ -234,6 +234,42 @@ test('图片与代码附件进入两阶段上下文，仅附件也可生成；�
   assert.ok(!JSON.stringify(result).includes(content));
 });
 
+test('图片默认按美化进入规划与生成上下文；兼容旧请求且纯图片可生成组件', async () => {
+  const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jg1kAAAAASUVORK5CYII=';
+  const image = { id: 'image', name: '页面.png', kind: 'image', mimeType: 'image/png', size: Buffer.from(png.split(',')[1], 'base64').length, content: png };
+  for (const imageAction of [undefined, 'beautify', 'recreate']) {
+    const expectedAction = imageAction ?? 'beautify';
+    const planned = { recipeId: 'detail', title: '设备档案', elements: [{ element: '导航', component: 'nav-bar', variant: '基础用法' }] };
+    const { service, calls } = fakeService([modelList, completion(planned), completion(page(node('nav', 'nav-bar')))]);
+    const result = await service.generate({ prompt: '', inputMode: 'image', imageAction, attachments: [image] });
+    for (const call of calls.slice(1)) {
+      const messages = JSON.parse(call.options.body).messages;
+      assert.match(messages[0].content, expectedAction === 'beautify' ? /图片智能美化.*保留主要内容/ : /图片还原布局.*可见文案/);
+      assert.equal(messages[1].content[1].image_url.url, png);
+      assert.match(messages[1].content[0].text, new RegExp(`"imageAction":"${expectedAction}"`));
+    }
+    assert.equal(result.report.generation.imageAction, expectedAction);
+    assert.equal(result.report.generation.inputMode, 'image');
+    assert.equal(result.nodes[0].type, 'nav-bar');
+    assert.ok(!JSON.stringify(result).includes(png), '参考图不能充当生成页面');
+  }
+});
+
+test('图片模式在调用模型前拒绝无图、混入文档和无效处理方式', async () => {
+  const { service, calls } = fakeService([]);
+  for (const request of [
+    { prompt: '只有描述', inputMode: 'image' },
+    { prompt: '描述', inputMode: 'unknown' },
+    { prompt: '描述', inputMode: 'image', imageAction: 'unknown' },
+    { prompt: '描述', inputMode: 'requirements', imageAction: 'beautify' },
+  ]) await assert.rejects(service.generate(request), error => error.status === 400);
+  const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jg1kAAAAASUVORK5CYII=';
+  const image = { id: 'img', name: '页面.png', kind: 'image', mimeType: 'image/png', size: Buffer.from(png.split(',')[1], 'base64').length, content: png };
+  const document = { id: 'prd', name: '需求.md', kind: 'code', mimeType: 'text/plain', size: 3, content: 'PRD' };
+  await assert.rejects(service.generate({ prompt: '', inputMode: 'image', attachments: [image, document] }), /图片模式仅支持图片/);
+  assert.equal(calls.length, 0);
+});
+
 test('不支持图片的模型明确拒绝，文件校验失败不向网关发送内容', async () => {
   const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jg1kAAAAASUVORK5CYII=';
   const attachment = { id: 'image', name: 'reference.png', kind: 'image', mimeType: 'image/png', size: Buffer.from(png.split(',')[1], 'base64').length, content: png };
